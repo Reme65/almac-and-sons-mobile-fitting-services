@@ -635,3 +635,445 @@ Asset
             └── Technician
             └── Invoice
                   └── Payment
+
+# Requirement 4 — User Authentication and Authorisation
+
+## Academic Requirement
+
+The application must provide user authentication, including registration and login, with a clear reason for requiring authenticated user accounts.
+
+Authentication must serve a genuine application purpose rather than being included solely to satisfy the assessment requirement.
+
+---
+
+## Purpose of Authentication
+
+Authentication is required because the application will contain personal, operational and financial information that must only be accessible to authorised users.
+
+Authenticated functionality may include:
+
+- Customer profiles
+- Vehicles/assets
+- Service requests
+- Service locations
+- Job information
+- Service history
+- Invoices
+- Payment information
+- Technician assignments
+- Operational staff functionality
+
+Authentication establishes the identity of the user.
+
+Authorisation will then determine which application data and functionality that authenticated user is permitted to access.
+
+---
+
+## Operational Roles
+
+The application will use four main operational roles:
+
+- Customer
+- Technician
+- Dispatcher / Staff
+- Manager / Supervisor
+
+Private and business/fleet customers are different customer account types rather than separate operational permission roles.
+
+---
+
+## Customer Account Types
+
+Public registration will only allow users to create customer accounts.
+
+The available customer account types will be:
+
+- Private Customer
+- Business / Fleet Customer
+
+Separate registration/profile workflows will be provided because private and commercial customers require different information.
+
+Users should only be asked for information relevant to their selected account type.
+
+---
+
+## Internal Accounts
+
+Technician, Dispatcher / Staff and Manager / Supervisor are internal operational roles.
+
+These roles will not be available through public registration.
+
+Internal accounts and their permissions may only be created or assigned by an authorised Manager / Supervisor.
+
+A customer must not be able to promote their own account or assign themselves an internal role.
+
+Similarly, internal users must not be able to increase their own privileges unless their existing permissions explicitly authorise that action.
+
+---
+
+## Authentication and Authorisation
+
+Authentication and authorisation will be treated as separate concerns.
+
+Authentication answers:
+
+> Who is this user?
+
+Authorisation answers:
+
+> What is this user permitted to do?
+
+Being logged in will therefore not automatically provide access to all authenticated functionality.
+
+Access will depend on the user's role, ownership of the requested data and the permissions required for the operation.
+
+---
+
+## Planned Access Rules
+
+Examples include:
+
+- Anonymous users may access appropriate public pages.
+- Customers may access their own account information.
+- Customers may access their own vehicles/assets.
+- Customers may access their own service requests and relevant job information.
+- Customers must not access another customer's private records.
+- Technicians may access operational information required for jobs assigned to them.
+- Technicians must not gain unrestricted access to unrelated customer or job records.
+- Dispatcher / Staff users may access authorised operational functionality.
+- Manager / Supervisor users may perform authorised account, staff and operational management functions.
+- Internal roles must not be available through public registration.
+
+The final permission matrix will be defined during detailed application design.
+
+---
+
+## Planned Security Testing
+
+Both positive and negative permission tests will be documented.
+
+Examples:
+
+| Test | Expected Result |
+| --- | --- |
+| Public user registers as private customer | Allowed |
+| Public user registers as business/fleet customer | Allowed |
+| Public user attempts to register as technician | Option not available |
+| Anonymous user accesses customer dashboard | Denied |
+| Customer accesses own service request | Allowed |
+| Customer attempts to access another customer's request | Denied |
+| Customer attempts to change own operational role | Denied |
+| Technician accesses assigned job | Allowed |
+| Technician attempts to access unauthorised job | Denied |
+| Dispatcher accesses authorised operational functionality | Allowed |
+| Dispatcher attempts unauthorised privilege escalation | Denied |
+| Manager/Supervisor creates authorised internal account | Allowed |
+| Manager/Supervisor assigns authorised internal role | Allowed |
+
+---
+
+## Django Authentication
+
+Django's authentication system will provide the underlying authentication framework.
+
+Application-specific customer profiles, business accounts and internal operational roles will extend this functionality rather than duplicating password or authentication functionality in custom models.
+
+The precise implementation of groups, permissions and role relationships will be determined during detailed database and permissions design.
+
+---
+
+## Planned Evidence
+
+Evidence for this requirement will include:
+
+- Registration forms
+- Login/logout functionality
+- Customer account-type selection
+- Authentication-protected views
+- Role-based permissions
+- Object-level ownership checks where required
+- Positive permission tests
+- Negative permission tests
+- Screenshots of relevant workflows
+- Documented security decisions
+- Git history showing incremental authentication and permission development
+
+**Status: PLANNED**
+
+# Requirement 5 — Validated Forms and CRUD
+
+## Academic Requirement
+
+The application must provide at least one validated form that allows users to create or edit data stored in the backend database.
+
+The wider Project 4 requirements also require the application to demonstrate meaningful full CRUD functionality.
+
+CRUD operations will be implemented according to genuine business requirements and user permissions rather than allowing every user to create, read, update and delete every type of record.
+
+---
+
+## Form Validation
+
+Django server-side validation will be the authoritative validation layer for data submitted to the application.
+
+JavaScript may enhance the user experience by providing immediate feedback, conditionally displaying relevant fields or assisting with location information, but client-side validation will not replace server-side validation.
+
+Invalid or manipulated requests must therefore still be rejected by the backend.
+
+---
+
+## Planned Customer Forms
+
+Customer-facing forms may include:
+
+- Private customer registration
+- Business / fleet customer registration
+- Customer profile update
+- Add vehicle / asset
+- Edit vehicle / asset
+- Create service request
+- Enter service location
+- Update a service request where permitted
+- Cancel a service request where permitted
+- Collection / delivery request
+
+Forms will request only information relevant to the selected account, service and location type.
+
+For example, a private customer will not be required to complete irrelevant commercial account fields.
+
+Similarly, selecting a workshop location should not require the customer to enter roadside location information.
+
+---
+
+## Dynamic Location Forms
+
+Service location forms will adapt according to the selected location type.
+
+Initial location types are:
+
+- Workshop
+- Customer premises
+- Roadside
+
+Examples of conditional information include:
+
+### Workshop
+
+The workshop location is already known and unnecessary customer location fields should not be displayed.
+
+### Customer Premises
+
+Relevant information may include:
+
+- Address
+- Postcode
+- Access instructions
+- Additional location notes
+
+### Roadside
+
+Relevant information may include:
+
+- Current / GPS location
+- Road or motorway
+- Direction of travel
+- Motorway marker/reference where applicable
+- Nearest junction
+- Map location
+- Additional location and safety information
+
+JavaScript may be used to improve this workflow by showing only relevant fields.
+
+Required business rules will also be validated by Django so that bypassing JavaScript does not bypass validation.
+
+---
+
+## CRUD Principles
+
+CRUD functionality will be controlled by:
+
+- Authentication
+- User role
+- Record ownership
+- Operational status
+- Business rules
+- Record retention requirements
+
+Full CRUD does not mean that every user should have unrestricted CRUD access to every model.
+
+Some records should be cancelled, archived or otherwise made inactive rather than permanently deleted.
+
+---
+
+## Initial CRUD Permission Matrix
+
+| Record | Customer | Technician | Dispatcher / Staff | Manager / Supervisor |
+| --- | --- | --- | --- | --- |
+| Own profile | Create / Read / Update | Read / Update own where appropriate | Read where authorised | Create / Read / Update / Delete where appropriate |
+| Vehicle / Asset | Create / Read / Update own; remove from active account where permitted | Read when required for assigned job | Create / Read / Update where authorised | Full authorised management |
+| Service Request | Create / Read / Update own where permitted; Cancel instead of Delete | Read assigned requests | Create / Read / Update / Cancel where authorised | Full authorised management |
+| Service Location | Create / Read / Update own where permitted | Read for assigned work | Create / Read / Update where authorised | Full authorised management |
+| Job | Read relevant customer information | Read / Update assigned jobs | Create / Read / Update / Cancel where authorised | Full authorised management |
+| Technician | No access | Read / limited Update of own relevant information | Read where required | Create / Read / Update / Delete where appropriate |
+| Invoice | Read own | Read where operationally required | Create / Read / Update where authorised | Full authorised management |
+| Payment | Create payment / Read own payment status | No normal access required | Read where authorised | Read / manage where authorised |
+
+This matrix is an initial design and will be refined when the final models, permissions and workflows are defined.
+
+---
+
+## Service Request Cancellation
+
+Cancelling a service request will not normally delete it from the database.
+
+Once a request has been submitted and entered the operational workflow, the business needs to retain a record of:
+
+- The original request
+- Processing already performed
+- Technician assignment where applicable
+- Status changes
+- Cancellation
+- Cancellation time
+- Cancellation reason where appropriate
+
+A typical workflow may therefore be:
+
+```text
+Request Submitted
+        ↓
+Dispatcher Reviews
+        ↓
+Technician Assigned
+        ↓
+Technician Accepts
+        ↓
+Customer Cancels
+        ↓
+Status = CANCELLED
+        ↓
+Operational history retained
+```
+
+Cancellation is therefore a business operation and status transition rather than a database deletion.
+
+Whether cancellation is permitted may also depend on the current job/request status.
+
+---
+
+## Asset Removal
+
+Removing an asset from a customer's active account should not automatically destroy legitimate historical service information associated with that asset.
+
+Where appropriate, the relationship between the customer and asset may be ended or archived while necessary asset/service history remains available to authorised users.
+
+This will be considered further during ERD design.
+
+---
+
+## Historical and Transactional Records
+
+Customers will not be permitted to permanently delete legitimate historical business records such as:
+
+- Processed service requests
+- Jobs
+- Completed work records
+- Invoices
+- Payment records
+
+Corrections, cancellations, status changes or archival processes should preserve an appropriate historical record rather than silently destroying it.
+
+---
+
+## Record Retention and Deletion
+
+The application will not assume that all records have one universal retention period.
+
+Retention requirements may vary according to:
+
+- Record type
+- Business purpose
+- Tax/accounting requirements
+- Legal obligations
+- Warranty or dispute requirements
+- Data-protection requirements
+
+The design will therefore distinguish between:
+
+### Delete
+
+Permanent deletion where the record can legitimately be removed and no retention requirement applies.
+
+### Cancel
+
+The transaction remains recorded but its operational status becomes cancelled.
+
+### Archive
+
+The record is removed from normal active workflows while necessary history is retained.
+
+### Anonymise
+
+Where appropriate after the applicable retention period, identifying personal information may be removed while legitimate non-personal historical information is retained.
+
+The final retention policy for a real commercial deployment would need to reflect the business's actual legal, accounting and data-protection obligations.
+
+The diploma project will demonstrate awareness of these requirements without attempting to implement an unsupported universal retention period.
+
+---
+
+## Commercial Collection Validation
+
+Where collection of a commercial vehicle requires a particular driving licence entitlement or other authorisation, assignment must be validated against the selected technician/driver's eligibility.
+
+The application should reject an invalid assignment rather than merely display a warning.
+
+This validation may form part of the application's original Python business logic.
+
+---
+
+## Planned Validation Testing
+
+Testing will include both valid and invalid submissions.
+
+Examples include:
+
+| Test | Expected Result |
+| --- | --- |
+| Valid private customer registration | Accepted |
+| Missing required registration field | Rejected |
+| Private customer supplied irrelevant commercial fields | Not requested / ignored as appropriate |
+| Valid asset creation | Accepted |
+| Customer attempts to edit another customer's asset | Denied |
+| Valid service request | Accepted |
+| Required location information missing | Rejected |
+| Roadside request with required location data | Accepted |
+| Customer attempts to delete processed request | Denied |
+| Permitted request cancellation | Status changed to Cancelled and record retained |
+| Technician updates assigned job | Accepted |
+| Technician attempts to update unauthorised job | Denied |
+| Commercial collection assigned to suitably eligible technician | Accepted |
+| Commercial collection assigned to ineligible technician | Rejected |
+
+The final testing documentation will include the actual inputs, expected result, actual result and supporting evidence.
+
+---
+
+## Planned Evidence
+
+Evidence for this requirement will include:
+
+- Django forms
+- ModelForms where appropriate
+- Server-side validation
+- Custom validation/business rules
+- CRUD views and templates
+- Authentication and permission checks
+- Positive form-validation tests
+- Negative form-validation tests
+- CRUD permission tests
+- Cancellation/status workflow tests
+- Screenshots at appropriate responsive breakpoints
+- Documented bugs and fixes
+- Git commits showing incremental development
+
+**Status: PLANNED**
