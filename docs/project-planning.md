@@ -3722,3 +3722,393 @@ The aim is to demonstrate a genuine role-based application rather than merely th
 | 3.3 | Controlled server-side data access | Ownership, permission and URL-manipulation tests | PLANNED |
 | M(vi) | Appropriate Django template syntax and separation of logic | Templates, views/forms/models, code review and tests | PLANNED |
 
+# Learning Outcome 4
+
+## Design, Develop and Integrate an E-commerce Payment System
+
+### Criterion 4.1 — E-commerce and Online Payment Processing
+
+**Assessment focus:**  
+Implement at least one Django app containing e-commerce functionality using an online payment processing system such as Stripe.
+
+**P4 Plan:**
+
+Almac & Sons Mobile Fitting Services will include a dedicated `payments` Django app responsible for the application's invoicing and payment workflow.
+
+Stripe will be used in **test mode only** for the assessed project.
+
+The planned business workflow is:
+
+```text
+Service Request
+      ↓
+Job
+      ↓
+Technician Completes Work
+      ↓
+Charges Recorded
+      ↓
+Invoice
+      ↓
+Stripe Test Payment
+      ↓
+Payment Confirmation
+      ↓
+Invoice Marked PAID
+      ↓
+Paid Receipt / Final Paid Invoice Available
+```
+
+Potential invoice charges may include:
+
+- Callout charge
+- Labour
+- Parts
+- Recovery
+- Mobile fitting
+- Collection / delivery
+- Workshop charges
+
+The payment functionality will therefore form part of the genuine service workflow rather than being included as an isolated demonstration of Stripe.
+
+---
+
+## Invoice and Payment Separation
+
+`Invoice` and `Payment` will represent separate relational concepts.
+
+Conceptually:
+
+```text
+Job
+ ↓
+Invoice
+ ↓
+Payment
+```
+
+The invoice represents the amount owed for the completed service.
+
+The payment record represents the financial transaction associated with settling that invoice.
+
+This distinction allows the application to represent states such as:
+
+```text
+Invoice Issued
+      ↓
+Payment Attempted
+      ↓
+Payment Failed
+      ↓
+Invoice Still Unpaid
+```
+
+and:
+
+```text
+Invoice Issued
+      ↓
+Payment Confirmed
+      ↓
+Payment Recorded
+      ↓
+Invoice Paid
+```
+
+The exact models and relationships will be finalised during ERD design.
+
+**Planned Evidence:**
+
+- `payments` Django app
+- Invoice model
+- Payment model
+- Model relationships
+- Stripe integration
+- Stripe test-mode transactions
+- Payment workflow tests
+- README e-commerce documentation
+
+**Status: PLANNED**
+
+---
+
+## Trusted Payment Amount
+
+The amount submitted for payment must be derived from trusted server-side invoice data.
+
+The application will not trust a payment amount supplied or modified by the browser.
+
+Conceptually:
+
+```text
+Browser requests payment
+        ↓
+Server retrieves authorised Invoice
+        ↓
+Server determines trusted amount
+        ↓
+Stripe payment created
+```
+
+This protects against manipulation such as changing an invoice amount through browser tools or a crafted request.
+
+**Planned Evidence:**
+
+- Server-side payment creation logic
+- Invoice ownership/permission checks
+- Amount-manipulation negative test
+- Stripe payment tests
+- Security documentation
+
+**Status: PLANNED**
+
+---
+
+## Payment Authorisation
+
+A customer will only be permitted to initiate payment for an invoice that they are authorised to access.
+
+For example:
+
+```text
+Customer A
+    ↓
+Customer A Invoice
+    ↓
+Payment Allowed
+```
+
+```text
+Customer A
+    ↓
+Customer B Invoice
+    ↓
+Payment Denied
+```
+
+Payment security will therefore use the authentication, authorisation and object-ownership principles defined under Learning Outcome 3.
+
+Hiding another customer's invoice from the interface will not be considered sufficient protection.
+
+The server must verify access independently.
+
+---
+
+## Stripe Configuration and Security
+
+Stripe credentials will not be stored directly in committed source code.
+
+Relevant credentials and configuration will use environment variables.
+
+The repository must not contain:
+
+- Stripe secret keys
+- Production credentials
+- Database passwords
+- Other sensitive payment configuration
+
+Stripe will remain in test mode for the assessed project.
+
+Current Stripe documentation will be consulted during implementation because payment APIs and recommended integration patterns may change.
+
+**Planned Evidence:**
+
+- Environment-variable configuration
+- `.gitignore`
+- Repository security audit
+- Deployment configuration
+- Stripe test-mode evidence
+- README security/deployment documentation
+
+**Status: PLANNED**
+
+---
+
+### Criterion 4.2 — Payment Feedback
+
+**Assessment focus:**  
+Provide helpful feedback to users for successful and unsuccessful purchases/payments.
+
+**P4 Plan:**
+
+The application will provide clear feedback for each significant payment outcome.
+
+### Successful Payment
+
+A confirmed successful payment should result in appropriate actions such as:
+
+```text
+Payment Confirmed
+      ↓
+Payment Record Created / Updated
+      ↓
+Invoice Marked PAID
+      ↓
+Success Feedback
+      ↓
+Paid Receipt / Final Paid Invoice Available
+```
+
+The user should receive an unambiguous confirmation that payment has succeeded.
+
+### Failed Payment
+
+A failed payment should:
+
+- Leave the invoice unpaid
+- Avoid incorrectly recording successful payment
+- Provide useful feedback
+- Allow the customer to recover appropriately
+
+Conceptually:
+
+```text
+Payment Attempt
+      ↓
+FAILURE
+      ↓
+Invoice remains UNPAID
+      ↓
+Helpful Message
+      ↓
+Safe Retry / Return Path
+```
+
+### Cancelled / Abandoned Payment
+
+Where applicable, a cancelled or abandoned payment should not be treated as successful.
+
+The customer should be returned to an appropriate application state with the invoice still unpaid.
+
+---
+
+## Server-Side Payment Confirmation
+
+The application will not rely solely on a browser success page as proof that a payment has completed.
+
+Appropriate server-side Stripe confirmation will be implemented according to the current recommended Stripe integration pattern selected during development.
+
+This ensures that application payment state is based on trusted payment information rather than merely on client-side navigation.
+
+**Planned Evidence:**
+
+- Successful payment test
+- Failed payment test
+- Cancelled payment test
+- Invoice-status verification
+- Payment-record verification
+- User-feedback screenshots
+- Server-side confirmation tests
+
+**Status: PLANNED**
+
+---
+
+## Additional Functionality Following Payment
+
+Successful payment will provide additional customer functionality/content.
+
+The planned additional functionality is access to the:
+
+**Paid receipt / final paid invoice**
+
+This will only become available when the application has confirmed the appropriate successful payment state.
+
+Conceptually:
+
+```text
+UNPAID INVOICE
+      ↓
+No Paid Receipt
+```
+
+```text
+CONFIRMED PAYMENT
+      ↓
+Invoice PAID
+      ↓
+Paid Receipt / Final Invoice Available
+```
+
+The exact implementation will be determined during development.
+
+**Planned Evidence:**
+
+- Unpaid invoice state
+- Successful Stripe test payment
+- Paid invoice state
+- Receipt/final invoice access
+- Negative test proving unpaid invoices do not receive paid content
+
+**Status: PLANNED**
+
+---
+
+## Payment Error Handling
+
+Payment and external-service failures will be handled gracefully.
+
+Possible scenarios include:
+
+- Invalid payment attempt
+- Declined test payment
+- Stripe request failure
+- Network/service error
+- Invalid invoice
+- Unauthorised invoice access
+- Duplicate/repeated requests where relevant
+
+The user should receive appropriate feedback without unnecessary exposure of internal technical information.
+
+A Stripe failure must not cause unrelated areas of the application to become unusable.
+
+---
+
+## Payment Testing Strategy
+
+Testing will include both normal and hostile/incorrect scenarios.
+
+Examples include:
+
+| Scenario | Expected Result |
+| --- | --- |
+| Customer pays own valid invoice successfully | Payment confirmed and invoice marked paid |
+| Successful payment | Paid receipt/final invoice becomes available |
+| Payment fails | Invoice remains unpaid and useful feedback shown |
+| Payment cancelled | Invoice remains unpaid |
+| Customer attempts another customer's invoice | Access denied |
+| Browser payment amount manipulated | Trusted server-side amount used / request rejected |
+| Anonymous user attempts protected payment | Redirected/denied |
+| Stripe/external error occurs | Graceful error handling and useful feedback |
+| Repeated payment action where inappropriate | Duplicate/invalid processing prevented appropriately |
+
+The final tests will reflect the Stripe integration actually implemented.
+
+---
+
+# Learning Outcome 4 — Distinction Alignment
+
+The e-commerce implementation will aim to demonstrate the wider Merit and Distinction characteristics of robustness, security, user feedback and real-world application design.
+
+In particular:
+
+- Stripe will form part of a genuine business workflow.
+- Invoice and payment data will be relationally modelled.
+- Payment amounts will originate from trusted server-side data.
+- Invoice access will be protected by authentication and authorisation.
+- Successful and unsuccessful payment states will be clearly communicated.
+- External payment failures will be handled gracefully.
+- Sensitive credentials will remain outside committed source code.
+- Successful payment will unlock appropriate paid content/functionality.
+- Payment behaviour will be comprehensively tested.
+- The final README will explain and evidence the complete payment workflow.
+
+---
+
+# Learning Outcome 4 Audit
+
+| Criterion | Primary P4 Coverage | Evidence Required | Planning Status |
+| --- | --- | --- | --- |
+| 4.1 | Dedicated `payments` app, invoices, payments and Stripe test-mode integration | Models, Stripe implementation, workflow tests, README | PLANNED |
+| 4.2 | Success, failure and cancellation feedback | Payment-state tests, messages and UI evidence | PLANNED |
+
