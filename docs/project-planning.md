@@ -1322,3 +1322,262 @@ Evidence for this requirement will include:
 - Incremental Git commits showing development of the payment functionality
 
 **Status: PLANNED**
+
+# Requirement 7 — Main Navigation and Structured Layout
+
+## Academic Requirement
+
+The application must provide a clear main navigation and a structured layout that allows users to move through the application efficiently.
+
+Navigation should support the needs of different user types without exposing irrelevant functionality.
+
+---
+
+## Navigation Principles
+
+The application will use role-aware navigation.
+
+Users will only be shown navigation options that are relevant to their current role and permissions.
+
+The main navigation will remain concise.
+
+More detailed operational actions will be provided through dashboards rather than attempting to place every function in the main navbar.
+
+---
+
+## Public Navigation
+
+Unauthenticated users are expected to see a simple public navigation such as:
+
+- Home
+- Services
+- Request Assistance
+- Login / Register
+
+Public navigation should provide a clear route into the primary customer journey without exposing protected operational functionality.
+
+---
+
+## Customer Navigation
+
+Authenticated customers may see navigation such as:
+
+- Home
+- Services
+- Request Assistance
+- My Account
+- My Vehicles / Equipment
+- My Requests
+- My Invoices
+- Logout
+
+The exact labels may be refined during wireframing and usability testing.
+
+Private and business/fleet customers will share the main customer navigation where appropriate, while account-specific functionality may differ within their dashboard or account area.
+
+---
+
+## Technician Navigation
+
+Technicians require a different operational interface from customers.
+
+Possible navigation includes:
+
+- Dashboard
+- Assigned Jobs
+- Current Job
+- Job History
+- Profile
+- Logout
+
+Technicians should only see jobs and operational information they are authorised to access.
+
+---
+
+## Dispatcher / Staff Navigation
+
+Dispatcher / Staff users may require access to:
+
+- Dashboard
+- Incoming Requests
+- Active Jobs
+- Scheduled Jobs
+- Technicians
+- Customers / Assets
+- Logout
+
+The dashboard should provide access to operational workflow without requiring an excessively large global navbar.
+
+---
+
+## Manager / Supervisor Navigation
+
+Manager / Supervisor users may require access to:
+
+- Dashboard
+- Operations
+- Technicians
+- Customers / Assets
+- Invoices
+- Staff Management
+- Reports
+- Logout
+
+Manager / Supervisor navigation will reflect the broader permissions of this role while remaining structured and understandable.
+
+---
+
+## Shared Layout
+
+The application will use a shared Django base template to maintain a consistent structure across pages.
+
+Conceptually:
+
+```text
+base.html
+├── Header
+│   └── Role-aware Navigation
+├── Main Content
+└── Footer
+```
+
+Individual templates will extend the base template rather than duplicating the full page structure.
+
+This should improve:
+
+- Consistency
+- Maintainability
+- Accessibility
+- Navigation reliability
+- Reusability
+
+---
+
+## Responsive Design
+
+The application will be designed and tested across:
+
+- Desktop
+- Tablet
+- Mobile
+
+Navigation must remain usable at all supported screen sizes.
+
+Where a burger menu or collapsible navigation is used on smaller screens, it must remain keyboard accessible and understandable.
+
+Responsive behaviour will be included in the testing evidence rather than relying only on visual inspection during development.
+
+---
+
+## Accessibility
+
+Navigation and layout design will consider:
+
+- Keyboard navigation
+- Logical focus order
+- Visible focus states
+- Semantic HTML
+- Appropriate link and button labels
+- Sufficient colour contrast
+- Clear active/current-page indication where appropriate
+
+Interactive navigation controls must not rely solely on mouse input.
+
+---
+
+## Dashboard-Based Navigation
+
+Role-specific dashboards will provide access to detailed operational functionality.
+
+This prevents the main navbar from becoming overcrowded as application functionality increases.
+
+Examples include:
+
+```text
+Customer Dashboard
+├── Vehicles / Equipment
+├── Service Requests
+├── Invoices
+└── Account Details
+```
+
+```text
+Technician Dashboard
+├── Assigned Jobs
+├── Current Job
+└── Job History
+```
+
+```text
+Dispatcher Dashboard
+├── Incoming Requests
+├── Active Jobs
+├── Scheduled Jobs
+└── Technician Allocation
+```
+
+```text
+Manager / Supervisor Dashboard
+├── Operations
+├── Staff Management
+├── Invoices
+└── Reports
+```
+
+The final dashboard structure will be refined during wireframing.
+
+---
+
+## Early Homepage Design
+
+The existing early `index.html` file is a conceptual static homepage sketch.
+
+It will not define the final Django structure.
+
+The final implementation will use Django templates and a shared `base.html`.
+
+The early homepage may be used as a visual reference while the final public layout and navigation are redesigned during wireframing and static development.
+
+---
+
+## Planned Testing
+
+Navigation and layout testing will include:
+
+| Test | Expected Result |
+| --- | --- |
+| Public user views navigation | Only public links shown |
+| Customer logs in | Customer navigation shown |
+| Technician logs in | Technician navigation shown |
+| Dispatcher logs in | Dispatcher/Staff navigation shown |
+| Manager/Supervisor logs in | Manager/Supervisor navigation shown |
+| Customer attempts to access staff navigation route directly | Denied |
+| Navigation tested on desktop | Fully usable |
+| Navigation tested on tablet | Fully usable |
+| Navigation tested on mobile | Fully usable |
+| Navigation tested by keyboard | All controls accessible |
+| Focus states tested | Clearly visible |
+| Burger/collapsible menu tested without mouse | Fully operable |
+
+---
+
+## Planned Evidence
+
+Evidence for this requirement will include:
+
+- Wireframes
+- Shared `base.html`
+- Role-aware navigation
+- Dashboard layouts
+- Desktop screenshots
+- Tablet screenshots
+- Mobile screenshots
+- Keyboard navigation testing
+- Focus-state testing
+- Accessibility checks
+- Responsive testing evidence
+- Git history showing layout and navigation development
+- Documented bugs and fixes
+
+**Status: PLANNED**
+
