@@ -2271,3 +2271,232 @@ Evidence for this requirement will include:
 
 **Status: PLANNED**
 
+# Requirement 10 — Git and GitHub
+
+## Academic Requirement
+
+The project must use Git for version control and GitHub for remote repository hosting.
+
+Version control should provide evidence of the development process through regular, meaningful commits.
+
+---
+
+## Version Control Strategy
+
+Git will be used throughout the complete development lifecycle rather than only being used to upload the finished application.
+
+Development will follow the established project workflow:
+
+```text
+DESIGN
+  ↓
+WRITE
+  ↓
+TEST
+  ↓
+DOCUMENT EVIDENCE
+  ↓
+REVIEW CHANGES
+  ↓
+COMMIT
+  ↓
+PUSH
+  ↓
+CLEAN / KNOWN-GOOD WORKING STATE
+```
+
+Each commit should represent a logical and understood development step.
+
+---
+
+## Incremental Development
+
+Large groups of unrelated changes will be avoided where practical.
+
+Features will be developed incrementally so that each stage can be:
+
+- Reviewed
+- Tested
+- Documented where appropriate
+- Committed independently
+- Returned to a known-good working state
+
+This should make the Git history useful both for development and as evidence of how the project evolved.
+
+---
+
+## Commit Messages
+
+Commit messages will describe the purpose of the change rather than use vague messages such as:
+
+- Update
+- Changes
+- Fix stuff
+- Work
+
+Examples of meaningful commits include:
+
+```text
+Add authentication and authorisation planning
+Add validated forms and CRUD planning
+Add Stripe payments and invoicing planning
+Add navigation and layout planning
+Add original JavaScript planning
+Add README and documentation planning
+```
+
+Implementation commits will follow the same principle.
+
+---
+
+## Selective Staging
+
+Files will be staged deliberately.
+
+Commands such as:
+
+```bash
+git status
+git diff
+git add <specific-file>
+```
+
+will be used where appropriate so that unrelated or unintended files are not automatically included in a commit.
+
+`git add .` will not be used automatically where selective staging provides better control over the commit.
+
+---
+
+## Review Before Commit
+
+Changes should be reviewed before being committed.
+
+Where appropriate this may include:
+
+```bash
+git diff
+```
+
+and:
+
+```bash
+git status
+```
+
+The aim is to understand what is entering the repository before creating the commit.
+
+---
+
+## Remote Repository
+
+The GitHub repository will act as the remote version-controlled source for the project.
+
+Completed logical development stages will be pushed regularly so that the remote repository reflects the development history.
+
+The repository will not be treated merely as a final submission upload.
+
+---
+
+## Secrets and Excluded Files
+
+Sensitive or environment-specific information must not be committed to GitHub.
+
+The `.gitignore` file will exclude appropriate files such as:
+
+- `.env`
+- Virtual environments
+- Python cache files
+- Local SQLite database
+- Collected production static files
+- Editor-specific files where appropriate
+- Operating-system-generated files
+
+Secret values such as:
+
+- Django secret keys
+- Stripe secret keys
+- Database credentials
+- External API credentials
+
+must not appear in committed source code.
+
+Before submission, the repository will be checked for accidentally committed secrets or inappropriate files.
+
+---
+
+## Branching
+
+The project does not require unnecessary branching purely to demonstrate Git usage.
+
+Branches may be used where they provide a genuine development benefit.
+
+The priority is a clear, understandable and reliable version history rather than introducing additional Git complexity without a practical reason.
+
+---
+
+## Early Design Files
+
+Files will not be committed simply because they exist in the working directory.
+
+Early experiments or design sketches will only enter the tracked project history when they have a clear purpose within the development process.
+
+This ensures that the repository history represents deliberate project development.
+
+---
+
+## Git as Development Evidence
+
+Git history will support the documentation of the project.
+
+Where significant functionality or bugs are discussed in the README, corresponding commits should make it possible to follow the relevant development where practical.
+
+The intended relationship is:
+
+```text
+Design Decision
+      ↓
+Implementation
+      ↓
+Testing
+      ↓
+Documentation
+      ↓
+Git Commit
+```
+
+This provides supporting evidence that the application was developed incrementally rather than appearing as a single completed codebase.
+
+---
+
+## Planned Final Checks
+
+Before submission, Git/GitHub checks will include:
+
+- Working tree reviewed
+- Required files tracked
+- No unintended files tracked
+- No secrets committed
+- `.gitignore` reviewed
+- Meaningful commit history present
+- Local and remote repositories synchronised
+- Deployment source matches the intended submitted version
+- Repository link verified
+
+---
+
+## Planned Evidence
+
+Evidence for this requirement will include:
+
+- GitHub repository
+- Incremental commit history
+- Meaningful commit messages
+- `.gitignore`
+- Git status checkpoints
+- Development commits corresponding to documented features
+- Bug-fix commits where appropriate
+- Regular pushes to the remote repository
+- Final repository audit
+
+**Status: PLANNED**
+
