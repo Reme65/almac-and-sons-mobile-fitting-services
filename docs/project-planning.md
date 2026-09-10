@@ -2500,3 +2500,260 @@ Evidence for this requirement will include:
 
 **Status: PLANNED**
 
+# Requirement 11 — Attribution and Separation of External Code
+
+## Academic Requirement
+
+External code, libraries, frameworks, APIs, media and other third-party resources used within the project must be appropriately acknowledged.
+
+Externally sourced or adapted work must be clearly distinguishable from original project work.
+
+---
+
+## Attribution Strategy
+
+External resources will be recorded throughout development rather than reconstructed immediately before submission.
+
+Where an external resource contributes materially to the application, the project will record:
+
+```text
+Resource
+   ↓
+Source
+   ↓
+Purpose
+   ↓
+How It Was Used
+   ↓
+Where It Appears
+   ↓
+Required Attribution
+```
+
+This should provide a clear record of third-party resources while also demonstrating which parts of the application represent original project work.
+
+---
+
+## Frameworks and Libraries
+
+The application will use established frameworks and libraries where they provide appropriate functionality.
+
+Expected examples include:
+
+- Django
+- Stripe
+- Database libraries
+- Deployment libraries
+- Static-file handling libraries
+- Potential mapping/location libraries
+
+These technologies will be documented in the README together with their purpose within the application.
+
+Use of an established framework or library will not be presented as original project functionality.
+
+---
+
+## External APIs and Services
+
+External APIs or services may be used where they provide useful supporting functionality.
+
+Potential examples include:
+
+- Stripe
+- Mapping
+- Geolocation
+- Address or postcode lookup
+- Future vehicle-data services
+
+Before implementation, appropriate current documentation, terms, licensing, availability and costs will be reviewed where relevant.
+
+The core application should not unnecessarily depend on optional external services where a suitable manual workflow can be provided.
+
+---
+
+## External Code and Snippets
+
+If code is copied or materially adapted from an external source, the source will be recorded.
+
+Possible sources may include:
+
+- Official documentation
+- Tutorials
+- Technical articles
+- Community resources
+- Code examples
+
+Where appropriate, attribution may be provided:
+
+- In the source code
+- In the README
+- In the project credits section
+- In more than one location where this improves clarity
+
+Attribution should identify the original source and explain whether the code was used directly or adapted.
+
+---
+
+## Learning Versus Copying
+
+Using documentation to understand a technology or programming concept does not automatically mean that every implementation requires individual code attribution.
+
+For example, learning how Django model relationships, forms or authentication work from official documentation is part of normal software development.
+
+However, where a specific implementation or substantial code example is copied or materially adapted, the relevant source should be acknowledged.
+
+---
+
+## Original Project Logic
+
+Original functionality developed specifically for this project will be clearly distinguishable from third-party functionality.
+
+This is particularly important for assessment evidence relating to original logic.
+
+Potential original project logic includes:
+
+- Service-request workflow
+- Role and permission logic
+- Technician eligibility logic
+- Commercial collection licence-entitlement validation
+- Job workflow and status transitions
+- Invoice/payment business logic
+- Dynamic JavaScript service-request forms
+- Dynamic location forms
+- Collection/delivery interactions
+- JavaScript fallback behaviour
+
+The final README will explain significant original logic and provide appropriate implementation and testing evidence.
+
+---
+
+## AI-Assisted Development
+
+AI-assisted development tools may be used as part of the development and learning process where permitted by the course and assessment rules.
+
+Any required declaration of AI-assisted development will follow the current Code Institute or assessment requirements applicable at submission time.
+
+AI-generated or AI-assisted suggestions will not be accepted into the project solely because they were generated.
+
+Code entering the project must be:
+
+- Understood
+- Reviewed
+- Appropriate to the project
+- Tested
+- Compatible with the existing application
+- Consistent with project security and quality requirements
+
+The developer remains responsible for the final implementation.
+
+---
+
+## Media and Images
+
+Third-party images, icons, fonts or other media will be checked for appropriate usage rights before being included in the final application.
+
+Where attribution is required, information should be recorded when the resource is selected.
+
+Relevant information may include:
+
+- Resource name
+- Creator
+- Source
+- Licence
+- Required attribution
+- Location within the application
+
+This avoids relying on reconstructing the origin of project media at the end of development.
+
+---
+
+## Attribution Record
+
+A simple attribution record will be maintained during development where useful.
+
+A possible structure is:
+
+| Resource | Source | Usage | Project Location | Attribution Required |
+| --- | --- | --- | --- | --- |
+| Django | Official Django project | Web framework | Application-wide | README technology section |
+| Stripe | Official Stripe service/documentation | Test payments | Payments app | README / credits |
+| External media | Recorded when selected | UI content | Relevant template/static directory | According to licence |
+
+Additional resources will be added as they are introduced.
+
+The final attribution table will reflect resources actually used rather than resources considered during planning.
+
+---
+
+## Separation of Original and External Work
+
+The project documentation should allow an assessor to distinguish between:
+
+```text
+Third-Party Technology
+        ↓
+Integration / Configuration
+        ↓
+Original Application Logic
+        ↓
+Testing and Evidence
+```
+
+Using third-party technology does not reduce the importance of demonstrating original implementation.
+
+Where external technology performs a specialised function, the project will explain the original application logic built around that technology.
+
+---
+
+## Source Comments
+
+Source-code comments may be used where they provide useful attribution or clarification.
+
+Comments should be particularly considered where:
+
+- A specific snippet has been adapted
+- An unusual solution originated from an external source
+- Licence terms require attribution
+- The source would otherwise be difficult to identify from the README
+
+Comments will not be added unnecessarily to standard framework usage merely to increase apparent documentation.
+
+---
+
+## Final Attribution Audit
+
+Before submission, the project will be reviewed for external resources.
+
+The audit will check:
+
+- Frameworks and libraries documented
+- External APIs documented
+- Adapted/copied code appropriately attributed
+- Media sources recorded
+- Required licences or attribution respected
+- Credits section complete
+- Original logic clearly identified
+- External functionality not represented as original work
+- AI declaration requirements checked against current assessment rules
+- Dead or unused external resources removed from documentation
+
+---
+
+## Planned Evidence
+
+Evidence for this requirement will include:
+
+- README Technologies section
+- README External APIs and Libraries section
+- README Credits and Attribution section
+- Source comments where appropriate
+- Media attribution records
+- External-resource attribution table
+- Original Python logic documentation
+- Original JavaScript documentation
+- Testing evidence for original functionality
+- Appropriate Git history
+- AI declaration where required by current assessment rules
+
+**Status: PLANNED**
+
