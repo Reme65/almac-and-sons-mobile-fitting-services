@@ -1,0 +1,325 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Almac & Sons Mobile Fitting Services</title>
+
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <link rel="icon" type="image/png" href="{% static 'images/favicon-16x16.png' %}">
+</head>
+
+<body>
+
+    <header class="site-header">
+        <nav class="navbar" aria-label="Main navigation">
+
+            <a href="{% url 'home' %}" class="site-brand">
+                Almac & Sons Mobile Fitting Services
+            </a>
+
+            <input type="checkbox" id="menu-checkbox" class="menu-checkbox">
+
+            <label for="menu-checkbox" class="menu-toggle" aria-label="Toggle navigation menu">
+                ☰
+            </label>
+
+            <ul class="nav-links">
+                <li>
+                    <a href="{% url 'home' %}">Home</a>
+                </li>
+
+                <li>
+                    <a href="#services">Services</a>
+                </li>
+
+                <li>
+                    <a href="#how-it-works">How It Works</a>
+                </li>
+
+                <li>
+                    <a href="{% url 'login' %}">Login</a>
+                </li>
+
+                <li>
+                    <a href="{% url 'register' %}">Register</a>
+                </li>
+            </ul>
+
+        </nav>
+    </header>
+
+    <main>
+
+        <section class="hero" aria-labelledby="hero-heading">
+
+            <div class="hero-content">
+
+                <h1 id="hero-heading">
+                    Mobile Vehicle Assistance When You Need It
+                </h1>
+
+                <p>
+                    Breakdown assistance, vehicle recovery, mobile fitting,
+                    roadside repairs and collection or delivery services for
+                    private and commercial customers.
+                </p>
+
+                <div class="hero-actions">
+                    <a href="{% url 'request_assistance' %}" class="button button-primary">
+                        Request Assistance
+                    </a>
+
+                    <a href="{% url 'book_service' %}" class="button button-secondary">
+                        Book a Service
+                    </a>
+                </div>
+
+            </div>
+
+            <div class="hero-image" aria-hidden="true">
+                <img
+                    src="{% static 'images/mobile-fitting-service.jpg' %}"
+                    alt=""
+                >
+            </div>
+
+        </section>
+
+        <section id="services" class="services" aria-labelledby="services-heading">
+
+            <h2 id="services-heading">Our Services</h2>
+
+            <div class="service-grid">
+
+                <article class="service-card">
+                    <h3>Breakdown Assistance</h3>
+                    <p>
+                        Help when your vehicle cannot continue its journey.
+                    </p>
+                </article>
+
+                <article class="service-card">
+                    <h3>Vehicle Recovery</h3>
+                    <p>
+                        Recovery for vehicles that cannot be repaired safely at the roadside.
+                    </p>
+                </article>
+
+                <article class="service-card">
+                    <h3>Mobile Tyre Fitting</h3>
+                    <p>
+                        Tyre replacement and fitting at an appropriate service location.
+                    </p>
+                </article>
+
+                <article class="service-card">
+                    <h3>Battery & Jump Start</h3>
+                    <p>
+                        Battery assistance, testing, replacement and jump-start support.
+                    </p>
+                </article>
+
+                <article class="service-card">
+                    <h3>Minor Roadside Repair</h3>
+                    <p>
+                        Suitable minor repairs carried out where the vehicle is located.
+                    </p>
+                </article>
+
+                <article class="service-card">
+                    <h3>Collection & Delivery</h3>
+                    <p>
+                        Vehicle collection and return for workshop, service or MOT work.
+                    </p>
+                </article>
+
+            </div>
+
+        </section>
+
+        <section id="how-it-works" class="how-it-works" aria-labelledby="how-heading">
+
+            <h2 id="how-heading">How It Works</h2>
+
+            <div class="steps">
+
+                <article class="step-card">
+                    <span class="step-number">1</span>
+                    <h3>Tell Us What You Need</h3>
+                    <p>
+                        Choose the assistance or scheduled service required.
+                    </p>
+                </article>
+
+                <article class="step-card">
+                    <span class="step-number">2</span>
+                    <h3>Tell Us Where You Are</h3>
+                    <p>
+                        Provide the service, collection or roadside location.
+                    </p>
+                </article>
+
+                <article class="step-card">
+                    <span class="step-number">3</span>
+                    <h3>We Arrange Assistance</h3>
+                    <p>
+                        The request can be reviewed and assigned to the appropriate staff.
+                    </p>
+                </article>
+
+                <article class="step-card">
+                    <span class="step-number">4</span>
+                    <h3>Track & Manage</h3>
+                    <p>
+                        Follow the progress of your request through your account.
+                    </p>
+                </article>
+
+            </div>
+
+        </section>
+
+        <section class="customer-types" aria-labelledby="customer-types-heading">
+
+            <h2 id="customer-types-heading">Who We Support</h2>
+
+            <div class="customer-type-grid">
+
+                <article class="customer-type-card">
+                    <h3>Private Customers</h3>
+
+                    <p>
+                        Mobile and roadside services for personal vehicles at home,
+                        at work or while travelling.
+                    </p>
+
+                    <a href="{% url 'register_private' %}" class="button button-secondary">
+                        Find Out More
+                    </a>
+                </article>
+
+                <article class="customer-type-card">
+                    <h3>Business & Fleet Customers</h3>
+
+                    <p>
+                        Support for vans, commercial vehicles, HGVs, trailers and
+                        agricultural vehicles or equipment.
+                    </p>
+
+                    <a href="{% url 'register_business' %}" class="button button-secondary">
+                        Find Out More
+                    </a>
+                </article>
+
+            </div>
+
+        </section>
+
+        <section class="why-us" aria-labelledby="why-us-heading">
+
+            <h2 id="why-us-heading">Why Almac & Sons?</h2>
+
+            <div class="benefit-grid">
+
+                <article class="benefit-card">
+                    <h3>Mobile Service</h3>
+                    <p>
+                        Assistance can be arranged around the vehicle's location.
+                    </p>
+                </article>
+
+                <article class="benefit-card">
+                    <h3>Private & Commercial</h3>
+                    <p>
+                        Services are designed for individual motorists and business users.
+                    </p>
+                </article>
+
+                <article class="benefit-card">
+                    <h3>Emergency Support</h3>
+                    <p>
+                        Roadside and recovery requests can be managed through one workflow.
+                    </p>
+                </article>
+
+                <article class="benefit-card">
+                    <h3>Scheduled Services</h3>
+                    <p>
+                        Customers can also arrange planned mobile or collection services.
+                    </p>
+                </article>
+
+            </div>
+
+        </section>
+
+        <section class="final-cta" aria-labelledby="cta-heading">
+
+            <h2 id="cta-heading">Need Assistance or a Service?</h2>
+
+            <p>
+                Choose the option that best matches what you need.
+            </p>
+
+            <div class="cta-actions">
+                <a href="{% url 'request_assistance' %}" class="button button-primary">
+                    Request Assistance
+                </a>
+
+                <a href="{% url 'book_service' %}" class="button button-secondary">
+                    Book a Service
+                </a>
+            </div>
+
+        </section>
+
+    </main>
+
+    <footer class="site-footer">
+
+        <div class="footer-left">
+            <a href="https://www.facebook.com/" target="_blank" rel="noopener noreferrer">
+                Facebook
+            </a>
+
+            <a href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer">
+                Instagram
+            </a>
+
+            <a href="https://twitter.com/" target="_blank" rel="noopener noreferrer">
+                X
+            </a>
+        </div>
+
+        <div class="footer-center">
+            <p>
+                &copy; 2026 Almac & Sons Vehicle Services incorporating
+                Almac & Sons Mobile Fitting Services
+            </p>
+        </div>
+
+        <div class="footer-right">
+            <img
+                src="{% static 'images/carlogo.jpg' %}"
+                alt="Almac & Sons logo"
+                class="footer-logo"
+            >
+        </div>
+
+        <div class="footer-credits">
+            <p>
+                Image and media credits will be documented according to the
+                sources used in the final application.
+            </p>
+        </div>
+
+    </footer>
+
+</body>
+
+</html>
