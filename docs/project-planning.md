@@ -4112,3 +4112,561 @@ In particular:
 | 4.1 | Dedicated `payments` app, invoices, payments and Stripe test-mode integration | Models, Stripe implementation, workflow tests, README | PLANNED |
 | 4.2 | Success, failure and cancellation feedback | Payment-state tests, messages and UI evidence | PLANNED |
 
+# Learning Outcome 5
+
+## Version Control, Deployment and Project Documentation
+
+### Criterion 5.1 — Cloud Deployment
+
+**Assessment focus:**  
+Deploy the final version of the application to a cloud hosting platform and verify that the deployed application matches the development version.
+
+**P4 Plan:**
+
+The completed Almac & Sons Mobile Fitting Services application will be deployed to an appropriate cloud hosting platform.
+
+The production application will use appropriate production configuration and a persistent relational database.
+
+Deployment will be treated as part of development rather than being attempted only immediately before submission.
+
+The deployed application will be tested independently from the local development environment.
+
+The final deployed version must correspond to the intended submitted Git version.
+
+**Planned Evidence:**
+
+- Live application
+- Deployment configuration
+- Production database configuration
+- Deployment tests
+- Git commit corresponding to deployed version
+- README deployment documentation
+- Local versus production verification
+
+**Status: PLANNED**
+
+---
+
+## Development and Production Configuration
+
+Configuration will be organised so that environment-specific values can be changed without scattering configuration throughout the codebase.
+
+Sensitive or environment-specific values will be supplied through appropriate environment configuration.
+
+The project will maintain clear separation between:
+
+```text
+Application Code
+       ↓
+Configuration
+       ↓
+Environment-Specific Values
+```
+
+Database configuration should have a clear and maintainable source of configuration rather than being unnecessarily duplicated throughout the application.
+
+Configuration and dependency files will be kept current as development progresses.
+
+**Planned Evidence:**
+
+- Django settings/configuration
+- Environment-variable handling
+- Database configuration
+- Dependency file
+- Deployment configuration
+- Git history
+
+**Status: PLANNED**
+
+---
+
+### Criterion 5.2 — Final Code Quality and Internal Links
+
+**Assessment focus:**  
+Ensure the final deployed code contains no unnecessary commented-out code and no broken internal links.
+
+**P4 Plan:**
+
+Before submission, the complete application will undergo a production-readiness audit.
+
+The audit will include:
+
+- Removal of obsolete commented-out code
+- Removal of temporary debugging code
+- Removal of unused development experiments
+- Internal-link testing
+- Navigation testing
+- Back/forward browser testing
+- Static-resource testing
+- Console-error checks
+- Custom error-page testing
+- Production deployment testing
+
+Comments that genuinely explain code or provide required attribution will remain where appropriate.
+
+The requirement to remove commented-out code will not be interpreted as requiring the removal of useful documentation comments.
+
+**Planned Evidence:**
+
+- Final source review
+- Internal-link test record
+- Navigation tests
+- Browser-console checks
+- Production-site tests
+- Final repository audit
+
+**Status: PLANNED**
+
+---
+
+## Error Pages and Recovery
+
+The production application will provide useful handling for invalid or unavailable routes/resources.
+
+Appropriate custom error handling may include:
+
+```text
+400 — Bad Request
+403 — Permission Denied
+404 — Page / Resource Not Found
+500 — Server Error
+```
+
+The exact set will depend on the final application.
+
+Error pages should:
+
+- Match the application's visual design
+- Explain the problem in user-appropriate language
+- Avoid exposing sensitive technical information
+- Provide an appropriate route back into the application
+- Avoid forcing users to depend solely on browser navigation
+
+Error behaviour must be tested in the deployed production application where appropriate.
+
+**Planned Evidence:**
+
+- Custom error templates
+- Error-route tests
+- Production 404 evidence
+- Permission-denied evidence
+- Recovery/navigation evidence
+
+**Status: PLANNED**
+
+---
+
+### Criterion 5.3 — Deployment Security
+
+**Assessment focus:**  
+Ensure the deployed application is secure, passwords are not committed, secret keys are protected using environment variables or ignored files, and DEBUG is disabled.
+
+**P4 Plan:**
+
+Sensitive configuration must remain outside committed source code.
+
+This includes:
+
+- Django secret key
+- Database credentials
+- Stripe secret credentials
+- External API credentials
+- Other private deployment configuration
+
+The project `.gitignore` will protect appropriate local files.
+
+Production configuration will use:
+
+```text
+DEBUG = False
+```
+
+The repository will be audited before submission for accidentally committed credentials or sensitive files.
+
+Protected functionality will require appropriate authentication and authorisation.
+
+**Planned Evidence:**
+
+- `.gitignore`
+- Environment-variable configuration
+- Production settings
+- `DEBUG = False` production evidence
+- Repository security review
+- Authentication/permission tests
+- README security documentation
+
+**Status: PLANNED**
+
+---
+
+## Production Security Testing
+
+Security testing will include appropriate scenarios such as:
+
+- Anonymous access to protected routes
+- Cross-customer object access
+- Privilege escalation attempts
+- Direct protected URL access
+- Invalid form input
+- Payment ownership
+- Client-side data manipulation
+- Secret/configuration audit
+- Production DEBUG behaviour
+
+The final application should fail safely rather than expose internal information.
+
+---
+
+### Criterion 5.4 — Git-Based Development Documentation
+
+**Assessment focus:**  
+Use Git-based version control throughout the application and document development through regular commits and the project README.
+
+**P4 Plan:**
+
+Git and GitHub will document the complete development process.
+
+The project will continue to use the established workflow:
+
+```text
+DESIGN
+   ↓
+TEST FIRST where appropriate
+   ↓
+IMPLEMENT
+   ↓
+TEST / RETEST
+   ↓
+DOCUMENT EVIDENCE
+   ↓
+REVIEW DIFF
+   ↓
+COMMIT
+   ↓
+PUSH
+   ↓
+CLEAN / KNOWN-GOOD STATE
+```
+
+Commits will be:
+
+- Regular
+- Incremental
+- Meaningfully described
+- Focused on logical features/fixes
+- Small enough to make development history understandable
+
+Large unrelated commits will be avoided where practical.
+
+**Planned Evidence:**
+
+- GitHub repository
+- Commit history
+- Feature commits
+- Test commits
+- Bug-fix commits
+- Documentation commits
+- Deployment commits
+- README version-control section
+
+**Status: PLANNED**
+
+---
+
+### Criterion 5.5 — Structured Markdown README
+
+**Assessment focus:**  
+Create a well-structured README using consistent Markdown formatting.
+
+**P4 Plan:**
+
+The README will be maintained throughout development.
+
+It will use:
+
+- Logical heading hierarchy
+- Consistent Markdown
+- Tables where they improve clarity
+- Code blocks where appropriate
+- Images/screenshots where they provide evidence
+- Internal structure that allows information to be located efficiently
+
+Documentation volume will not be treated as a substitute for clarity.
+
+The guiding principle is:
+
+```text
+Claim
+   ↓
+Implementation
+   ↓
+Evidence
+   ↓
+Testing
+   ↓
+Result
+```
+
+**Planned Evidence:**
+
+- Final `README.md`
+- Markdown structure
+- Assessment traceability
+- Screenshots/evidence
+- Final documentation review
+
+**Status: PLANNED**
+
+---
+
+### Criterion 5.6 — Deployment, Testing, Purpose and Value Documentation
+
+**Assessment focus:**  
+Document the complete deployment and testing procedures while explaining the application's purpose and value to its users.
+
+**P4 Plan:**
+
+The README will clearly explain the real-world purpose of Almac & Sons Mobile Fitting Services.
+
+It will describe how the application addresses the needs of its target users rather than requiring the assessor to infer its purpose from the feature list.
+
+The README will document:
+
+- Application purpose
+- Business problem
+- Proposed solution
+- Target users
+- User value
+- UX/design process
+- Application architecture
+- Database schema
+- Features
+- Authentication/authorisation
+- CRUD
+- Original logic
+- Stripe/e-commerce
+- Testing
+- Security
+- Deployment
+- Version control
+- Known issues
+- Future features
+- Credits/attribution
+- Assessment traceability
+
+---
+
+## Deployment Procedure Documentation
+
+The final README will document sufficient information to reproduce the deployment process without exposing secret values.
+
+This may include:
+
+```text
+Repository
+    ↓
+Hosting Configuration
+    ↓
+Environment Variables
+    ↓
+Production Database
+    ↓
+Dependencies
+    ↓
+Static Files
+    ↓
+Migrations
+    ↓
+Application Deployment
+    ↓
+Production Verification
+```
+
+The exact procedure will reflect the hosting platform actually used.
+
+---
+
+## Testing Procedure Documentation
+
+Testing documentation will describe both the planned approach and the tests actually performed.
+
+Evidence will include appropriate coverage of:
+
+- Functional testing
+- TDD/automated testing
+- CRUD
+- Forms and validation
+- Authentication
+- Authorisation
+- Permissions
+- Original logic
+- JavaScript
+- Stripe
+- Responsive design
+- Accessibility
+- Browser behaviour
+- Error handling
+- External-service failures
+- Deployment
+- Bugs and fixes
+
+The final documentation must report actual results rather than simply list intended tests.
+
+**Planned Evidence:**
+
+- README
+- Testing documentation
+- Deployment documentation
+- Live application
+- GitHub repository
+- Assessment evidence matrix
+
+**Status: PLANNED**
+
+---
+
+# Merit Criterion M(vii) — Effective Version Control
+
+**Assessment focus:**  
+Use version-control software effectively to provide a clear record of the development process.
+
+**P4 Plan:**
+
+Git history should allow the development of the application to be followed chronologically.
+
+Where practical, each significant feature or fix will have its own logical commit.
+
+Commit messages will explain the purpose of the change.
+
+The project will avoid:
+
+- Large unexplained commits
+- Vague commit messages
+- Committing unrelated changes together
+- Committing secrets
+- Treating GitHub merely as final file storage
+
+Test-driven development commits will provide evidence of the test/implementation process where appropriate.
+
+**Planned Evidence:**
+
+- Git history
+- Individual feature/fix commits
+- TDD-related commits
+- Meaningful commit messages
+- Regular remote pushes
+- Final repository audit
+
+**Status: PLANNED**
+
+---
+
+# Merit and Distinction Configuration Alignment
+
+The assessment guidance places particular emphasis on configuration being organised and maintainable.
+
+The project will therefore ensure that:
+
+- Dependency information remains current
+- Settings are logically organised
+- Database configuration has a clear source
+- Environment-specific values are configurable
+- Secrets remain outside source control
+- Deployment configuration is documented
+- Configuration changes are represented clearly in Git history
+
+Branches or alternative configuration structures will be introduced where they provide a genuine technical benefit rather than solely to manufacture assessment evidence.
+
+Any final configuration approach will be explicitly documented and justified.
+
+---
+
+# Production Readiness Audit
+
+Before final submission, the deployed application will undergo a structured audit.
+
+This will include:
+
+```text
+CODE
+✓ No obsolete commented-out code
+✓ No temporary debug statements
+✓ No known unexplained logic errors
+
+LINKS / NAVIGATION
+✓ No broken internal links
+✓ Back/forward navigation tested
+✓ Role navigation tested
+
+BROWSER
+✓ No unexplained console errors
+✓ Static resources load correctly
+
+SECURITY
+✓ No secrets committed
+✓ DEBUG disabled in production
+✓ Protected routes secured
+✓ Permissions tested
+
+DATABASE
+✓ Production database operational
+✓ Migrations applied
+✓ Implemented schema matches documentation
+
+PAYMENTS
+✓ Stripe test mode
+✓ Success/failure paths tested
+✓ Payment permissions tested
+
+ERROR HANDLING
+✓ Invalid routes handled
+✓ External failures handled gracefully
+✓ Appropriate user feedback provided
+
+DOCUMENTATION
+✓ README matches implemented application
+✓ Testing results complete
+✓ Deployment procedure complete
+✓ Attribution complete
+✓ Assessment traceability complete
+
+VERSION CONTROL
+✓ Required files tracked
+✓ Local/remote state verified
+✓ Submitted/deployed version identified
+```
+
+---
+
+# Learning Outcome 5 — Distinction Alignment
+
+The deployment and documentation process will aim to demonstrate the wider Distinction characteristics of professional readiness and craftsmanship.
+
+In particular:
+
+- The deployed application will represent the intended submitted version.
+- Production configuration will be secure.
+- The application will contain no known broken internal links.
+- User and external-service errors will be handled gracefully.
+- The application will provide useful recovery paths.
+- Git history will clearly demonstrate incremental development.
+- Documentation will cover the complete development lifecycle.
+- Deployment and testing procedures will be reproducible and understandable.
+- The final README will accurately describe the implemented application.
+- Assessment evidence will be easy to locate.
+- The finished application will be reviewed as a potential publishable product rather than merely as coursework.
+
+---
+
+# Learning Outcome 5 Audit
+
+| Criterion | Primary P4 Coverage | Evidence Required | Planning Status |
+| --- | --- | --- | --- |
+| 5.1 | Cloud deployment with persistent relational database | Live site, production tests, deployment evidence | PLANNED |
+| 5.2 | Production code/link audit | Code review, link/navigation/console tests | PLANNED |
+| 5.3 | Secure production configuration | Environment variables, `.gitignore`, DEBUG evidence | PLANNED |
+| 5.4 | Git-based development record | Incremental Git history and README | PLANNED |
+| 5.5 | Structured Markdown README | Final README and documentation audit | PLANNED |
+| 5.6 | Purpose/value, deployment and testing documentation | README, testing and deployment evidence | PLANNED |
+| M(vii) | Effective version control | Feature/fix/TDD commits and Git history | PLANNED |
+
