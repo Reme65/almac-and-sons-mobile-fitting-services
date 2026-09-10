@@ -4670,3 +4670,797 @@ In particular:
 | 5.6 | Purpose/value, deployment and testing documentation | README, testing and deployment evidence | PLANNED |
 | M(vii) | Effective version control | Feature/fix/TDD commits and Git history | PLANNED |
 
+# Merit and Distinction Quality Standard
+
+The Pass and Merit assessment criteria are mapped individually in the preceding Learning Outcome sections.
+
+This section converts the wider Merit and Distinction assessment guidance into a practical quality standard for the development of Almac & Sons Mobile Fitting Services.
+
+Its purpose is not to repeat the assessment specification.
+
+Instead, it defines the standard that each significant feature should aim to meet before being considered complete.
+
+The guiding question throughout development will be:
+
+> **If a strict external examiner were looking for a reason not to award the higher grade, what evidence would be missing?**
+
+Where practical, that evidence will be created during development rather than reconstructed immediately before submission.
+
+---
+
+## 1. Real-World Purpose and Professional Standard
+
+The application must solve a clear real-world problem.
+
+Almac & Sons Mobile Fitting Services is intended to support the operational workflow of a mobile vehicle service business providing services such as:
+
+- Breakdown assistance
+- Vehicle recovery
+- Mobile tyre fitting
+- Battery replacement
+- Jump starts
+- Minor roadside repairs
+- Vehicle collection and delivery
+- Scheduled mobile services
+
+The application must demonstrate value for its different users rather than exist merely as a collection of technical features.
+
+The final product should aim to resemble a credible commercial prototype rather than a classroom exercise.
+
+### Quality Questions
+
+Before considering a major feature complete:
+
+- Is its business purpose clear?
+- Does it solve an identified user need?
+- Is the intended user obvious?
+- Does it integrate naturally with the wider workflow?
+- Would the feature make sense in a real mobile-service business?
+- Does the interface contain realistic content rather than placeholder text?
+- Is unnecessary functionality being avoided?
+
+**Evidence may include:**
+
+- User stories
+- User journeys
+- Wireframes
+- Feature documentation
+- Screenshots
+- Testing
+- README explanation
+- Git history
+
+---
+
+## 2. User Experience and Information Hierarchy
+
+The interface should make its purpose understandable to a new user without requiring explanation.
+
+Pages should present information according to its importance.
+
+Users should be able to understand:
+
+```text
+Where am I?
+What can I do?
+What information is important?
+What happened after my action?
+What can I do next?
+```
+
+Navigation should remain predictable and consistent.
+
+Role-specific users should be presented with functionality relevant to their responsibilities.
+
+The application should avoid asking users for information it already knows.
+
+For example, an authenticated customer's known account information should be reused where appropriate instead of repeatedly requesting the same details.
+
+### Quality Questions
+
+- Is the purpose of the page immediately apparent?
+- Is the primary action obvious?
+- Is information presented in a logical order?
+- Does the user retain control?
+- Are destructive or important actions clearly identified?
+- Does the interface provide confirmation after important actions?
+- Can users recover from mistakes?
+- Can users recover from a missing resource without relying solely on browser controls?
+- Is unnecessary repetition avoided?
+- Does the interface reflect the current user's role?
+
+---
+
+## 3. Responsive Design
+
+Responsive behaviour will be designed and tested rather than assumed.
+
+Wireframes and implementation evidence will cover at least representative:
+
+- Mobile
+- Tablet
+- Desktop
+
+screen sizes.
+
+Testing should consider more than whether content technically fits on the screen.
+
+It should consider:
+
+- Navigation
+- Information hierarchy
+- Form usability
+- Touch targets
+- Tables/data displays
+- Cards
+- Images
+- Buttons
+- Error messages
+- Dashboards
+- Payment interfaces
+
+Where a desktop design is inappropriate for a smaller device, the interface may change structure rather than merely shrink.
+
+### Evidence
+
+- Responsive wireframes
+- Screenshots at representative sizes
+- Manual testing table
+- Browser developer-tool testing
+- Real-device testing where practical
+- Bugs/fixes discovered during responsive testing
+
+---
+
+## 4. Accessibility
+
+Accessibility will be incorporated during design and implementation rather than treated solely as a final audit.
+
+Relevant considerations include:
+
+- Semantic HTML
+- Logical heading hierarchy
+- Keyboard accessibility
+- Visible focus states
+- Appropriate labels
+- Alternative text
+- Colour contrast
+- Meaningful link/button text
+- Error identification
+- Form instructions
+- Responsive text/layout
+- Avoiding information conveyed only by colour
+
+JavaScript enhancements must not unnecessarily prevent access to essential functionality.
+
+### Accessibility Testing
+
+Testing will include appropriate evidence for:
+
+- Keyboard navigation
+- Focus order
+- Focus visibility
+- Form labels
+- Validation feedback
+- Colour contrast
+- Semantic structure
+- Responsive behaviour
+
+Automated tools may support testing but will not replace manual accessibility checks.
+
+---
+
+## 5. Application Architecture
+
+Each Django app should represent a natural area of responsibility.
+
+The planned application structure is:
+
+```text
+core
+accounts
+assistance
+payments
+```
+
+Apps should be neither artificially tiny nor unnecessarily broad.
+
+Shared data should not be duplicated merely to make applications independent.
+
+Relationships between apps should represent the business domain clearly.
+
+### Architecture Questions
+
+- Does this functionality belong in this app?
+- Is data being unnecessarily duplicated?
+- Could this component reasonably be reused?
+- Is the responsibility of each app understandable?
+- Is business logic placed in an appropriate layer?
+- Are models representing genuine domain concepts?
+
+Architecture decisions will be documented where they materially affect the project.
+
+---
+
+## 6. Database Quality and Data Integrity
+
+The final relational schema must represent the implemented business workflow accurately.
+
+The ERD must match the actual implementation.
+
+Relationships should be justified by the domain rather than created merely to demonstrate database complexity.
+
+The application should protect data integrity through appropriate:
+
+- Relationships
+- Constraints
+- Validation
+- Permissions
+- Business rules
+
+The project will distinguish between:
+
+```text
+DELETE
+CANCEL
+ARCHIVE
+ANONYMISE
+```
+
+where appropriate.
+
+Transactional history such as completed jobs, invoices and payments should not be destructively removed merely to demonstrate CRUD functionality.
+
+### Data Quality Questions
+
+- Does the model represent a genuine business entity?
+- Is this relationship correct?
+- Is duplicated data necessary?
+- What happens if a related record changes?
+- What happens if deletion is requested?
+- Should this record actually be deleted?
+- Does historical information need to remain?
+- Is ownership/relationship history preserved appropriately?
+
+---
+
+## 7. CRUD and Immediate User Feedback
+
+CRUD operations must operate through the actual user interface and respect permissions.
+
+Successful data changes should be reflected immediately in the application's UI.
+
+For example:
+
+```text
+CREATE
+   ↓
+New record visible
+
+UPDATE
+   ↓
+Updated information visible
+
+DELETE
+   ↓
+Record removed where genuine deletion is appropriate
+```
+
+Where deletion is not appropriate:
+
+```text
+Operational Record
+      ↓
+Cancel / Archive / End Relationship
+      ↓
+History Preserved
+```
+
+Users should receive clear confirmation or error feedback following data operations.
+
+---
+
+## 8. Authentication, Authorisation and Least Privilege
+
+Security will be enforced server-side.
+
+The application will not rely on hidden buttons or navigation links as access control.
+
+The permission sequence should conceptually follow:
+
+```text
+Authentication
+      ↓
+Role
+      ↓
+Permission
+      ↓
+Object Ownership / Responsibility
+      ↓
+Business Rule
+      ↓
+Action Allowed or Denied
+```
+
+Users should receive only the access necessary for their role.
+
+Public users must not be able to create privileged internal accounts.
+
+Customer accounts must not be able to promote themselves to Technician, Dispatcher/Staff or Manager/Supervisor.
+
+### Negative Testing
+
+Permission testing must deliberately attempt prohibited actions.
+
+Examples:
+
+- Anonymous user accesses protected page
+- Customer A accesses Customer B data
+- Customer manipulates an object ID in a URL
+- Technician attempts manager-only operation
+- Customer attempts internal role assignment
+- Authenticated user attempts anonymous-only login/register page
+- User attempts unauthorised invoice/payment access
+
+A permission system is not considered proven merely because the intended workflow succeeds.
+
+---
+
+## 9. Defensive Programming and Validation
+
+The application should assume that incorrect, incomplete or hostile input is possible.
+
+Client-side validation may improve UX but must not be the sole protection for important data.
+
+Server-side validation remains authoritative.
+
+Testing should include:
+
+- Missing values
+- Invalid formats
+- Invalid identifiers
+- Invalid dates
+- Impossible workflow transitions
+- Duplicate actions
+- Manipulated requests
+- Unauthorised requests
+- Unexpected external-service responses
+
+Errors should be handled without exposing unnecessary internal technical information.
+
+---
+
+## 10. External Services and Graceful Failure
+
+External integrations must not be assumed to be permanently available.
+
+Potential integrations include:
+
+- Stripe
+- Browser geolocation
+- Mapping/geocoding services
+- Future vehicle-data APIs
+
+Where an external service is unavailable, the application should fail gracefully.
+
+Where practical, essential workflows should retain an appropriate manual alternative.
+
+For example:
+
+```text
+Geolocation unavailable
+        ↓
+User informed
+        ↓
+Manual location entry remains available
+```
+
+External errors should not unnecessarily make unrelated application functionality unusable.
+
+### External-Service Testing
+
+Where appropriate, test:
+
+- Successful response
+- Invalid response
+- Service unavailable
+- Timeout/network problem
+- Missing configuration
+- User denial of browser permission
+- Invalid external data
+
+---
+
+## 11. Stripe and Transaction Integrity
+
+Payment functionality must be treated as a security-sensitive workflow.
+
+The browser must not be trusted as the authoritative source for:
+
+- Payment amount
+- Payment success
+- Invoice ownership
+- Paid status
+
+Trusted state should be determined server-side.
+
+Payment failures must not incorrectly alter invoice status.
+
+Duplicate or repeated payment actions should be handled appropriately.
+
+Users should receive useful feedback for:
+
+- Success
+- Failure
+- Cancellation
+- Invalid invoice
+- Unauthorised access
+
+Payment functionality should form a genuine part of the service workflow.
+
+---
+
+## 12. Original Python Logic
+
+Custom Python functionality should demonstrate understanding rather than merely connect framework components.
+
+Potential areas of original logic include:
+
+- Role-based workflow
+- Service-request handling
+- Job status transitions
+- Technician allocation
+- Collection/delivery eligibility
+- Commercial licence/authorisation checks
+- Invoice calculations
+- Ownership/permission rules
+- Location handling
+
+Logic should be implemented where it naturally belongs.
+
+Complex business rules should not be hidden inside templates merely to demonstrate template syntax.
+
+---
+
+## 13. Original JavaScript Logic
+
+JavaScript should enhance the user experience rather than exist only to satisfy an assessment requirement.
+
+Potential functionality includes:
+
+- Immediate versus scheduled request behaviour
+- Location-type interfaces
+- Conditional form sections
+- Geolocation assistance
+- Collection/delivery options
+- Progressive interface feedback
+
+Essential security and business validation must remain server-side.
+
+Where practical, functionality should degrade gracefully if JavaScript is unavailable or fails.
+
+---
+
+## 14. Test-Driven Development
+
+Where functionality is suitable for automated testing, the project will aim to demonstrate TDD through the actual development history.
+
+The preferred process is:
+
+```text
+DESIGN EXPECTED BEHAVIOUR
+          ↓
+WRITE TEST
+          ↓
+RUN TEST
+          ↓
+RED
+          ↓
+IMPLEMENT MINIMUM FUNCTIONALITY
+          ↓
+RUN TEST
+          ↓
+GREEN
+          ↓
+REFACTOR
+          ↓
+RETEST
+          ↓
+DOCUMENT
+          ↓
+COMMIT
+```
+
+The Git history should provide credible evidence that tests influenced implementation.
+
+Tests should not be manufactured after completed functionality merely to create the appearance of TDD.
+
+Manual testing will complement automated testing where human interaction or visual behaviour is involved.
+
+---
+
+## 15. Code Quality
+
+Code should be readable, maintainable and consistent.
+
+The project will aim for:
+
+- Clear naming
+- Consistent formatting
+- Appropriate functions/classes
+- Avoidance of unnecessary duplication
+- Logical separation of concerns
+- Appropriate comments
+- No obsolete commented-out code
+- No temporary debugging code in the final deployment
+
+Files should use safe cross-platform naming conventions such as lowercase names without spaces where appropriate.
+
+HTML, CSS, JavaScript and Python responsibilities should remain appropriately separated.
+
+---
+
+## 16. Validation and Technical Quality Checks
+
+Before submission, relevant code will be checked using appropriate validation/linting tools.
+
+Planned evidence includes:
+
+- W3C HTML validation
+- Jigsaw CSS validation
+- JavaScript linting
+- Python PEP8 / declared style checking
+- Browser-console review
+- Broken-link testing
+
+Any unavoidable warnings should be understood and documented rather than silently ignored.
+
+Validation evidence should show actual results and, where relevant:
+
+```text
+Issue
+  ↓
+Diagnosis
+  ↓
+Correction
+  ↓
+Retest
+  ↓
+Result
+```
+
+---
+
+## 17. Robustness
+
+A successful happy-path demonstration is not sufficient evidence of a robust application.
+
+Testing must deliberately attempt to break functionality.
+
+Areas should include:
+
+- Invalid URLs
+- Missing resources
+- Invalid forms
+- Permission violations
+- Incorrect workflow transitions
+- External-service failures
+- Browser back/forward behaviour
+- Payment failures
+- Duplicate actions
+- Invalid object identifiers
+
+The application should provide useful recovery paths.
+
+The final deployed application should contain:
+
+- No known broken internal links
+- No unexplained browser-console errors
+- No known logic errors affecting intended workflows
+
+---
+
+## 18. Content and Presentation
+
+The final application will use realistic content appropriate to the fictional Almac & Sons business.
+
+Placeholder content such as Lorem Ipsum will not remain in the submitted application.
+
+External links should behave appropriately, including opening in a separate tab where suitable.
+
+Visual design should remain consistent across:
+
+- Public pages
+- Authentication
+- Customer interfaces
+- Staff interfaces
+- Forms
+- Dashboards
+- Errors
+- Payment pages
+
+The application should look like one coherent product.
+
+---
+
+## 19. Git Quality
+
+Git history is part of the project evidence.
+
+A commit should represent a known and understood change.
+
+The development principle remains:
+
+```text
+Write
+  ↓
+Test
+  ↓
+Document where required
+  ↓
+Review
+  ↓
+Commit
+  ↓
+Clean Tree
+```
+
+For TDD features, the testing cycle precedes implementation as described above.
+
+Commit messages should communicate what changed.
+
+Where practical:
+
+**one logical feature or fix = one logical commit**
+
+Unrelated changes should not be bundled merely for convenience.
+
+---
+
+## 20. Documentation Quality
+
+Documentation must accurately describe the application that actually exists.
+
+Planning documentation may describe proposed functionality.
+
+The final README must distinguish implemented functionality from future features.
+
+The README should provide evidence for:
+
+- Purpose
+- User needs
+- UX decisions
+- Wireframes
+- Architecture
+- Database schema
+- Features
+- CRUD
+- Authentication/permissions
+- Original logic
+- Stripe
+- Testing
+- Validation
+- Bugs/fixes
+- Security
+- Deployment
+- Version control
+- Attribution
+
+The README will be reviewed against the final application before submission so that documentation and implementation remain aligned.
+
+---
+
+## 21. Development Evidence Standard
+
+Important development decisions, problems and corrections should be documented while they are fresh.
+
+Where a meaningful problem occurs, use:
+
+```text
+Attempt
+   ↓
+Failure
+   ↓
+Diagnosis
+   ↓
+Change
+   ↓
+Retest
+   ↓
+Result
+```
+
+This provides stronger evidence than merely stating that the final feature works.
+
+Screenshots should be collected when they demonstrate something that may be difficult to reproduce later.
+
+---
+
+# Feature Definition of Done
+
+Before a significant feature is considered complete, ask:
+
+| Check | Question |
+| --- | --- |
+| Purpose | Does it solve the intended user/business need? |
+| UX | Is the workflow clear and intuitive? |
+| Accessibility | Can it be used accessibly? |
+| Responsive | Has it been tested at appropriate screen sizes? |
+| Data | Are relationships and data changes correct? |
+| Validation | Is invalid input handled server-side? |
+| Permissions | Are allowed and prohibited actions tested? |
+| Feedback | Does the user know what happened? |
+| Errors | Can failure occur safely and recoverably? |
+| External Services | Are failure states handled where relevant? |
+| Tests | Are appropriate automated/manual tests complete? |
+| TDD | Is RED → GREEN evidence present where appropriate? |
+| Code Quality | Is the implementation clean and maintainable? |
+| Documentation | Has relevant evidence been recorded? |
+| Git | Is the change represented by a logical commit? |
+| Deployment | Does it work in production where applicable? |
+
+A feature should not be marked complete simply because its happy path works.
+
+---
+
+# Distinction Evidence Question
+
+At major development checkpoints, the project will be reviewed using the following question:
+
+> **If a strict external examiner wanted to withhold the higher grade, what evidence could they reasonably say is missing?**
+
+Any genuine evidence gap should then be addressed through implementation, testing or documentation as appropriate.
+
+The objective is not to create unnecessary features or excessive documentation.
+
+The objective is to make the quality of the implemented application and the evidence supporting it clear, traceable and difficult to misinterpret.
+
+---
+
+# Final Merit and Distinction Audit
+
+Before submission, verify that:
+
+- [ ] The application has a clear and justified real-world purpose.
+- [ ] The intended target users are clearly identified.
+- [ ] User stories align with implemented functionality.
+- [ ] The UI is professional, consistent and responsive.
+- [ ] Accessibility has been manually and technically tested.
+- [ ] Navigation is intuitive and consistent.
+- [ ] Users retain appropriate control and receive feedback.
+- [ ] Known user information is reused appropriately.
+- [ ] Django apps have natural and justified boundaries.
+- [ ] The final ERD matches the implemented database.
+- [ ] Full CRUD is implemented and evidenced.
+- [ ] Data integrity and historical records are handled appropriately.
+- [ ] Authentication and authorisation are enforced server-side.
+- [ ] Positive and negative permission tests are documented.
+- [ ] Original Python logic is clearly identifiable.
+- [ ] Original JavaScript meaningfully improves UX.
+- [ ] Forms have authoritative server-side validation.
+- [ ] External-service failures are handled gracefully.
+- [ ] Stripe payment security and failure paths are tested.
+- [ ] TDD is demonstrated in Git history where appropriate.
+- [ ] Manual testing complements automated testing.
+- [ ] HTML validation is complete.
+- [ ] CSS validation is complete.
+- [ ] JavaScript linting is complete.
+- [ ] Python style checking is complete.
+- [ ] Browser console contains no unexplained errors.
+- [ ] Internal links have been tested.
+- [ ] Browser back/forward behaviour has been tested.
+- [ ] Custom error handling has been tested.
+- [ ] No secrets exist in committed source code.
+- [ ] Production runs with DEBUG disabled.
+- [ ] Git history clearly demonstrates development.
+- [ ] Commits are meaningful and appropriately scoped.
+- [ ] README accurately matches the final application.
+- [ ] Deployment instructions are complete.
+- [ ] Testing evidence records actual results.
+- [ ] Bugs and fixes are documented.
+- [ ] External code and media are correctly attributed.
+- [ ] The deployed application matches the intended submitted version.
+- [ ] No obsolete debugging or commented-out code remains.
+- [ ] No known broken internal links remain.
+- [ ] No known logic errors remain in intended workflows.
+
