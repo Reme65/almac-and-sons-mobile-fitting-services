@@ -2757,3 +2757,503 @@ Evidence for this requirement will include:
 
 **Status: PLANNED**
 
+# Assessment Criteria Traceability
+
+The project will be audited throughout development against the published assessment criteria for Unit 4: Full Stack Frameworks with Django.
+
+The purpose of this section is to provide a direct relationship between:
+
+```text
+Assessment Criterion
+        ↓
+Project Design
+        ↓
+Implementation
+        ↓
+Testing
+        ↓
+Evidence
+```
+
+This traceability record is a planning and development tool.
+
+A final assessment evidence matrix will be included in the completed project documentation and will describe the functionality that was actually implemented.
+
+---
+
+# Learning Outcome 1
+
+## Design, Develop and Implement a Full Stack Django Application
+
+### Criterion 1.1 — Full Stack Application Design
+
+**Assessment focus:**  
+Design a Full Stack web application using Django that incorporates a relational database and multiple apps representing potentially reusable components.
+
+**P4 Plan:**
+
+Almac & Sons Mobile Fitting Services will be developed as a brand-new Django project.
+
+Working Django project:
+
+```text
+almac_mobile
+```
+
+Planned Django apps:
+
+```text
+core
+accounts
+assistance
+payments
+```
+
+Each app represents a genuine application responsibility rather than being created solely to increase the number of Django apps.
+
+The application will use a relational database with related domain models.
+
+**Planned Evidence:**
+
+- Project architecture documentation
+- Django app structure
+- App responsibility descriptions
+- Database design
+- ERD
+- Git history showing creation and development of the project/apps
+- Final README architecture section
+
+**Status: PLANNED**
+
+---
+
+### Criterion 1.2 — Front-End Design, UX and Accessibility
+
+**Assessment focus:**  
+Design the front end so that it meets accessibility guidelines, follows UX principles, satisfies the application's purpose and provides appropriate user interactions.
+
+**P4 Plan:**
+
+The interface will be designed around the needs of the application's principal users:
+
+- Private customers
+- Business / fleet customers
+- Technicians
+- Dispatcher / Staff users
+- Manager / Supervisor users
+
+UX planning will include:
+
+- User stories
+- User journeys
+- Information hierarchy
+- Wireframes
+- Navigation design
+- Responsive layouts
+- User feedback
+- Error handling
+- Accessibility
+- Role-appropriate interfaces
+
+The application will avoid requesting information already available from an authenticated user's account where that information can safely and appropriately be reused.
+
+**Planned Evidence:**
+
+- User stories
+- User journeys
+- Wireframes
+- Design decisions
+- Desktop testing
+- Tablet testing
+- Mobile testing
+- Keyboard-navigation testing
+- Focus-state testing
+- Colour-contrast testing
+- Semantic HTML review
+- Screenshots of representative workflows
+- README UX section
+
+**Status: PLANNED**
+
+---
+
+### Criterion 1.3 — Full Stack Django Implementation
+
+**Assessment focus:**  
+Develop and implement a Django Full Stack application containing a relational database, interactive front end and multiple apps.
+
+**P4 Plan:**
+
+The completed application will connect the Django back end, relational data model and interactive front end through real business workflows.
+
+The principal workflow is planned as:
+
+```text
+Customer
+   ↓
+Vehicle / Equipment
+   ↓
+Service Request
+   ↓
+Service Location
+   ↓
+Dispatch
+   ↓
+Technician / Job
+   ↓
+Work Completed
+   ↓
+Invoice
+   ↓
+Payment
+```
+
+CRUD operations and changes to application data will be reflected appropriately in the user interface.
+
+**Planned Evidence:**
+
+- Working Django application
+- Relational models
+- Views
+- Templates
+- Forms
+- Interactive JavaScript
+- CRUD evidence
+- Functional tests
+- Deployed application
+- README feature documentation
+
+**Status: PLANNED**
+
+---
+
+### Criterion 1.4 — Validated Create and Edit Forms
+
+**Assessment focus:**  
+Implement at least one validated form allowing users to create and edit back-end models.
+
+**P4 Plan:**
+
+The application will contain multiple validated Django forms supporting genuine business operations.
+
+Potential examples include:
+
+- Customer profile management
+- Vehicle / equipment management
+- Service requests
+- Service locations
+- Collection / delivery information
+- Job updates where permitted
+
+Validation will be enforced on the server side.
+
+JavaScript may improve the user experience but will not replace authoritative Django validation.
+
+**Planned Evidence:**
+
+- Django forms
+- Create workflow
+- Edit workflow
+- Valid submission tests
+- Invalid submission tests
+- Validation messages
+- Server-side validation tests
+- README CRUD/testing evidence
+
+**Status: PLANNED**
+
+---
+
+### Criterion 1.5 — Django File Structure
+
+**Assessment focus:**  
+Use a consistent and logical file structure following Django conventions.
+
+**P4 Plan:**
+
+The project will follow standard Django conventions while maintaining clear separation between application responsibilities.
+
+Files and directories will use descriptive, consistent naming.
+
+Static resources will be organised logically and HTML, CSS, JavaScript and Python will remain appropriately separated.
+
+**Planned Evidence:**
+
+- Repository structure
+- Django project structure
+- App structure
+- Static-file organisation
+- Template organisation
+- Final repository audit
+
+**Status: PLANNED**
+
+---
+
+### Criterion 1.6 — Clean Code
+
+**Assessment focus:**  
+Write code demonstrating characteristics of clean code.
+
+**P4 Plan:**
+
+Project code will use:
+
+- Consistent naming conventions
+- Descriptive class, function and variable names
+- Consistent formatting
+- Appropriate separation of concerns
+- Logical file organisation
+- Appropriate comments
+- Minimal unnecessary duplication
+- Semantic HTML
+- Separate linked CSS and JavaScript
+- Python style consistent with PEP8
+
+Validation and code-quality checks will form part of the testing process.
+
+**Planned Evidence:**
+
+- Code review
+- Python style checks
+- HTML validation
+- CSS validation
+- JavaScript linting
+- Appropriate source comments
+- Repository structure
+- Final code-quality audit
+
+**Status: PLANNED**
+
+---
+
+### Criterion 1.7 — Consistent Application URLs
+
+**Assessment focus:**  
+Define application URLs consistently.
+
+**P4 Plan:**
+
+URL patterns will use descriptive and consistent naming appropriate to each Django app and business workflow.
+
+URL design will support intuitive navigation and maintain clear separation between application areas.
+
+**Planned Evidence:**
+
+- Django URL configuration
+- Named URL patterns
+- Template URL usage
+- Navigation testing
+- Broken-link testing
+- Back/forward browser-navigation testing
+
+**Status: PLANNED**
+
+---
+
+### Criterion 1.8 — Main Navigation and Structured Layout
+
+**Assessment focus:**  
+Provide a main navigation menu and structured application layout.
+
+**P4 Plan:**
+
+A shared Django base template will provide the principal site structure.
+
+Navigation will adapt appropriately to authentication state and operational role.
+
+Detailed functionality will be accessed through role-specific dashboards rather than placing every available operation in the main navigation.
+
+The interface will remain usable across desktop, tablet and mobile layouts.
+
+**Planned Evidence:**
+
+- `base.html`
+- Main navigation
+- Role-aware navigation
+- Role dashboards
+- Responsive testing
+- Keyboard-navigation testing
+- Active/focus-state evidence
+- Screenshots
+
+**Status: PLANNED**
+
+---
+
+### Criterion 1.9 — Original Python Logic
+
+**Assessment focus:**  
+Include custom logic demonstrating proficiency in Python.
+
+**P4 Plan:**
+
+Original Python logic will solve genuine business problems within the application rather than being added solely to satisfy the assessment criterion.
+
+Potential examples include:
+
+- Technician eligibility
+- Service capability matching
+- Commercial vehicle licence-entitlement validation
+- Job workflow rules
+- Role/ownership restrictions
+- Invoice/payment workflow rules
+
+Final documentation will identify the original logic actually implemented.
+
+**Planned Evidence:**
+
+- Original Python source code
+- Explanation of business logic
+- Automated tests
+- Positive and negative scenarios
+- Git development history
+- README Original Logic section
+
+**Status: PLANNED**
+
+---
+
+### Criterion 1.10 — Python Compound Statements
+
+**Assessment focus:**  
+Use Python functions containing compound statements such as conditions and/or loops.
+
+**P4 Plan:**
+
+Conditions and loops will be used where naturally required by the application's business rules.
+
+They will not be inserted artificially merely to demonstrate language syntax.
+
+Likely examples occur within:
+
+- Technician eligibility
+- Permission/business-rule checks
+- Service-request processing
+- Job workflow
+- Invoice/payment processing
+
+**Planned Evidence:**
+
+- Relevant Python functions
+- Automated tests
+- Code-quality review
+- README explanation of significant original logic
+
+**Status: PLANNED**
+
+---
+
+### Criterion 1.11 — Testing
+
+**Assessment focus:**  
+Design and implement manual or automated procedures assessing functionality, usability, responsiveness and data management.
+
+**P4 Plan:**
+
+Testing will be planned as part of development rather than performed only immediately before submission.
+
+Testing will include:
+
+- Functional testing
+- Model testing
+- Form validation
+- CRUD
+- Authentication
+- Authorisation
+- Object ownership
+- Business rules
+- Original Python logic
+- JavaScript interactions
+- Stripe
+- Error handling
+- Responsive behaviour
+- Accessibility
+- Browser behaviour
+- Data integrity
+
+Both successful and unsuccessful scenarios will be tested.
+
+---
+
+## Test-Driven Development
+
+Where appropriate original Python and/or JavaScript functionality is suitable for automated testing, development will use a demonstrable Test Driven Development process.
+
+The intended cycle is:
+
+```text
+DESIGN BEHAVIOUR
+      ↓
+WRITE TEST
+      ↓
+RUN TEST
+      ↓
+RED — EXPECTED FAILURE
+      ↓
+IMPLEMENT MINIMUM FUNCTIONALITY
+      ↓
+RUN TEST
+      ↓
+GREEN — TEST PASSES
+      ↓
+REFACTOR
+      ↓
+RUN TESTS AGAIN
+      ↓
+DOCUMENT
+      ↓
+COMMIT
+      ↓
+CLEAN TREE
+```
+
+TDD evidence must arise naturally during implementation and must not be reconstructed retrospectively for assessment purposes.
+
+Git commits should provide supporting evidence of the testing and implementation sequence where practical.
+
+Manual testing will continue to be used for areas such as:
+
+- UX
+- Responsive behaviour
+- Accessibility
+- Browser interaction
+- Visual feedback
+- End-to-end workflows
+
+Automated and manual testing therefore complement one another rather than one replacing the other.
+
+**Planned Evidence:**
+
+- Automated test files
+- Red/Green/Refactor development evidence
+- Git commits
+- Manual testing records
+- Responsive testing at desktop/tablet/mobile sizes
+- Accessibility testing
+- Validation testing
+- CRUD testing
+- Permission testing
+- Error/fallback testing
+- Final testing documentation
+
+**Status: PLANNED**
+
+---
+
+## Learning Outcome 1 Audit
+
+| Criterion | Primary P4 Coverage | Evidence Required | Planning Status |
+| --- | --- | --- | --- |
+| 1.1 | New Django project, relational DB, multiple domain apps | Architecture, apps, ERD, Git | PLANNED |
+| 1.2 | UX, accessibility, responsive role-based interfaces | Wireframes, user stories, accessibility/responsive tests | PLANNED |
+| 1.3 | Django + relational DB + interactive front end | Application, models, templates, tests, deployment | PLANNED |
+| 1.4 | Validated create/edit forms | Forms and positive/negative tests | PLANNED |
+| 1.5 | Conventional Django structure | Repository/app structure | PLANNED |
+| 1.6 | Clean code | Validators, linters, style/code review | PLANNED |
+| 1.7 | Consistent URLs | URL configuration and link/navigation tests | PLANNED |
+| 1.8 | Main navigation and structured layout | Base template, role navigation, responsive evidence | PLANNED |
+| 1.9 | Original Python business logic | Source, tests, explanation, Git history | PLANNED |
+| 1.10 | Genuine conditions/loops | Python implementation and tests | PLANNED |
+| 1.11 | Comprehensive manual/automated testing and TDD | Tests, records, Git history | PLANNED — TDD now explicit |
+
