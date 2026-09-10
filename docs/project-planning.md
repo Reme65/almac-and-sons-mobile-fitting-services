@@ -1846,3 +1846,428 @@ Evidence for this requirement will include:
 
 **Status: PLANNED**
 
+# Requirement 9 — README and Project Documentation
+
+## Academic Requirement
+
+The project must include a README that clearly explains the application, its purpose and the value it provides to its intended users.
+
+The README will also provide structured evidence of the design, development, testing and deployment of the completed application.
+
+---
+
+## Documentation Strategy
+
+The README will be developed throughout the project rather than written only after development is complete.
+
+Documentation will form part of the normal development cycle:
+
+```text
+DESIGN
+  ↓
+WRITE
+  ↓
+TEST
+  ↓
+DOCUMENT EVIDENCE
+  ↓
+COMMIT
+  ↓
+CLEAN TREE
+```
+
+This should ensure that important design decisions, testing evidence, bugs and development reasoning are recorded while they are still current.
+
+---
+
+## Purpose of the README
+
+The README will explain:
+
+- What the application is
+- What business problem it addresses
+- Who the intended users are
+- What value the application provides
+- How the application was designed
+- How the application was implemented
+- How the application was tested
+- How security and permissions were handled
+- How the application was deployed
+- How the completed project satisfies the assessment requirements
+
+The aim is not simply to produce a long document.
+
+The aim is to produce clear, traceable evidence that allows an assessor to understand and evaluate the project efficiently.
+
+---
+
+## Project Value
+
+The README will explain that Almac & Sons Mobile Fitting Services is intended to manage the complete service workflow rather than act only as an informational garage website.
+
+The planned workflow includes:
+
+```text
+Customer
+   ↓
+Vehicle / Equipment
+   ↓
+Service Request
+   ↓
+Service Location
+   ↓
+Dispatch
+   ↓
+Technician / Job
+   ↓
+Work Completed
+   ↓
+Invoice
+   ↓
+Payment
+```
+
+The application is intended to support both customer-facing and internal operational processes.
+
+---
+
+## Target Users
+
+The README will describe the needs of:
+
+- Private customers
+- Business / fleet customers
+- Technicians
+- Dispatcher / Staff users
+- Manager / Supervisor users
+
+Private and business/fleet customers will be documented as customer account types, while Customer, Technician, Dispatcher / Staff and Manager / Supervisor represent the principal operational roles.
+
+---
+
+## Planned README Structure
+
+The final README is expected to contain sections covering:
+
+1. Project Overview
+2. Target Users
+3. UX Design
+4. Application Architecture
+5. Features
+6. Authentication and Authorisation
+7. CRUD and Validation
+8. Original Python and JavaScript Logic
+9. Stripe / E-commerce
+10. Testing
+11. Technologies
+12. External APIs and Libraries
+13. Security
+14. Deployment
+15. Version Control and Development Methodology
+16. Known Issues
+17. Future Features
+18. Credits and Attribution
+19. Assessment Evidence / Criterion Traceability
+
+The exact structure may evolve as the application develops.
+
+---
+
+## UX and Design Evidence
+
+The README will document the design process rather than only showing the finished interface.
+
+Evidence may include:
+
+- Project goals
+- User needs
+- User stories
+- User journeys
+- Information architecture
+- Wireframes
+- Responsive design decisions
+- Accessibility decisions
+- Significant UX decisions and their justification
+
+Where a design changes during development, the reason for the change should be recorded where it provides useful evidence of the development process.
+
+---
+
+## Architecture and Database Evidence
+
+The README will explain:
+
+- Django project architecture
+- Django app responsibilities
+- Separation of concerns
+- Custom models
+- Model relationships
+- ERD
+- Important database-design decisions
+- Relevant business rules
+
+Significant modelling decisions should include their reasoning rather than merely listing model names and fields.
+
+---
+
+## Feature Documentation
+
+Features will be documented according to the users and workflows they support.
+
+This may include:
+
+- Public functionality
+- Private customer functionality
+- Business / fleet functionality
+- Technician functionality
+- Dispatcher / Staff functionality
+- Manager / Supervisor functionality
+- Vehicle / equipment management
+- Service requests
+- Location functionality
+- Collection / delivery
+- Job management
+- Invoicing
+- Stripe payments
+
+Screenshots will be used where they provide useful evidence rather than simply increasing the size of the README.
+
+---
+
+## Assessment Traceability
+
+The completed README will include an assessment evidence matrix.
+
+The purpose of the matrix is to provide a direct route from an assessment criterion to its implementation and supporting evidence.
+
+Conceptually:
+
+```text
+Assessment Criterion
+        ↓
+Design / Requirement
+        ↓
+Implementation
+        ↓
+Testing
+        ↓
+Evidence
+        ↓
+Result
+```
+
+A final matrix may use a structure such as:
+
+| Criterion | Implementation | Evidence | Testing | Status |
+| --- | --- | --- | --- | --- |
+| Relational database | Custom related models | ERD / model evidence | Relationship tests | Complete |
+| Multiple Django apps | Domain-based app architecture | Project structure | Functional testing | Complete |
+| CRUD | Permission-controlled CRUD | Forms / views | CRUD tests | Complete |
+| Authentication | Django authentication | Registration / login evidence | Access tests | Complete |
+| Stripe | Invoice payment workflow | Stripe test evidence | Payment tests | Complete |
+| Original JavaScript | Dynamic service/location forms | JS evidence | Interaction/fallback tests | Complete |
+
+The final version will use the actual assessment criteria and wording where available.
+
+---
+
+## Testing Documentation
+
+Testing evidence will be recorded throughout development.
+
+The README will provide evidence of areas including:
+
+- Forms
+- Validation
+- CRUD
+- Authentication
+- Authorisation
+- Object ownership
+- User roles
+- Original Python logic
+- Original JavaScript
+- Stripe
+- Responsive behaviour
+- Accessibility
+- Keyboard navigation
+- Browser compatibility
+- Deployment
+
+Testing should include both successful and unsuccessful scenarios.
+
+Where appropriate, tests will record:
+
+- Test objective
+- Input/action
+- Expected result
+- Actual result
+- Pass/fail result
+- Supporting evidence
+
+---
+
+## Responsive Evidence
+
+Representative pages and important workflows will be tested at three principal screen categories:
+
+- Desktop
+- Tablet
+- Mobile
+
+Responsive evidence will demonstrate actual testing rather than relying solely on a statement that the application is responsive.
+
+---
+
+## Accessibility Evidence
+
+Accessibility documentation will include appropriate evidence relating to:
+
+- Keyboard navigation
+- Focus order
+- Visible focus states
+- Semantic structure
+- Labels
+- Colour contrast
+- Responsive navigation
+- Dynamic JavaScript interactions
+
+Accessibility problems discovered during development and their resolution should be documented where relevant.
+
+---
+
+## Bugs and Fixes
+
+Significant bugs will be treated as useful development evidence.
+
+Where appropriate, bugs will be documented using:
+
+```text
+Problem
+   ↓
+Observed Behaviour
+   ↓
+Diagnosis
+   ↓
+Change / Fix
+   ↓
+Retest
+   ↓
+Result
+```
+
+This will demonstrate the development and debugging process rather than presenting the final application as though no problems occurred during development.
+
+Git history should support significant fixes where appropriate.
+
+---
+
+## Security Documentation
+
+The README will document relevant security decisions, including:
+
+- Authentication
+- Authorisation
+- Role-based access
+- Object ownership
+- Environment variables
+- Secret management
+- Production DEBUG configuration
+- Payment security
+- Server-side validation
+
+Security evidence will cross-reference the relevant implementation and testing sections rather than unnecessarily duplicating documentation.
+
+---
+
+## Deployment Documentation
+
+The README will provide sufficient information to explain how the application is deployed and configured.
+
+This will include relevant information such as:
+
+- Hosting platform
+- Production database
+- Required environment variables
+- Static-file handling
+- Deployment process
+- Production configuration
+- Live application link
+- Repository link
+
+No secret values will be included in the documentation.
+
+---
+
+## External Code and Attribution
+
+External libraries, APIs, documentation, tutorials and other significant external resources used during development will be appropriately acknowledged.
+
+Externally sourced or adapted code will be clearly distinguished from original project code where required.
+
+The project will not claim externally sourced functionality as original work.
+
+---
+
+## Planning Document and Final README
+
+`docs/project-planning.md` and `README.md` have different purposes.
+
+The planning document records:
+
+- Proposed requirements
+- Early design decisions
+- Business reasoning
+- Planned implementation
+- Planned testing and evidence
+
+The final README records:
+
+- What was actually implemented
+- Why final decisions were made
+- How functionality works
+- How it was tested
+- Evidence of the completed application
+
+Plans that change during development will therefore not automatically be presented as completed features in the final README.
+
+---
+
+## Final Assessment Audit
+
+Before submission, the project will be reviewed against the complete available Pass, Merit and Distinction assessment criteria.
+
+For each criterion the final audit will ask:
+
+> What evidence demonstrates that this criterion has been satisfied?
+
+Where evidence is incomplete, the missing evidence should be addressed before submission where possible.
+
+The final README should allow an assessor to move efficiently from criterion to implementation, testing and evidence without having to infer whether functionality exists.
+
+---
+
+## Planned Evidence
+
+Evidence for this requirement will include:
+
+- Continuously maintained README
+- User stories and journeys
+- Wireframes
+- ERD
+- Architecture documentation
+- Feature documentation
+- CRUD matrix
+- Authentication/authorisation evidence
+- Testing tables
+- Responsive evidence
+- Accessibility evidence
+- Stripe evidence
+- Bugs and fixes
+- Deployment documentation
+- Security documentation
+- Credits and attribution
+- Assessment traceability matrix
+- Supporting Git history
+
+**Status: PLANNED**
+
