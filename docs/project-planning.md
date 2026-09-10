@@ -1077,3 +1077,248 @@ Evidence for this requirement will include:
 - Git commits showing incremental development
 
 **Status: PLANNED**
+
+# Requirement 6 — Stripe Payments and Invoicing
+
+## Academic Requirement
+
+The application must include e-commerce functionality using Stripe in at least one Django app.
+
+Stripe will operate in test mode only.
+
+Successful payment must provide the user with additional functionality or content within the application.
+
+---
+
+## Business Purpose
+
+Stripe will be used to allow customers to securely pay invoices generated for completed work.
+
+Payment functionality will form part of the normal operational workflow rather than being added as an isolated demonstration of Stripe.
+
+The planned workflow is:
+
+```text
+Service Request
+      ↓
+Job Created
+      ↓
+Technician Assigned
+      ↓
+Work Carried Out
+      ↓
+Labour / Parts / Other Charges Recorded
+      ↓
+Invoice Generated
+      ↓
+Invoice Issued to Customer
+      ↓
+Stripe Test Payment
+      ↓
+Payment Confirmed
+      ↓
+Invoice Marked PAID
+      ↓
+Paid Receipt / Final Paid Invoice Available
+```
+
+---
+
+## Charge Types
+
+An invoice may contain charges relating to services such as:
+
+- Call-out charges
+- Labour
+- Parts
+- Vehicle recovery
+- Mobile fitting
+- Collection / delivery
+- Workshop work
+
+The exact pricing structure will be determined during detailed application design.
+
+---
+
+## Invoice and Payment Separation
+
+Invoices and payments will be represented separately within the data model.
+
+An `Invoice` represents the amount owed by the customer and the charges that make up that amount.
+
+A `Payment` represents a payment transaction associated with that invoice.
+
+This separation prevents operational and financial responsibilities from being combined unnecessarily within a single model.
+
+Conceptually:
+
+```text
+Job
+ ↓
+Invoice
+ ↓
+Payment
+```
+
+The final relationship and field structure will be defined during ERD and model design.
+
+---
+
+## Invoice Status
+
+The initial invoice lifecycle is expected to include:
+
+- Draft
+- Issued
+- Paid
+
+Additional states such as:
+
+- Cancelled
+- Refunded
+
+may be introduced if justified by the final workflow.
+
+The application will not introduce unnecessary payment states purely for complexity.
+
+---
+
+## Stripe Test Mode
+
+All Stripe functionality developed for this project will use Stripe Test Mode.
+
+No real customer payments or real card transactions will be processed as part of the assessed application.
+
+Stripe test credentials and other secret values will be stored securely using environment variables and will not be committed to the Git repository.
+
+---
+
+## Server-Controlled Payment Amounts
+
+The amount submitted to Stripe must be derived from trusted server-side invoice data.
+
+The application will not trust a payment amount supplied by the browser or customer.
+
+For example, altering an HTML field or request value must not allow a customer to change the amount actually owed.
+
+Conceptually:
+
+```text
+Customer selects Pay
+        ↓
+Server retrieves authorised Invoice
+        ↓
+Server determines amount due
+        ↓
+Stripe payment created from trusted amount
+```
+
+This provides protection against client-side manipulation of payment values.
+
+---
+
+## Access Control
+
+Payment functionality will follow the authentication, authorisation and record-ownership rules defined in Requirement 4.
+
+Customers may only access and pay invoices associated with their own authorised account.
+
+Payment-specific views will not provide a route around the application's existing access-control rules.
+
+---
+
+## Successful Payment
+
+A successful Stripe payment must result in a meaningful change within the application.
+
+Following verified successful payment:
+
+- A payment record will be created or confirmed as appropriate.
+- The related invoice will be marked as paid.
+- Payment confirmation information will be stored as appropriate.
+- The customer will gain access to the final paid invoice / receipt for that transaction.
+
+The paid receipt or equivalent post-payment functionality will therefore only become available following successful payment confirmation.
+
+This satisfies the requirement for successful payment to grant additional functionality or content.
+
+---
+
+## Failed or Cancelled Payment
+
+A failed or cancelled Stripe payment must not cause the application to mark an invoice as paid.
+
+The customer should be returned to an appropriate application state and given clear feedback.
+
+The invoice should remain outstanding so that another payment attempt can be made where appropriate.
+
+No paid receipt or other payment-dependent functionality should be unlocked following an unsuccessful payment.
+
+---
+
+## Payment Confirmation
+
+The application must not rely solely on the customer's browser reaching a success page as proof that payment succeeded.
+
+The final Stripe implementation will use an appropriate server-side confirmation mechanism so that payment status is based on verified payment information.
+
+The exact Stripe implementation will be determined when the payment functionality is developed using the current Stripe documentation.
+
+---
+
+## Record Retention
+
+Invoices and confirmed payment records are transactional business records and will follow the retention principles defined in Requirement 5.
+
+Customers will not be able to permanently delete legitimate invoice or payment history through their account.
+
+Any future refund, cancellation or correction process should preserve an appropriate transaction history rather than silently removing the original record.
+
+---
+
+## Planned Testing
+
+Testing will cover successful and unsuccessful payment paths.
+
+Examples include:
+
+| Test | Expected Result |
+| --- | --- |
+| Customer accesses own issued invoice | Allowed |
+| Customer attempts to access another customer's invoice | Denied |
+| Anonymous user attempts to access protected payment functionality | Authentication required |
+| Correct invoice amount supplied to Stripe | Accepted |
+| Client attempts to manipulate payment amount | Trusted server-side amount used |
+| Successful Stripe test payment | Payment confirmed |
+| Successful payment | Invoice status becomes Paid |
+| Successful payment | Paid receipt / final invoice becomes available |
+| Failed Stripe test payment | Invoice remains unpaid |
+| Cancelled payment | Invoice remains unpaid |
+| Failed/cancelled payment | Paid receipt remains unavailable |
+| Stripe secret credentials checked in repository | No secrets present |
+
+The final testing documentation will record the actual test data, expected result, actual result and supporting evidence.
+
+---
+
+## Planned Evidence
+
+Evidence for this requirement will include:
+
+- Stripe Test Mode integration
+- Invoice and Payment models
+- Invoice/payment relationship in the ERD
+- Payment views and templates
+- Server-side payment amount handling
+- Successful Stripe test transaction
+- Failed/cancelled transaction testing
+- Payment status updates
+- Paid receipt / final invoice access
+- Authentication and ownership testing
+- Environment-variable configuration
+- Evidence that Stripe secrets are excluded from Git
+- Responsive screenshots of the payment workflow
+- Documented bugs and fixes
+- Incremental Git commits showing development of the payment functionality
+
+**Status: PLANNED**
