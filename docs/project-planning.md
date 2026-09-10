@@ -3257,3 +3257,468 @@ Automated and manual testing therefore complement one another rather than one re
 | 1.10 | Genuine conditions/loops | Python implementation and tests | PLANNED |
 | 1.11 | Comprehensive manual/automated testing and TDD | Tests, records, Git history | PLANNED — TDD now explicit |
 
+# Learning Outcome 3
+
+## Authentication, Authorisation and Permissions
+
+### Criterion 3.1 — Authentication
+
+**Assessment focus:**  
+Implement an authentication mechanism allowing users to register and log in, with a clear reason why users need to authenticate.
+
+**P4 Plan:**
+
+Django authentication will provide the underlying authentication mechanism for Almac & Sons Mobile Fitting Services.
+
+Authentication is necessary because the application contains personal, operational and transactional information that must be associated with the correct user and protected from unauthorised access.
+
+Authenticated customer functionality is expected to include:
+
+- Managing account/profile information
+- Managing vehicles / equipment
+- Creating service requests
+- Viewing existing service requests
+- Viewing relevant job progress
+- Viewing invoices
+- Making payments
+- Accessing paid receipts / final paid invoices
+
+Authentication also provides the identity required for internal operational roles.
+
+The principal operational roles are:
+
+```text
+Customer
+Technician
+Dispatcher / Staff
+Manager / Supervisor
+```
+
+Private and Business / Fleet represent customer account types rather than separate permission roles.
+
+---
+
+## Customer Registration
+
+Public registration will be available only for customer accounts.
+
+The planned public registration choices are:
+
+```text
+Private Customer
+
+Business / Fleet Customer
+```
+
+Registration will create the appropriate authenticated customer account/profile structure.
+
+Internal operational accounts will not be publicly self-registerable.
+
+**Planned Evidence:**
+
+- Registration implementation
+- Login implementation
+- Logout implementation
+- Private customer registration
+- Business / fleet registration
+- Authentication tests
+- Protected-page tests
+- README explanation of why authentication is required
+
+**Status: PLANNED**
+
+---
+
+### Criterion 3.2 — Anonymous-Only Login and Registration
+
+**Assessment focus:**  
+Ensure login and registration pages are available only to anonymous users.
+
+**P4 Plan:**
+
+Login and registration will be accessible to anonymous users.
+
+Once authenticated, users will not be permitted to use the login or public registration workflows again.
+
+The restriction will be enforced by application logic rather than merely hiding navigation links.
+
+Expected behaviour:
+
+```text
+Anonymous User
+    ↓
+Login       → ALLOWED
+Registration → ALLOWED
+```
+
+```text
+Authenticated User
+    ↓
+Login       → REDIRECTED / RESTRICTED
+Registration → REDIRECTED / RESTRICTED
+```
+
+The final implementation will provide an appropriate destination and useful user experience for authenticated users who attempt to access these routes.
+
+**Planned Evidence:**
+
+- Anonymous login test
+- Anonymous registration test
+- Authenticated login-route test
+- Authenticated registration-route test
+- Navigation evidence
+- Redirect/feedback evidence
+
+**Status: PLANNED**
+
+---
+
+### Criterion 3.3 — Protected Data Access
+
+**Assessment focus:**  
+Prevent non-admin users from accessing the data store directly without going through the application's controlled code.
+
+**P4 Plan:**
+
+Application data will be accessed through controlled Django functionality.
+
+Regular users will not receive direct database access.
+
+Access to records will be governed by:
+
+```text
+Authentication
+      ↓
+Role
+      ↓
+Permission
+      ↓
+Object Ownership / Responsibility
+      ↓
+Business Rules
+```
+
+Hiding a link or button will not be treated as sufficient security.
+
+Server-side code must independently verify that the requesting user is authorised to perform the requested action.
+
+For example:
+
+```text
+Customer A
+    ↓
+Requests Customer A ServiceRequest
+    ↓
+ALLOWED
+```
+
+```text
+Customer A
+    ↓
+Attempts Customer B ServiceRequest by changing URL/object ID
+    ↓
+DENIED
+```
+
+Similar restrictions will apply to update and delete operations.
+
+Internal roles will receive only the access appropriate to their responsibilities.
+
+**Planned Evidence:**
+
+- Authentication-required tests
+- Role-permission tests
+- Object-ownership tests
+- Direct URL manipulation tests
+- Cross-account access tests
+- Create/read/update/delete permission tests
+- Appropriate 403/404 behaviour where applicable
+- Security documentation
+
+**Status: PLANNED**
+
+---
+
+## Internal Account Provisioning
+
+The internal operational roles are:
+
+- Technician
+- Dispatcher / Staff
+- Manager / Supervisor
+
+These roles will not be available through public self-registration.
+
+Only an appropriately authorised Manager / Supervisor will be able to create or assign internal operational accounts and roles.
+
+A customer must not be able to promote themselves to:
+
+- Technician
+- Dispatcher / Staff
+- Manager / Supervisor
+
+A Technician or Dispatcher / Staff user must not be able to grant themselves Manager / Supervisor privileges.
+
+These restrictions will be enforced server-side.
+
+**Planned Evidence:**
+
+- Internal account creation workflow
+- Role-assignment permissions
+- Customer self-promotion negative test
+- Technician self-promotion negative test
+- Dispatcher / Staff privilege-escalation negative test
+- Manager / Supervisor positive test
+
+**Status: PLANNED**
+
+---
+
+## Role-Based Authorisation
+
+Authentication and authorisation will be treated as separate concepts.
+
+```text
+Authentication
+WHO is the user?
+
+        ↓
+
+Authorisation
+WHAT may this user do?
+
+        ↓
+
+Object-Level Permission
+WHICH records may this user act upon?
+```
+
+The planned responsibility boundaries are:
+
+### Customer
+
+May access appropriate functionality relating to their own:
+
+- Profile/account
+- Vehicles / equipment
+- Service requests
+- Jobs where customer visibility is appropriate
+- Invoices
+- Payments
+- Paid receipts
+
+Customers must not access another customer's protected records.
+
+### Technician
+
+May access operational information required for assigned work.
+
+Potential functionality includes:
+
+- Assigned jobs
+- Current job
+- Appropriate service/location information
+- Job-status updates
+- Work/completion information
+- Job history where appropriate
+
+Technicians must not receive unrestricted access to unrelated customer, financial or management information.
+
+### Dispatcher / Staff
+
+May manage appropriate operational information such as:
+
+- Incoming requests
+- Active jobs
+- Scheduled jobs
+- Technician allocation
+- Customer/asset information required for operations
+
+Dispatcher / Staff users must not automatically receive unrestricted Manager / Supervisor permissions.
+
+### Manager / Supervisor
+
+May perform broader authorised operational and management functions, potentially including:
+
+- Staff/role management
+- Technician management
+- Operational oversight
+- Customer/asset management where appropriate
+- Invoice/payment oversight
+- Reporting
+- Other restricted management functions
+
+The exact permission matrix will be finalised during implementation.
+
+---
+
+## Principle of Least Privilege
+
+Users should receive the access required to perform their role without receiving unnecessary additional permissions.
+
+The application will therefore avoid treating every authenticated internal user as an unrestricted administrator.
+
+Django's technical administration functionality and the application's operational Manager / Supervisor role will remain conceptually distinct.
+
+---
+
+# Merit Criterion M(vi) — Django Template Syntax and Appropriate Placement of Logic
+
+**Assessment focus:**  
+Demonstrate solid understanding of Django template syntax and place logic in the component where it is best suited.
+
+**P4 Plan:**
+
+The application will follow Django conventions and maintain appropriate separation between:
+
+```text
+Models
+   ↓
+Data structure and model-level rules
+
+Views / Application Logic
+   ↓
+Request handling and workflow/business logic
+
+Forms
+   ↓
+Input handling and validation
+
+Templates
+   ↓
+Presentation and appropriate display logic
+
+JavaScript
+   ↓
+Client-side UX enhancement
+```
+
+Templates may use appropriate Django template functionality such as:
+
+- Template inheritance
+- URL tags
+- Static tags
+- Conditional presentation
+- Loops
+- Context variables
+- Reusable template components where appropriate
+
+Complex business or data-handling logic will not be placed in templates simply because Django template syntax makes some logic possible.
+
+Similarly, security decisions will not rely on template conditions alone.
+
+For example:
+
+```django
+{% if user_can_edit %}
+    <!-- display edit control -->
+{% endif %}
+```
+
+may improve the interface, but the corresponding Django view must still verify permission if the user directly requests the edit URL.
+
+---
+
+## Shared Template Structure
+
+A shared `base.html` is planned to provide consistent:
+
+- Document structure
+- Header
+- Navigation
+- Main content area
+- Feedback/messages
+- Footer
+- Shared static resources
+
+Individual templates will extend the shared structure rather than unnecessarily duplicating complete page layouts.
+
+Role-aware presentation will be used where appropriate while server-side authorisation remains authoritative.
+
+---
+
+## User Feedback
+
+Authenticated and data-changing operations will provide appropriate feedback.
+
+Examples may include:
+
+- Registration confirmation
+- Login/logout feedback
+- Record-created confirmation
+- Record-updated confirmation
+- Cancellation confirmation
+- Validation errors
+- Permission/access feedback
+- Payment success
+- Payment failure/cancellation
+
+Feedback will be clear and useful rather than exposing unnecessary internal technical details.
+
+---
+
+## Permission Testing Strategy
+
+Permission testing will include both positive and negative scenarios.
+
+For each important protected operation, testing should ask both:
+
+```text
+Should this user be allowed?
+```
+
+and:
+
+```text
+Who must NOT be allowed?
+```
+
+Example:
+
+| Scenario | Expected Result |
+| --- | --- |
+| Customer views own request | Allowed |
+| Customer views another customer's request | Denied |
+| Customer edits permitted own record | Allowed |
+| Customer edits another customer's record | Denied |
+| Anonymous user accesses protected account page | Redirected/denied |
+| Technician accesses assigned operational data | Allowed |
+| Technician attempts restricted management action | Denied |
+| Dispatcher performs authorised dispatch action | Allowed |
+| Dispatcher attempts restricted manager action | Denied |
+| Manager performs authorised role-management action | Allowed |
+
+The final matrix will reflect the functionality actually implemented.
+
+---
+
+# Learning Outcome 3 — Distinction Alignment
+
+The authentication and authorisation design will aim to demonstrate the Distinction characteristics relating to security, user control and appropriate access.
+
+In particular:
+
+- Authentication-required functionality will be protected.
+- Users will have permissions appropriate to their responsibilities.
+- Customers will not be able to access another customer's protected records.
+- Internal users will not automatically receive unrestricted privileges.
+- Public users will not be able to create privileged internal accounts.
+- Security will be enforced server-side.
+- Template logic will improve presentation without replacing authorisation checks.
+- Data access will follow the application's controlled Django logic.
+- User actions will receive appropriate feedback.
+- Authentication and authorisation behaviour will be comprehensively tested.
+
+The aim is to demonstrate a genuine role-based application rather than merely the existence of a login page.
+
+---
+
+# Learning Outcome 3 Audit
+
+| Criterion | Primary P4 Coverage | Evidence Required | Planning Status |
+| --- | --- | --- | --- |
+| 3.1 | Django authentication with private/business customer registration and protected functionality | Registration/login/logout implementation and tests | PLANNED |
+| 3.2 | Login/registration restricted to anonymous users | Positive and negative route tests | PLANNED |
+| 3.3 | Controlled server-side data access | Ownership, permission and URL-manipulation tests | PLANNED |
+| M(vi) | Appropriate Django template syntax and separation of logic | Templates, views/forms/models, code review and tests | PLANNED |
+
