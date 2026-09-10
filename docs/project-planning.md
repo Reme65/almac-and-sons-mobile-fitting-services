@@ -1581,3 +1581,268 @@ Evidence for this requirement will include:
 
 **Status: PLANNED**
 
+# Requirement 8 — Original JavaScript Logic
+
+## Academic Requirement
+
+The application must include original JavaScript logic that enhances the user experience.
+
+JavaScript functionality will be designed around genuine user and operational needs rather than being included solely to satisfy the assessment requirement.
+
+---
+
+## JavaScript Design Principle
+
+JavaScript will enhance the user interface and provide immediate feedback and interaction.
+
+Django and Python will remain responsible for authoritative server-side validation, permissions and business rules.
+
+The application must not rely on JavaScript for security or for enforcing critical business rules.
+
+Conceptually:
+
+```text
+JavaScript
+→ Improve user experience
+→ Show relevant information
+→ Reduce unnecessary form fields
+→ Assist with location entry
+
+Django
+→ Validate submitted data
+→ Enforce permissions
+→ Enforce business rules
+→ Protect database integrity
+```
+
+Disabling or bypassing JavaScript must not allow a user to bypass required backend validation.
+
+---
+
+## Dynamic Service Request Forms
+
+JavaScript will adapt the service request interface according to the type of assistance requested.
+
+The initial distinction will be between:
+
+- Immediate assistance
+- Scheduled service
+
+### Immediate Assistance
+
+The interface may prioritise:
+
+- Vehicle / equipment
+- Current problem
+- Current location
+- Contact information
+- Request assistance action
+
+The form should avoid unnecessary steps because the customer may be requesting help from the roadside.
+
+### Scheduled Service
+
+The interface may include:
+
+- Vehicle / equipment
+- Service required
+- Preferred date
+- Preferred time
+- Service location
+- Collection / delivery options
+- Additional instructions
+
+JavaScript may reveal or hide relevant fields as the customer makes selections.
+
+---
+
+## Dynamic Service Location Forms
+
+JavaScript will adapt location fields according to where the work or assistance is required.
+
+Initial location types are:
+
+- Workshop
+- Customer premises
+- Roadside
+
+Conceptually:
+
+```text
+Workshop
+      ↓
+No unnecessary customer location fields
+
+Customer Premises
+      ↓
+Address
+Postcode
+Access instructions
+Additional notes
+
+Roadside
+      ↓
+Road / Motorway
+Direction of travel
+Nearest junction
+Marker / reference where applicable
+Current location
+Location notes
+```
+
+This should reduce form complexity and prevent customers being presented with large numbers of irrelevant fields.
+
+All conditionally required information will also be validated server-side.
+
+---
+
+## Collection and Delivery Interaction
+
+Scheduled workshop services may include collection and/or delivery.
+
+JavaScript may dynamically display relevant fields when these services are selected.
+
+Examples include:
+
+```text
+Collection required?
+        ↓ YES
+Show collection location/details
+```
+
+and:
+
+```text
+Delivery required?
+        ↓ YES
+Is delivery location the same?
+       ↙             ↘
+     YES              NO
+      ↓                ↓
+Reuse location    Request delivery
+information       location/details
+```
+
+The exact interaction will be refined during wireframing and usability testing.
+
+---
+
+## Browser Geolocation
+
+For roadside assistance, the application may provide a:
+
+`Use My Current Location`
+
+function.
+
+Where supported and with the user's permission, browser geolocation may be used to obtain location coordinates and assist the customer in identifying their current position.
+
+The application must handle situations where:
+
+- The user grants location permission
+- The user denies location permission
+- Location services are unavailable
+- The browser does not support the required functionality
+- A location cannot be obtained
+
+Manual location entry must remain available as a fallback.
+
+---
+
+## Mapping
+
+Interactive mapping may be used to help customers identify or confirm a service location.
+
+Potential technologies will be investigated before implementation.
+
+The selected solution should support the application requirements without making the core service-request workflow dependent on an unnecessary external service.
+
+Any external mapping, geocoding or location service will be documented and attributed appropriately.
+
+---
+
+## Progressive Enhancement
+
+Where practical, JavaScript functionality will follow progressive-enhancement principles.
+
+Core operations such as submitting a valid service request must remain protected and validated by the server.
+
+Failure of optional JavaScript functionality should not create an insecure application or corrupt application data.
+
+---
+
+## Accessibility
+
+Dynamic JavaScript functionality must remain accessible.
+
+Considerations will include:
+
+- Keyboard operation
+- Focus management
+- Clear labels
+- Appropriate announcements or status messages where necessary
+- Avoiding interactions that depend solely on mouse input
+- Maintaining understandable forms when fields are dynamically shown or hidden
+
+Accessibility behaviour will be included in testing.
+
+---
+
+## Planned Testing
+
+JavaScript testing will include both expected and failure scenarios.
+
+| Test | Expected Result |
+| --- | --- |
+| Immediate assistance selected | Immediate-request fields displayed |
+| Scheduled service selected | Scheduled-service fields displayed |
+| Workshop selected | Unnecessary location fields hidden |
+| Customer premises selected | Relevant address fields displayed |
+| Roadside selected | Relevant roadside fields displayed |
+| Collection selected | Collection fields displayed |
+| Collection not selected | Collection fields not unnecessarily displayed |
+| Different delivery location selected | Delivery location fields displayed |
+| Geolocation permission granted | Location information obtained where available |
+| Geolocation permission denied | Clear fallback/manual entry available |
+| Geolocation unavailable | Application remains usable |
+| JavaScript-enhanced form submitted with valid data | Accepted by backend |
+| Manipulated/invalid submission bypasses JavaScript | Rejected by backend |
+| Dynamic controls operated by keyboard | Fully usable |
+
+---
+
+## Originality
+
+The principal original JavaScript functionality is planned to include:
+
+1. Dynamic service-request behaviour based on immediate or scheduled assistance.
+2. Dynamic location forms based on workshop, customer-premises or roadside service.
+3. Location assistance using browser geolocation and/or interactive mapping where appropriate.
+4. Dynamic collection and delivery options where required.
+
+Additional JavaScript may be introduced where it provides genuine usability improvements.
+
+Functionality will not be added merely to increase the quantity of JavaScript in the project.
+
+---
+
+## Planned Evidence
+
+Evidence for this requirement will include:
+
+- Original JavaScript source code
+- Explanation of the purpose of each major interaction
+- Dynamic service-request form evidence
+- Dynamic location form evidence
+- Collection/delivery interaction evidence
+- Geolocation/map evidence if implemented
+- Keyboard testing
+- Failure/fallback testing
+- Server-side validation tests demonstrating JavaScript cannot bypass business rules
+- Desktop, tablet and mobile testing
+- Documented bugs and fixes
+- Attribution of any external libraries/services
+- Incremental Git history showing JavaScript development
+
+**Status: PLANNED**
+
