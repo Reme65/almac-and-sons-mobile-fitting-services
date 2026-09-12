@@ -382,6 +382,119 @@ a {
     color: #52606d;
 }
 
+/* ========================================
+   Final Call to Action
+======================================== */
+
+.final-cta {
+    padding: 4rem 1rem;
+    text-align: center;
+    color: #ffffff;
+    background-color: #003366;
+}
+
+.final-cta h2 {
+    margin-bottom: 0.75rem;
+    font-size: 2rem;
+}
+
+.final-cta p {
+    margin-bottom: 1.5rem;
+    font-size: 1.05rem;
+}
+
+.cta-actions {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.final-cta .button-primary {
+    border-color: #ffffff;
+    color: #003366;
+    background-color: #ffffff;
+}
+
+.final-cta .button-secondary {
+    border-color: #ffffff;
+    color: #ffffff;
+    background-color: transparent;
+}
+
+.final-cta .button-primary:hover,
+.final-cta .button-primary:focus-visible {
+    color: #ffffff;
+    background-color: transparent;
+}
+
+.final-cta .button-secondary:hover,
+.final-cta .button-secondary:focus-visible {
+    color: #003366;
+    background-color: #ffffff;
+}
+
+.final-cta .button:focus-visible {
+    outline-color: #ffffff;
+}
+
+/* ========================================
+   Footer
+======================================== */
+
+.site-footer {
+    display: grid;
+    grid-template-columns: 1fr 2fr 1fr;
+    align-items: center;
+    gap: 1.5rem;
+    padding: 2rem max(4%, calc((100% - 1100px) / 2));
+    color: #ffffff;
+    background-color: #1f2933;
+}
+
+.footer-left {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.footer-left a {
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
+
+.footer-left a:hover,
+.footer-left a:focus-visible {
+    text-decoration-thickness: 2px;
+}
+
+.footer-left a:focus-visible {
+    outline: 3px solid #ffffff;
+    outline-offset: 4px;
+}
+
+.footer-center {
+    text-align: center;
+}
+
+.footer-right {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.footer-logo {
+    width: 70px;
+    height: 70px;
+    object-fit: contain;
+}
+
+.footer-credits {
+    grid-column: 1 / -1;
+    padding-top: 1rem;
+    border-top: 1px solid #52606d;
+    text-align: center;
+    font-size: 0.85rem;
+}
 
 /* Mobile navigation control is hidden
    until the responsive breakpoints are added. */
