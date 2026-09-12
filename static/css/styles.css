@@ -189,6 +189,46 @@ a {
     object-position: center;
 }
 
+/* ========================================
+   Services
+======================================== */
+
+.services {
+    width: min(1100px, 92%);
+    margin: 0 auto;
+    padding: 4rem 0;
+}
+
+.services h2 {
+    margin-bottom: 2rem;
+    text-align: center;
+    font-size: 2rem;
+    color: #003366;
+}
+
+.service-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+}
+
+.service-card {
+    padding: 1.75rem;
+    border: 1px solid #d9e2ec;
+    border-radius: 8px;
+    background-color: #ffffff;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+}
+
+.service-card h3 {
+    margin-bottom: 0.75rem;
+    color: #003366;
+}
+
+.service-card p {
+    color: #52606d;
+}
+
 /* Mobile navigation control is hidden
    until the responsive breakpoints are added. */
 
