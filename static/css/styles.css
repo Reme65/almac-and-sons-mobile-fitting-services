@@ -294,6 +294,55 @@ a {
     font-weight: 700;
 }
 
+/* ========================================
+   Who We Support
+======================================== */
+
+.customer-types {
+    width: min(1100px, 92%);
+    margin: 0 auto;
+    padding: 4rem 0;
+}
+
+.customer-types h2 {
+    margin-bottom: 2rem;
+    text-align: center;
+    font-size: 2rem;
+    color: #003366;
+}
+
+.customer-type-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+}
+
+.customer-type-card {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 2rem;
+    border: 1px solid #d9e2ec;
+    border-radius: 8px;
+    background-color: #ffffff;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+}
+
+.customer-type-card h3 {
+    margin-bottom: 0.75rem;
+    color: #003366;
+    font-size: 1.4rem;
+}
+
+.customer-type-card p {
+    margin-bottom: 1.5rem;
+    color: #52606d;
+}
+
+.customer-type-card .button {
+    margin-top: auto;
+}
+
 /* Mobile navigation control is hidden
    until the responsive breakpoints are added. */
 
