@@ -343,6 +343,46 @@ a {
     margin-top: auto;
 }
 
+/* ========================================
+   Why Almac & Sons
+======================================== */
+
+.why-us {
+    padding: 4rem 0;
+    background-color: #f4f7fa;
+}
+
+.why-us h2 {
+    margin-bottom: 2rem;
+    text-align: center;
+    font-size: 2rem;
+    color: #003366;
+}
+
+.benefit-grid {
+    width: min(1100px, 92%);
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.5rem;
+}
+
+.benefit-card {
+    padding: 1.5rem;
+    text-align: center;
+}
+
+.benefit-card h3 {
+    margin-bottom: 0.75rem;
+    color: #003366;
+    font-size: 1.2rem;
+}
+
+.benefit-card p {
+    color: #52606d;
+}
+
+
 /* Mobile navigation control is hidden
    until the responsive breakpoints are added. */
 
