@@ -585,7 +585,7 @@ a {
         grid-column: 1 / -1;
         grid-row: 3;
     }
-    
+
     .menu-toggle {
         display: block;
         cursor: pointer;
@@ -621,3 +621,213 @@ a {
         display: flex;
     }
 }
+
+/* ========================================
+   Mobile
+======================================== */
+
+@media (max-width: 520px) {
+
+    /* Header and Navigation */
+
+    .navbar {
+        width: 92%;
+        min-height: 64px;
+    }
+
+    .site-brand {
+        max-width: 230px;
+        font-size: 1rem;
+    }
+
+    .menu-toggle {
+        font-size: 1.6rem;
+    }
+
+
+    /* Hero */
+
+    .hero {
+        min-height: 400px;
+    }
+
+    .hero-content {
+        padding: 2.5rem 0;
+    }
+
+    .hero-content h1 {
+        font-size: 2.2rem;
+        line-height: 1.15;
+    }
+
+    .hero-content p {
+        font-size: 1rem;
+    }
+
+    .hero-actions {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .hero-actions .button {
+        width: 100%;
+    }
+
+    .hero-image img {
+        object-position: 70% center;
+    }
+}
+
+    /* Services */
+
+    .services {
+        padding: 3rem 0;
+    }
+
+    .service-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1rem;
+    }
+
+    .service-card {
+        padding: 1.25rem;
+    }
+
+    .service-card h3 {
+        font-size: 1.05rem;
+    }
+
+    .service-card p {
+        font-size: 0.9rem;
+    }
+ 
+        /* How It Works */
+
+    .steps {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.5rem;
+    }
+
+    .step-card {
+        padding: 1rem;
+    }
+
+    /* Reset the tablet position for step 4 */
+    .step-card:nth-child(4) {
+        grid-column: 1;
+        grid-row: 2;
+    }
+
+    .step-card:nth-child(3) {
+        grid-column: 2;
+        grid-row: 2;
+    }
+
+    /* Remove the existing desktop/tablet arrows */
+    .step-card::after {
+        content: "";
+    }
+
+    /* 1 → 2 */
+    .step-card:nth-child(1)::after {
+        content: "→";
+        top: 1.3rem;
+        right: -0.9rem;
+    }
+
+    /* 2 ↓ 3 */
+    .step-card:nth-child(2)::after {
+        content: "↓";
+        top: auto;
+        right: 50%;
+        bottom: -1.3rem;
+        transform: translateX(50%);
+    }
+
+    /* 3 ← 4 */
+    .step-card:nth-child(3)::after {
+        content: "←";
+        top: 1.3rem;
+        right: auto;
+        left: -0.9rem;
+    }
+
+        /* Who We Support */
+
+    .customer-types {
+        padding: 3rem 0;
+    }
+
+    .customer-type-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+
+    .customer-type-card {
+        padding: 1.5rem;
+    }
+
+    .customer-type-card .button {
+        width: 100%;
+    }
+
+        /* Why Almac & Sons */
+
+    .why-us {
+        padding: 3rem 0;
+    }
+
+    .benefit-grid {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+
+    .benefit-card {
+        padding: 1rem;
+    }
+
+        /* Final Call to Action */
+
+    .final-cta {
+        padding: 3rem 4%;
+    }
+
+    .cta-actions {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .cta-actions .button {
+        width: 100%;
+    }
+
+
+    /* Footer */
+
+    .site-footer {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+        padding: 2rem 4%;
+        text-align: center;
+    }
+
+    .footer-left {
+        justify-content: center;
+    }
+
+    .footer-center {
+        grid-column: 1;
+        grid-row: auto;
+    }
+
+    .footer-right {
+        grid-column: 1;
+        grid-row: auto;
+        justify-content: center;
+    }
+
+    .footer-credits {
+        grid-column: 1;
+        grid-row: auto;
+    }
+    
