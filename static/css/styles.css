@@ -734,6 +734,196 @@ a {
 }
 
 /* ========================================
+   Request Assistance
+======================================== */
+
+.assistance-intro {
+    padding: 3rem 0 4rem;
+    background-color: #f4f7fa;
+}
+
+.assistance-container {
+    width: min(700px, 92%);
+    margin: 0 auto;
+}
+
+.assistance-intro h1 {
+    margin-bottom: 0.75rem;
+    color: #003366;
+    font-size: 2.5rem;
+    text-align: center;
+}
+
+.assistance-intro > .assistance-container > p {
+    margin-bottom: 2rem;
+    color: #52606d;
+    text-align: center;
+}
+
+.assistance-safety {
+    margin-bottom: 2rem;
+    padding: 1rem 1.25rem;
+    border: 1px solid #f0b4b4;
+    border-radius: 6px;
+    background-color: #fff1f1;
+    color: #8b1e1e;
+}
+
+.assistance-progress {
+    margin-bottom: 2rem;
+}
+
+.assistance-progress p {
+    margin-bottom: 0.5rem;
+    color: #003366;
+    font-weight: 700;
+}
+
+.assistance-progress progress {
+    width: 100%;
+    height: 10px;
+    accent-color: #0066cc;
+}
+
+.assistance-form {
+    padding: 2rem;
+    border: 1px solid #d9e2ec;
+    border-radius: 8px;
+    background-color: #ffffff;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+}
+
+.assistance-form fieldset {
+    margin: 0;
+    padding: 0;
+    border: 0;
+}
+
+.assistance-form legend {
+    margin-bottom: 0.75rem;
+    color: #003366;
+    font-size: 1.5rem;
+    font-weight: 700;
+}
+
+.assistance-form fieldset > p {
+    margin-bottom: 1.75rem;
+    color: #52606d;
+}
+
+.assistance-step[hidden] {
+    display: none;
+}
+
+.assistance-actions [hidden] {
+    display: none;
+}
+
+
+/* ========================================
+   Assistance Review
+======================================== */
+
+.assistance-review {
+    display: grid;
+    gap: 1.5rem;
+    margin: 2rem 0;
+}
+
+.assistance-review section {
+    padding: 1.5rem;
+    border: 1px solid #d9e2ec;
+    border-radius: 6px;
+    background-color: #f4f7fa;
+}
+
+.assistance-review h2 {
+    margin-bottom: 1rem;
+    color: #003366;
+    font-size: 1.2rem;
+}
+
+.assistance-review section > div {
+    margin-bottom: 1rem;
+    color: #334e68;
+}
+
+.assistance-edit {
+    padding: 0;
+    border: 0;
+    background: transparent;
+    color: #0066cc;
+    font: inherit;
+    font-weight: 600;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    cursor: pointer;
+}
+
+.assistance-edit:hover {
+    color: #003366;
+}
+
+.assistance-edit:focus-visible {
+    outline: 3px solid #0066cc;
+    outline-offset: 4px;
+}
+
+.assistance-review-notice {
+    padding: 1rem 1.25rem;
+    border-left: 4px solid #0066cc;
+    background-color: #edf5ff;
+    color: #243b53;
+    line-height: 1.6;
+}
+
+.assistance-field {
+    margin-bottom: 1.5rem;
+}
+
+.assistance-field label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: #003366;
+    font-weight: 600;
+}
+
+.assistance-field input,
+.assistance-field select,
+.assistance-field textarea {
+    width: 100%;
+    padding: 0.75rem;
+    border: 1px solid #b8c4d1;
+    border-radius: 5px;
+    background-color: #ffffff;
+    color: #243b53;
+    font: inherit;
+}
+
+.assistance-field textarea {
+    resize: vertical;
+}
+
+.assistance-field input:focus-visible,
+.assistance-field select:focus-visible,
+.assistance-field textarea:focus-visible {
+    outline: 3px solid #0066cc;
+    outline-offset: 2px;
+}
+
+.assistance-actions {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-top: 2rem;
+}
+
+.assistance-actions > a {
+    color: #003366;
+}
+
+/* ========================================
    Tablet
 ======================================== */
 
@@ -883,6 +1073,20 @@ a {
 
     .menu-checkbox:checked ~ .nav-links {
         display: flex;
+    }
+    
+    /* Request Assistance */
+
+    .assistance-intro {
+        padding: 2.5rem 0 3rem;
+    }
+
+    .assistance-form {
+        padding: 1.75rem;
+    }
+
+    .assistance-review {
+        gap: 1.25rem;
     }
 }
 
@@ -1168,5 +1372,56 @@ a {
         grid-column: 1;
         grid-row: auto;
     }
-}
-    
+
+    /* Request Assistance */
+
+    .assistance-intro {
+        padding: 2rem 0 3rem;
+    }
+
+    .assistance-intro h1 {
+        font-size: 2rem;
+    }
+
+    .assistance-safety {
+        padding: 1rem;
+    }
+
+    .assistance-progress {
+        margin-bottom: 1.5rem;
+    }
+
+    .assistance-form {
+        padding: 1.25rem;
+    }
+
+    .assistance-form legend {
+        font-size: 1.3rem;
+    }
+
+    .assistance-actions {
+        flex-wrap: wrap;
+        gap: 1rem;
+    }
+
+    .assistance-actions .button {
+        flex: 1 1 auto;
+    }
+
+    .assistance-review {
+        gap: 1rem;
+        margin: 1.5rem 0;
+    }
+
+    .assistance-review section {
+        padding: 1rem;
+    }
+
+    .assistance-review h2 {
+        font-size: 1.1rem;
+    }
+
+    .assistance-review-notice {
+        padding: 1rem;
+    }
+}   
