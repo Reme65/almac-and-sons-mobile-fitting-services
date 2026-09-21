@@ -72,7 +72,12 @@
                     <progress value="1" max="6">1 of 6 steps</progress>
                 </div>
 
-                <form class="assistance-form" action="#" method="post">
+                <form
+                    class="assistance-form"
+                    action="{% url 'request_assistance' %}"
+                    method="post"
+             >
+                    {% csrf_token %}
 
                     <fieldset
                         id="assistance-step-1"

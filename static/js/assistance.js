@@ -75,25 +75,31 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function showStep(stepIndex) {
-        steps.forEach((step, index) => {
-            step.hidden = index !== stepIndex;
-        });
+    steps.forEach((step, index) => {
+        step.hidden = index !== stepIndex;
+    });
 
-        currentStep = stepIndex;
-        if (currentStep === 5) {
-            populateReview();
-  }
+    currentStep = stepIndex;
 
-        progressText.textContent = `Step ${currentStep + 1} of 6`;
-        progressBar.value = currentStep + 1;
-
-        backButton.hidden = currentStep === 0;
-        cancelLink.hidden = currentStep !== 0;
-
-        nextButton.textContent = currentStep === steps.length - 1
-            ? "Continue"
-            : "Continue";
+    if (currentStep === steps.length - 1) {
+        populateReview();
     }
+
+    progressText.textContent = `Step ${currentStep + 1} of 6`;
+    progressBar.value = currentStep + 1;
+
+    backButton.hidden = currentStep === 0;
+    cancelLink.hidden = currentStep !== 0;
+
+    if (editingFromReview) {
+        nextButton.textContent = "Return to Review";
+    } else if (currentStep === steps.length - 1) {
+        nextButton.textContent = "Submit Request";
+    } else {
+        nextButton.textContent = "Continue";
+    }
+}
+        
 
     function validateCurrentStep() {
         const fields = steps[currentStep].querySelectorAll(
