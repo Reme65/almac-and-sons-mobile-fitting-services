@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="en">
+ {% load static %}   
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta
+        name="description"
+        content="Request mobile vehicle assistance, recovery and roadside support from Almac & Sons."
+    >
+
+    <title>Request Assistance | Almac & Sons Mobile Fitting Services</title>
+
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <link rel="icon" type="image/png" href="{% static 'images/favicon-32x32.png' %}"> 
+</head>
+
+<body>
+
+    <header class="site-header">
+        <nav class="navbar" aria-label="Main navigation">
+
+            <a class="site-brand" href="index.html">
+                Almac &amp; Sons Vehicle Services
+            </a>
+
+            <input
+                class="menu-checkbox"
+                type="checkbox"
+                id="menu-checkbox"
+                aria-label="Toggle navigation menu"
+            >
+
+            <label class="menu-toggle" for="menu-checkbox" aria-hidden="true">
+                ☰
+            </label>
+
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="services.html">Services</a></li>
+                <li><a href="index.html#how-it-works">How It Works</a></li>
+                <li><a href="assistance.html" aria-current="page">Request Assistance</a></li>
+                <li><a href="#">Login</a></li>
+                <li><a href="#">Register</a></li>
+            </ul>
+
+        </nav>
+    </header>
+
+    <main>
+        <section class="assistance-intro" aria-labelledby="assistance-heading">
+            <div class="assistance-container">
+
+                <h1 id="assistance-heading">Request Assistance</h1>
+
+                <p>
+                    Tell us about your vehicle and where you need help.
+                    We'll guide you through the request one step at a time.
+                </p>
+
+                <div class="assistance-safety" role="note">
+                    <p>
+                        <strong>In immediate danger?</strong>
+                        Move to a place of safety if you can. If there is an
+                        emergency, call 999 rather than using this form.
+                    </p>
+                </div>
+
+                <div class="assistance-progress" aria-label="Request progress">
+                    <p>Step 1 of 6</p>
+                    <progress value="1" max="6">1 of 6 steps</progress>
+                </div>
+
+                <form class="assistance-form" action="#" method="post">
+
+                    <fieldset
+                        id="assistance-step-1"
+                        class="assistance-step"
+                    >
+                        <legend>Your vehicle or equipment</legend>
+
+                        <p>
+                            Tell us about the vehicle or equipment that needs
+                            assistance.
+                        </p>
+
+                        <div class="assistance-field">
+                            <label for="vehicle-registration">
+                                Registration number (if known)
+                            </label>
+
+                            <input
+                                type="text"
+                                id="vehicle-registration"
+                                name="vehicle_registration"
+                                autocomplete="off"
+                                placeholder="e.g. AB12 CDE"
+                            >
+                        </div>
+
+                        <div class="assistance-field">
+                            <label for="vehicle-type">
+                                Vehicle or equipment type
+                            </label>
+
+                            <select
+                                id="vehicle-type"
+                                name="vehicle_type"
+                                required
+                            >
+                                <option value="">Please select...</option>
+                                <option value="car">Car</option>
+                                <option value="van">Van</option>
+                                <option value="hgv">HGV</option>
+                                <option value="trailer">Trailer</option>
+                                <option value="agricultural">
+                                    Agricultural vehicle or equipment
+                                </option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+
+                        <div class="assistance-field">
+                            <label for="vehicle-make">
+                                Make (optional)
+                            </label>
+
+                            <input
+                                type="text"
+                                id="vehicle-make"
+                                name="vehicle_make"
+                                placeholder="e.g. Ford"
+                            >
+                        </div>
+
+                        <div class="assistance-field">
+                            <label for="vehicle-model">
+                                Model (optional)
+                            </label>
+
+                            <input
+                                type="text"
+                                id="vehicle-model"
+                                name="vehicle_model"
+                                placeholder="e.g. Focus"
+                            >
+                        </div>
+
+                        <div class="assistance-field">
+                            <label for="vehicle-description">
+                                Additional vehicle details (optional)
+                            </label>
+
+                            <textarea
+                                id="vehicle-description"
+                                name="vehicle_description"
+                                rows="3"
+                                placeholder="Colour, distinguishing features or equipment details..."
+                            ></textarea>
+                        </div>
+                    </fieldset>
+
+                    <fieldset
+                        id="assistance-step-2"
+                        class="assistance-step"
+                        hidden
+                    >
+                        <legend>What's happened?</legend>
+
+                        <p>
+                            Tell us what has happened to your vehicle or equipment.
+                            You don't need to diagnose the problem yourself.
+                        </p>
+
+                        <div class="assistance-field">
+                            <label for="problem-type">
+                                What best describes the problem?
+                            </label>
+
+                            <select
+                                id="problem-type"
+                                name="problem_type"
+                                required
+                            >
+                                <option value="">Please select...</option>
+                                <option value="wont-start">Vehicle won't start</option>
+                                <option value="flat-tyre">Flat or damaged tyre</option>
+                                <option value="breakdown">Vehicle has broken down</option>
+                                <option value="recovery">Vehicle needs recovery</option>
+                                <option value="other">Other problem</option>
+                                <option value="unsure">I'm not sure</option>
+                            </select>
+                        </div>
+
+                        <div class="assistance-field">
+                            <label for="problem-description">
+                                Tell us a little more about what happened
+                            </label>
+
+                            <textarea
+                                id="problem-description"
+                                name="problem_description"
+                                rows="4"
+                                placeholder="Describe what happened and any information that may help our team..."
+                                required
+                            ></textarea>
+                        </div>
+                    </fieldset>
+                    <fieldset
+                        id="assistance-step-3"
+                        class="assistance-step"
+                        hidden
+                    >
+                        <legend>Where are you?</legend>
+
+                        <p>
+                            Tell us where your vehicle or equipment is located.
+                            If you don't know the address or postcode, provide
+                            as much information as you can.
+                        </p>
+
+                        <div class="assistance-field">
+                            <label for="location-type">
+                                Where is the vehicle?
+                            </label>
+
+                            <select
+                                id="location-type"
+                                name="location_type"
+                                required
+                            >
+                                <option value="">Please select...</option>
+                                <option value="roadside">Roadside</option>
+                                <option value="motorway">Motorway</option>
+                                <option value="home">Home address</option>
+                                <option value="workplace">Workplace</option>
+                                <option value="other">Other location</option>
+                            </select>
+                        </div>
+
+                        <div class="assistance-field">
+                            <label for="location-postcode">
+                                Postcode (if known)
+                            </label>
+
+                            <input
+                                type="text"
+                                id="location-postcode"
+                                name="location_postcode"
+                                autocomplete="postal-code"
+                                placeholder="e.g. BA14 8AA"
+                            >
+                        </div>
+
+                        <div class="assistance-field">
+                            <label for="location-description">
+                                Address or location description
+                            </label>
+
+                            <textarea
+                                id="location-description"
+                                name="location_description"
+                                rows="4"
+                                placeholder="Road name, nearby town, landmark, junction or other details that will help us find you..."
+                                required
+                            ></textarea>
+                        </div>
+
+                        <div class="assistance-field">
+                            <label for="location-direction">
+                                Direction of travel (if applicable)
+                            </label>
+
+                            <input
+                                type="text"
+                                id="location-direction"
+                                name="location_direction"
+                                placeholder="e.g. M4 westbound towards Bristol"
+                            >
+                        </div>
+
+                        <div class="assistance-field">
+                            <label for="location-access">
+                                Additional access information (optional)
+                            </label>
+
+                            <textarea
+                                id="location-access"
+                                name="location_access"
+                                rows="3"
+                                placeholder="Motorway marker, farm entrance, gate instructions or other useful details..."
+                            ></textarea>
+                        </div>
+                    </fieldset>
+                    <fieldset
+                        id="assistance-step-4"
+                        class="assistance-step"
+                        hidden
+                    >
+                        <legend>Occupants and assistance needs</legend>
+
+                        <p>
+                            Tell us how many people are with the vehicle and
+                            whether anyone needs additional assistance.
+                            This helps us arrange a suitable response.
+                        </p>
+
+                        <div class="assistance-field">
+                            <label for="occupant-count">
+                                Number of occupants
+                            </label>
+
+                            <input
+                                type="number"
+                                id="occupant-count"
+                                name="occupant_count"
+                                min="0"
+                                max="99"
+                                step="1"
+                                required
+                            >
+                        </div>
+
+                        <div class="assistance-field">
+                            <label for="assistance-needs">
+                                Does anyone need additional assistance?
+                            </label>
+
+                            <select
+                                id="assistance-needs"
+                                name="assistance_needs"
+                                required
+                            >
+                                <option value="">Please select...</option>
+                                <option value="yes">Yes</option>
+                                <option value="no">No</option>
+                                <option value="unsure">Not sure</option>
+                            </select>
+                        </div>
+
+                        <div class="assistance-field">
+                            <label for="assistance-details">
+                                Additional assistance details (optional)
+                            </label>
+
+                            <textarea
+                                id="assistance-details"
+                                name="assistance_details"
+                                rows="4"
+                                placeholder="For example, wheelchair-accessible transport, help entering or leaving a vehicle, or other practical assistance needed..."
+                            ></textarea>
+                        </div>
+
+                        <div class="assistance-field">
+                            <label for="occupant-safety">
+                                Are all occupants in a place of safety?
+                            </label>
+
+                            <select
+                                id="occupant-safety"
+                                name="occupant_safety"
+                                required
+                            >
+                                <option value="">Please select...</option>
+                                <option value="yes">Yes</option>
+                                <option value="no">No</option>
+                                <option value="unsure">Not sure</option>
+                            </select>
+                        </div>
+                    </fieldset>
+                    <fieldset
+                        id="assistance-step-5"
+                        class="assistance-step"
+                        hidden
+                    >
+                        <legend>How can we contact you?</legend>
+
+                        <p>
+                            Provide your contact details so our team can
+                            discuss your request, confirm the arrangements
+                            and give you an estimated arrival time.
+                        </p>
+
+                        <div class="assistance-field">
+                            <label for="contact-first-name">
+                                First name
+                            </label>
+
+                            <input
+                                type="text"
+                                id="contact-first-name"
+                                name="contact_first_name"
+                                autocomplete="given-name"
+                                required
+                            >
+                        </div>
+
+                        <div class="assistance-field">
+                            <label for="contact-last-name">
+                                Last name
+                            </label>
+
+                            <input
+                                type="text"
+                                id="contact-last-name"
+                                name="contact_last_name"
+                                autocomplete="family-name"
+                                required
+                            >
+                        </div>
+
+                        <div class="assistance-field">
+                            <label for="contact-phone">
+                                Telephone number
+                            </label>
+
+                            <input
+                                type="tel"
+                                id="contact-phone"
+                                name="contact_phone"
+                                autocomplete="tel"
+                                placeholder="e.g. 07123 456789"
+                                required
+                            >
+                        </div>
+
+                        <div class="assistance-field">
+                            <label for="contact-email">
+                                Email address (optional)
+                            </label>
+
+                            <input
+                                type="email"
+                                id="contact-email"
+                                name="contact_email"
+                                autocomplete="email"
+                                placeholder="e.g. name@example.com"
+                            >
+                        </div>
+
+                        <div class="assistance-field">
+                            <label for="contact-notes">
+                                Additional contact instructions (optional)
+                            </label>
+
+                            <textarea
+                                id="contact-notes"
+                                name="contact_notes"
+                                rows="3"
+                                placeholder="For example, poor mobile signal or the best way to reach you..."
+                            ></textarea>
+                        </div>
+                    </fieldset>
+                    <fieldset
+                        id="assistance-step-6"
+                        class="assistance-step"
+                        hidden
+                    >
+                        <legend>Review your request</legend>
+
+                        <p>
+                            Please check the information below before sending
+                            your assistance request. You can return to an
+                            earlier step to make changes.
+                        </p>
+
+                        <div class="assistance-review">
+
+                            <section aria-labelledby="review-vehicle-heading">
+                                <h2 id="review-vehicle-heading">
+                                    Vehicle or equipment
+                                </h2>
+
+                                <div id="review-vehicle"></div>
+
+                                <button
+                                    class="assistance-edit"
+                                    type="button"
+                                    data-edit-step="0"
+                                >
+                                    Edit vehicle details
+                                </button>
+                            </section>
+
+                            <section aria-labelledby="review-problem-heading">
+                                <h2 id="review-problem-heading">
+                                    What's happened?
+                                </h2>
+
+                                <div id="review-problem"></div>
+
+                                <button
+                                    class="assistance-edit"
+                                    type="button"
+                                    data-edit-step="1"
+                                >
+                                    Edit problem details
+                                </button>
+                            </section>
+
+                            <section aria-labelledby="review-location-heading">
+                                <h2 id="review-location-heading">
+                                    Your location
+                                </h2>
+
+                                <div id="review-location"></div>
+
+                                <button
+                                    class="assistance-edit"
+                                    type="button"
+                                    data-edit-step="2"
+                                >
+                                    Edit location details
+                                </button>
+                            </section>
+
+                            <section aria-labelledby="review-occupants-heading">
+                                <h2 id="review-occupants-heading">
+                                    Occupants and assistance needs
+                                </h2>
+
+                                <div id="review-occupants"></div>
+
+                                <button
+                                    class="assistance-edit"
+                                    type="button"
+                                    data-edit-step="3"
+                                >
+                                    Edit occupant details
+                                </button>
+                            </section>
+
+                            <section aria-labelledby="review-contact-heading">
+                                <h2 id="review-contact-heading">
+                                    Contact details
+                                </h2>
+
+                                <div id="review-contact"></div>
+
+                                <button
+                                    class="assistance-edit"
+                                    type="button"
+                                    data-edit-step="4"
+                                >
+                                    Edit contact details
+                                </button>
+                            </section>
+
+                        </div>
+
+                        <p class="assistance-review-notice">
+                            Sending this form submits an assistance request.
+                            It does not confirm that a technician has been
+                            dispatched. Our team will review your details
+                            and provide an estimated arrival time when
+                            assistance has been arranged.
+                        </p>
+                    </fieldset>
+
+                    <div class="assistance-actions">
+                        <button
+                            class="button button-secondary"
+                            id="assistance-back"
+                            type="button"
+                            hidden
+                        >
+                            Back
+                        </button>
+
+                        <a id="assistance-cancel" href="index.html">
+                            Cancel
+                        </a>
+
+                        <button
+                            class="button button-primary"
+                            id="assistance-next"
+                            type="button"
+                        >
+                            Continue
+                        </button>
+                    </div>
+
+                </form>
+
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+
+        <div class="footer-left">
+            <a href="https://www.facebook.com/" target="_blank" rel="noopener noreferrer">
+                Facebook
+            </a>
+
+            <a href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer">
+                Instagram
+            </a>
+
+            <a href="https://twitter.com/" target="_blank" rel="noopener noreferrer">
+                X
+            </a>
+        </div>
+
+        <div class="footer-center">
+            <p>
+                &copy; 2026 Almac &amp; Sons Vehicle Services incorporating
+                Almac &amp; Sons Mobile Fitting Services
+            </p>
+        </div>
+
+        <div class="footer-right">
+            <img
+                src="{% static 'images/almac-mobile-logo.png' %}"
+                alt="Almac & Sons logo"
+                class="footer-logo"
+            >
+        </div>
+
+        <div class="footer-credits">
+            <p>
+                Image and media credits will be documented according to the
+                sources used in the final application.
+            </p>
+        </div>
+
+    </footer>
+    <script src="{% static 'js/assistance.js' %}" defer></script>
+</body>
+</html>
