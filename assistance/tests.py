@@ -293,4 +293,36 @@ class LocationPostcodeValidationTests(SimpleTestCase):
                     ValidationError,
                     "Please enter a valid UK postcode.",
                 ):
-                    form.clean_location_postcode()            
+                    form.clean_location_postcode()
+
+class CompleteAssistanceRequestFormTests(SimpleTestCase):
+
+    def test_complete_assistance_request_is_valid(self):
+        form_data = {
+            "vehicle_registration": "AB12 CDE",
+            "vehicle_type": "car",
+            "vehicle_make": "Ford",
+            "vehicle_model": "Focus",
+            "vehicle_description": "",
+            "problem_type": "breakdown",
+            "problem_description": "The engine stopped while driving.",
+            "location_type": "roadside",
+            "location_postcode": "BA14 8AA",
+            "location_description": "Near the entrance to the retail park.",
+            "location_direction": "",
+            "location_access": "",
+            "occupant_count": 2,
+            "assistance_needs": "no",
+            "assistance_details": "",
+            "occupant_safety": "yes",
+            "contact_first_name": "Alex",
+            "contact_last_name": "Taylor",
+            "contact_phone": "07123 456789",
+            "contact_email": "alex@example.com",
+            "contact_notes": "",
+        }
+
+        form = AssistanceRequestForm(data=form_data)
+
+        self.assertTrue(form.is_valid(), form.errors.as_json())
+                    
