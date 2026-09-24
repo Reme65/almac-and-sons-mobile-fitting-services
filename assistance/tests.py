@@ -1,7 +1,9 @@
 from django.core.exceptions import ValidationError
-from django.test import SimpleTestCase
+from django.test import SimpleTestCase, TestCase
+from django.urls import reverse
 
 from .forms import AssistanceRequestForm
+from .models import AssistanceRequest
 
 class VehicleTypeValidationTests(SimpleTestCase):
 
@@ -371,3 +373,41 @@ class CompleteAssistanceRequestFormTests(SimpleTestCase):
 
         self.assertFalse(form.is_valid())
         self.assertIn("contact_email", form.errors)
+
+class AssistanceRequestViewTests(TestCase):
+
+    def test_valid_post_creates_assistance_request(self):
+        form_data = (
+            CompleteAssistanceRequestFormTests()
+            .get_valid_form_data()
+        )
+
+        response = self.client.post(
+            reverse("request_assistance"),
+            data=form_data,
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(AssistanceRequest.objects.count(), 1)
+
+        saved_request = AssistanceRequest.objects.get()
+        self.assertEqual(saved_request.vehicle_type, "car")
+        self.assertEqual(
+            saved_request.problem_description,
+            "The engine stopped while driving.",
+        )
+    def test_invalid_post_does_not_create_assistance_request(self):
+        form_data = (
+            CompleteAssistanceRequestFormTests()
+            .get_valid_form_data()
+        )
+        form_data["problem_description"] = ""
+
+        response = self.client.post(
+            reverse("request_assistance"),
+            data=form_data,
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(AssistanceRequest.objects.count(), 0)
+        
