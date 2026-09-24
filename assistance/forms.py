@@ -30,29 +30,6 @@ class AssistanceRequestForm(forms.ModelForm):
             "contact_notes",
         ]
 
-    def clean_problem_type(self):
-        problem_type = self.cleaned_data["problem_type"]
-
-        allowed_types = {
-            "wont-start",
-            "flat-tyre",
-            "breakdown",
-            "recovery",
-            "other",
-            "unsure",
-        }
-
-        if problem_type not in allowed_types:
-            raise forms.ValidationError(
-                "Please select a valid problem type."
-            )
-
-        return problem_type    
-        
-
-
-
-
     def clean_vehicle_type(self):
         vehicle_type = self.cleaned_data["vehicle_type"]
 
@@ -71,3 +48,41 @@ class AssistanceRequestForm(forms.ModelForm):
             )
 
         return vehicle_type
+
+    def clean_problem_type(self):
+        problem_type = self.cleaned_data["problem_type"]
+
+        allowed_types = {
+            "wont-start",
+            "flat-tyre",
+            "breakdown",
+            "recovery",
+            "other",
+            "unsure",
+        }
+
+        if problem_type not in allowed_types:
+            raise forms.ValidationError(
+                "Please select a valid problem type."
+            )
+
+        return problem_type
+
+    def clean_location_type(self):
+        location_type = self.cleaned_data["location_type"]
+
+        allowed_types = {
+            "roadside",
+            "motorway",
+            "home",
+            "workplace",
+            "other",
+        }
+
+        if location_type not in allowed_types:
+            raise forms.ValidationError(
+                "Please select a valid location type."
+            )
+
+        return location_type
+    

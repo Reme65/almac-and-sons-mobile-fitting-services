@@ -20,7 +20,7 @@ class VehicleTypeValidationTests(SimpleTestCase):
             "Please select a valid vehicle or equipment type.",
         ):
             form.clean_vehicle_type()
-            
+
 class ProblemTypeValidationTests(SimpleTestCase):
 
     def test_valid_problem_types_are_accepted(self):
@@ -52,3 +52,34 @@ class ProblemTypeValidationTests(SimpleTestCase):
             "Please select a valid problem type.",
         ):
             form.clean_problem_type()
+class LocationTypeValidationTests(SimpleTestCase):
+
+    def test_valid_location_types_are_accepted(self):
+        allowed_types = [
+            "roadside",
+            "motorway",
+            "home",
+            "workplace",
+            "other",
+        ]
+
+        for location_type in allowed_types:
+            with self.subTest(location_type=location_type):
+                form = AssistanceRequestForm()
+                form.cleaned_data = {"location_type": location_type}
+
+                self.assertEqual(
+                    form.clean_location_type(),
+                    location_type,
+                )
+
+    def test_invalid_location_type_is_rejected(self):
+        form = AssistanceRequestForm()
+        form.cleaned_data = {"location_type": "spaceship"}
+
+        with self.assertRaisesMessage(
+            ValidationError,
+            "Please select a valid location type.",
+        ):
+            form.clean_location_type()
+            
