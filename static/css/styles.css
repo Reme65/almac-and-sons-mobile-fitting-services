@@ -923,6 +923,53 @@ a {
     color: #003366;
 }
 
+/* Assistance confirmation — page layout */
+
+.confirmation-content {
+    width: min(100% - 2rem, 900px);
+    margin: 3rem auto;
+    padding: 2rem 0;
+    text-align: center;
+}
+
+.confirmation-content h1 {
+    margin-bottom: 1rem;
+    color: #003366;
+}
+
+.confirmation-content > p {
+    max-width: 680px;
+    margin: 0.75rem auto;
+    line-height: 1.6;
+}
+
+.confirmation-reference {
+    text-align: left;
+}
+
+/* Assistance confirmation — reference and status panel */
+
+.confirmation-reference {
+    max-width: 680px;
+    margin: 2rem auto;
+    padding: 1.5rem;
+    background-color: #f4f7fb;
+    border: 1px solid #d5e0ec;
+    border-left: 5px solid #003366;
+    border-radius: 8px;
+}
+
+.confirmation-reference h2 {
+    margin-top: 0;
+    margin-bottom: 1rem;
+    color: #003366;
+}
+
+.confirmation-reference p {
+    margin: 0.75rem 0;
+    overflow-wrap: anywhere;
+}
+
 /* ========================================
    Tablet
 ======================================== */
