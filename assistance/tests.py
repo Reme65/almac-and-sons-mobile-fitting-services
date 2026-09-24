@@ -457,3 +457,9 @@ class AssistanceConfirmationTemplateTests(SimpleTestCase):
             "Your request for assistance has been submitted",
             html,
         )
+        self.assertIn("What happens next?", html)
+        self.assertIn("We assess your request", html)
+        self.assertIn("We arrange assistance", html)
+        self.assertIn("We provide an estimated arrival time", html)
+        self.assertIn("We keep you updated", html)
+        
