@@ -297,8 +297,8 @@ class LocationPostcodeValidationTests(SimpleTestCase):
 
 class CompleteAssistanceRequestFormTests(SimpleTestCase):
 
-    def test_complete_assistance_request_is_valid(self):
-        form_data = {
+    def get_valid_form_data(self):
+        return {
             "vehicle_registration": "AB12 CDE",
             "vehicle_type": "car",
             "vehicle_make": "Ford",
@@ -322,7 +322,18 @@ class CompleteAssistanceRequestFormTests(SimpleTestCase):
             "contact_notes": "",
         }
 
+    def test_complete_assistance_request_is_valid(self):
+        form_data = self.get_valid_form_data()
         form = AssistanceRequestForm(data=form_data)
 
         self.assertTrue(form.is_valid(), form.errors.as_json())
-                    
+
+    def test_missing_problem_description_is_rejected(self):
+        form_data = self.get_valid_form_data()
+        form_data["problem_description"] = ""
+
+        form = AssistanceRequestForm(data=form_data)
+
+        self.assertFalse(form.is_valid())
+        self.assertIn("problem_description", form.errors)
+        
