@@ -396,6 +396,7 @@ class AssistanceRequestViewTests(TestCase):
             saved_request.problem_description,
             "The engine stopped while driving.",
         )
+
     def test_invalid_post_does_not_create_assistance_request(self):
         form_data = (
             CompleteAssistanceRequestFormTests()
@@ -410,4 +411,49 @@ class AssistanceRequestViewTests(TestCase):
 
         self.assertEqual(response.status_code, 200)
         self.assertEqual(AssistanceRequest.objects.count(), 0)
-        
+
+    def test_valid_post_renders_confirmation_with_saved_request(self):
+            form_data = (
+                CompleteAssistanceRequestFormTests()
+                .get_valid_form_data()
+            )
+    
+            response = self.client.post(
+                reverse("request_assistance"),
+                data=form_data,
+            )
+    
+            self.assertEqual(response.status_code, 200)
+            self.assertTemplateUsed(
+                response,
+                "assistance-confirmation.html",
+            )
+
+            saved_request = AssistanceRequest.objects.get()
+            
+            self.assertEqual(
+                response.context["assistance_request"],
+                saved_request,
+            )
+
+            self.assertContains(
+                response,
+                str(saved_request.reference),
+           )
+            self.assertContains(
+                response,
+                saved_request.get_status_display(),
+           )
+
+class AssistanceConfirmationTemplateTests(SimpleTestCase):
+
+    def test_confirmation_template_renders(self):
+        from django.template.loader import render_to_string
+
+        html = render_to_string("assistance-confirmation.html")
+
+        self.assertIn("Request Received", html)
+        self.assertIn(
+            "Your request for assistance has been submitted",
+            html,
+        )

@@ -8,6 +8,12 @@ def request_assistance(request):
         form = AssistanceRequestForm(request.POST)
 
         if form.is_valid():
-            form.save()
+            assistance_request = form.save()
+
+            return render(
+                request,
+                "assistance-confirmation.html",
+                {"assistance_request": assistance_request},
+            )
 
     return render(request, "assistance.html")

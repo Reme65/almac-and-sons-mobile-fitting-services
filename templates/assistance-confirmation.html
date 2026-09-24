@@ -1,0 +1,93 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta
+        name="description"
+        content="Confirmation of your assistance request to Almac & Sons."
+    >
+
+    <title>Request Received | Almac & Sons Mobile Fitting Services</title>
+
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <link
+        rel="icon"
+        type="image/png"
+        href="{% static 'images/favicon-32x32.png' %}"
+    >
+</head>
+
+<body>
+
+    <header class="site-header">
+        <nav class="navbar" aria-label="Main navigation">
+
+            <a class="site-brand" href="{% url 'home' %}">
+                Almac &amp; Sons Vehicle Services
+            </a>
+
+            <input
+                class="menu-checkbox"
+                type="checkbox"
+                id="menu-checkbox"
+                aria-label="Toggle navigation menu"
+            >
+
+            <label class="menu-toggle" for="menu-checkbox" aria-hidden="true">
+                ☰
+            </label>
+
+            <ul class="nav-links">
+                <li><a href="{% url 'home' %}">Home</a></li>
+                <li><a href="#">Services</a></li>
+                <li>
+                    <a href="{% url 'home' %}#how-it-works">
+                        How It Works
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'request_assistance' %}" aria-current="page">
+                        Request Assistance
+                    </a>
+                </li>
+                <li><a href="#">Login</a></li>
+                <li><a href="#">Register</a></li>
+            </ul>
+
+        </nav>
+    </header>
+
+    <main>
+        <section class="confirmation-content">
+            <h1>Request Received</h1>
+
+            <p>
+                Thank you for contacting Almac &amp; Sons Vehicle Services.
+            </p>
+
+            <p>
+                Your request for assistance has been submitted and is now
+                awaiting assessment by our team.
+            </p>
+        <div class="confirmation-reference">
+            <h2>Your assistance request</h2>
+
+            <p>
+                <strong>Reference number:</strong>
+                <span>{{ assistance_request.reference }}</span>
+            </p>
+
+            <p>
+                <strong>Current status:</strong>
+                <span>{{ assistance_request.get_status_display }}</span>
+            </p>
+        </div>    
+        </section>
+    </main>
+
+</body>
+</html>
