@@ -117,4 +117,13 @@ class AssistanceRequestForm(forms.ModelForm):
             )
 
         return occupant_safety
+    def clean_occupant_count(self):
+        occupant_count = self.cleaned_data["occupant_count"]
+
+        if not 0 <= occupant_count <= 99:
+            raise forms.ValidationError(
+                "Occupant count must be between 0 and 99."
+            )
+
+        return occupant_count
     

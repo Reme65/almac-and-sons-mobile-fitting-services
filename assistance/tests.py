@@ -147,4 +147,36 @@ class OccupantSafetyValidationTests(SimpleTestCase):
             "Please select a valid occupant safety option.",
         ):
             form.clean_occupant_safety()
-                   
+
+class OccupantCountValidationTests(SimpleTestCase):
+
+    def test_valid_occupant_counts_are_accepted(self):
+        for count in [0, 1, 5, 99]:
+            with self.subTest(count=count):
+                form = AssistanceRequestForm()
+                form.cleaned_data = {"occupant_count": count}
+
+                self.assertEqual(
+                    form.clean_occupant_count(),
+                    count,
+                )
+
+    def test_negative_occupant_count_is_rejected(self):
+        form = AssistanceRequestForm()
+        form.cleaned_data = {"occupant_count": -1}
+
+        with self.assertRaisesMessage(
+            ValidationError,
+            "Occupant count must be between 0 and 99.",
+        ):
+            form.clean_occupant_count()
+
+    def test_occupant_count_above_99_is_rejected(self):
+        form = AssistanceRequestForm()
+        form.cleaned_data = {"occupant_count": 100}
+
+        with self.assertRaisesMessage(
+            ValidationError,
+            "Occupant count must be between 0 and 99.",
+        ):
+            form.clean_occupant_count()
