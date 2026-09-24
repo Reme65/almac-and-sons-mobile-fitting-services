@@ -336,4 +336,12 @@ class CompleteAssistanceRequestFormTests(SimpleTestCase):
 
         self.assertFalse(form.is_valid())
         self.assertIn("problem_description", form.errors)
-        
+
+    def test_missing_location_description_is_rejected(self):
+        form_data = self.get_valid_form_data()
+        form_data["location_description"] = ""
+
+        form = AssistanceRequestForm(data=form_data)
+
+        self.assertFalse(form.is_valid())
+        self.assertIn("location_description", form.errors)   
