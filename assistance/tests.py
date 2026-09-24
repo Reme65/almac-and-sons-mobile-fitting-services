@@ -82,4 +82,35 @@ class LocationTypeValidationTests(SimpleTestCase):
             "Please select a valid location type.",
         ):
             form.clean_location_type()
-            
+class AssistanceNeedsValidationTests(SimpleTestCase):
+
+    def test_valid_assistance_needs_are_accepted(self):
+        allowed_values = [
+            "yes",
+            "no",
+            "unsure",
+        ]
+
+        for assistance_needs in allowed_values:
+            with self.subTest(assistance_needs=assistance_needs):
+                form = AssistanceRequestForm()
+                form.cleaned_data = {
+                    "assistance_needs": assistance_needs
+                }
+
+                self.assertEqual(
+                    form.clean_assistance_needs(),
+                    assistance_needs,
+                )
+
+    def test_invalid_assistance_needs_are_rejected(self):
+        form = AssistanceRequestForm()
+        form.cleaned_data = {
+            "assistance_needs": "spaceship"
+        }
+
+        with self.assertRaisesMessage(
+            ValidationError,
+            "Please select a valid assistance needs option.",
+        ):
+            form.clean_assistance_needs()          

@@ -85,4 +85,20 @@ class AssistanceRequestForm(forms.ModelForm):
             )
 
         return location_type
+
+    def clean_assistance_needs(self):
+        assistance_needs = self.cleaned_data["assistance_needs"]
+
+        allowed_values = {
+            "yes",
+            "no",
+            "unsure",
+        }
+
+        if assistance_needs not in allowed_values:
+            raise forms.ValidationError(
+                "Please select a valid assistance needs option."
+            )
+
+        return assistance_needs
     
