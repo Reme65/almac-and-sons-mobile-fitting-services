@@ -113,4 +113,38 @@ class AssistanceNeedsValidationTests(SimpleTestCase):
             ValidationError,
             "Please select a valid assistance needs option.",
         ):
-            form.clean_assistance_needs()          
+            form.clean_assistance_needs()  
+
+class OccupantSafetyValidationTests(SimpleTestCase):
+
+    def test_valid_occupant_safety_values_are_accepted(self):
+        allowed_values = [
+            "yes",
+            "no",
+            "unsure",
+        ]
+
+        for occupant_safety in allowed_values:
+            with self.subTest(occupant_safety=occupant_safety):
+                form = AssistanceRequestForm()
+                form.cleaned_data = {
+                    "occupant_safety": occupant_safety
+                }
+
+                self.assertEqual(
+                    form.clean_occupant_safety(),
+                    occupant_safety,
+                )
+
+    def test_invalid_occupant_safety_value_is_rejected(self):
+        form = AssistanceRequestForm()
+        form.cleaned_data = {
+            "occupant_safety": "spaceship"
+        }
+
+        with self.assertRaisesMessage(
+            ValidationError,
+            "Please select a valid occupant safety option.",
+        ):
+            form.clean_occupant_safety()
+                   

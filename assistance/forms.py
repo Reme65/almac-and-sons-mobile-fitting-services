@@ -101,4 +101,20 @@ class AssistanceRequestForm(forms.ModelForm):
             )
 
         return assistance_needs
+
+    def clean_occupant_safety(self):
+        occupant_safety = self.cleaned_data["occupant_safety"]
+
+        allowed_values = {
+            "yes",
+            "no",
+            "unsure",
+        }
+
+        if occupant_safety not in allowed_values:
+            raise forms.ValidationError(
+                "Please select a valid occupant safety option."
+            )
+
+        return occupant_safety
     
