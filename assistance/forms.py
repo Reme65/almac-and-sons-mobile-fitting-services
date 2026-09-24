@@ -1,3 +1,5 @@
+import re
+
 from django import forms
 
 from .models import AssistanceRequest
@@ -126,4 +128,21 @@ class AssistanceRequestForm(forms.ModelForm):
             )
 
         return occupant_count
+
+    def clean_contact_phone(self):
+        phone_number = self.cleaned_data["contact_phone"]
+
+        if not re.fullmatch(r"\+?[0-9()\s-]+", phone_number):
+            raise forms.ValidationError(
+                "Please enter a valid phone number."
+            )
+
+        digit_count = sum(character.isdigit() for character in phone_number)
+
+        if not 7 <= digit_count <= 15:
+            raise forms.ValidationError(
+                "Please enter a valid phone number."
+            )
+
+        return phone_number
     

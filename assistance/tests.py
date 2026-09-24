@@ -180,3 +180,67 @@ class OccupantCountValidationTests(SimpleTestCase):
             "Occupant count must be between 0 and 99.",
         ):
             form.clean_occupant_count()
+
+class ContactPhoneValidationTests(SimpleTestCase):
+
+    def test_valid_phone_numbers_are_accepted(self):
+        valid_numbers = [
+            "07123 456789",
+            "020 7946 0123",
+            "+44 7123 456789",
+            "01234-567890",
+            "(020) 7946 0123",
+            "1234567",
+            "123456789012345",
+        ]
+
+        for phone_number in valid_numbers:
+            with self.subTest(phone_number=phone_number):
+                form = AssistanceRequestForm()
+                form.cleaned_data = {"contact_phone": phone_number}
+
+                self.assertEqual(
+                    form.clean_contact_phone(),
+                    phone_number,
+                )
+
+    def test_invalid_phone_characters_are_rejected(self):
+        invalid_numbers = [
+            "07123 ABCDEF",
+            "07123@456789",
+            "07123+456789",
+        ]
+
+        for phone_number in invalid_numbers:
+            with self.subTest(phone_number=phone_number):
+                form = AssistanceRequestForm()
+                form.cleaned_data = {"contact_phone": phone_number}
+
+                with self.assertRaisesMessage(
+                    ValidationError,
+                    "Please enter a valid phone number.",
+                ):
+                    form.clean_contact_phone()
+
+    def test_phone_number_with_too_few_digits_is_rejected(self):
+        form = AssistanceRequestForm()
+        form.cleaned_data = {"contact_phone": "123456"}
+
+        with self.assertRaisesMessage(
+            ValidationError,
+            "Please enter a valid phone number.",
+        ):
+            form.clean_contact_phone()
+
+    def test_phone_number_with_too_many_digits_is_rejected(self):
+        form = AssistanceRequestForm()
+        form.cleaned_data = {
+            "contact_phone": "1234567890123456"
+        }
+
+        with self.assertRaisesMessage(
+            ValidationError,
+            "Please enter a valid phone number.",
+        ):
+            form.clean_contact_phone()
+            
