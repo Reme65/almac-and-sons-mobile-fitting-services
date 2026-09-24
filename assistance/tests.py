@@ -354,4 +354,11 @@ class CompleteAssistanceRequestFormTests(SimpleTestCase):
 
         self.assertFalse(form.is_valid())
         self.assertIn("contact_phone", form.errors)
-               
+
+    def test_blank_contact_email_is_accepted(self):
+        form_data = self.get_valid_form_data()
+        form_data["contact_email"] = ""
+
+        form = AssistanceRequestForm(data=form_data)
+
+        self.assertTrue(form.is_valid(), form.errors.as_json())           
