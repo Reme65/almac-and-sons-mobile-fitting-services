@@ -243,4 +243,54 @@ class ContactPhoneValidationTests(SimpleTestCase):
             "Please enter a valid phone number.",
         ):
             form.clean_contact_phone()
-            
+
+class LocationPostcodeValidationTests(SimpleTestCase):
+
+    def test_blank_postcode_is_accepted(self):
+        form = AssistanceRequestForm()
+        form.cleaned_data = {"location_postcode": ""}
+
+        self.assertEqual(form.clean_location_postcode(), "")
+
+    def test_valid_postcodes_are_accepted(self):
+        valid_postcodes = [
+            "BA14 8AA",
+            "ba14 8aa",
+            "SW1A 1AA",
+            "M1 1AE",
+            "B33 8TH",
+            "CR2 6XH",
+            "DN55 1PT",
+            "GIR 0AA",
+        ]
+
+        for postcode in valid_postcodes:
+            with self.subTest(postcode=postcode):
+                form = AssistanceRequestForm()
+                form.cleaned_data = {"location_postcode": postcode}
+
+                self.assertEqual(
+                    form.clean_location_postcode(),
+                    postcode,
+                )
+
+    def test_invalid_postcodes_are_rejected(self):
+        invalid_postcodes = [
+            "12345",
+            "ABCDE",
+            "BA14",
+            "BA14 8A",
+            "BA14 8AAA",
+            "BA14 @AA",
+        ]
+
+        for postcode in invalid_postcodes:
+            with self.subTest(postcode=postcode):
+                form = AssistanceRequestForm()
+                form.cleaned_data = {"location_postcode": postcode}
+
+                with self.assertRaisesMessage(
+                    ValidationError,
+                    "Please enter a valid UK postcode.",
+                ):
+                    form.clean_location_postcode()            

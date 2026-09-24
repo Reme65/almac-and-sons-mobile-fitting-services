@@ -145,4 +145,26 @@ class AssistanceRequestForm(forms.ModelForm):
             )
 
         return phone_number
+
+    def clean_location_postcode(self):
+        postcode = self.cleaned_data["location_postcode"]
+
+        if not postcode:
+            return postcode
+
+        postcode_pattern = (
+            r"^(?:GIR\s?0AA|"
+            r"(?:[A-Z]{1,2}[0-9][A-Z0-9]?)\s?[0-9][A-Z]{2})$"
+        )
+
+        if not re.fullmatch(
+            postcode_pattern,
+            postcode,
+            flags=re.IGNORECASE,
+        ):
+            raise forms.ValidationError(
+                "Please enter a valid UK postcode."
+            )
+
+        return postcode
     
