@@ -470,7 +470,7 @@ class AssistanceConfirmationTemplateTests(SimpleTestCase):
         self.assertIn("Are you in immediate danger?", html)
         self.assertIn("999", html)
 
-    def test_confirmation_has_return_home_link(self):
+    def test_confirmation_has_action_links(self):
         from django.template.loader import render_to_string
 
         html = render_to_string("assistance-confirmation.html")
@@ -480,4 +480,9 @@ class AssistanceConfirmationTemplateTests(SimpleTestCase):
             html,
         )
         self.assertIn("Return to Home", html)
+        self.assertIn(
+            f'href="{reverse("services")}"',
+            html,
+        )
+        self.assertIn("View Services", html)
         

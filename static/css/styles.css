@@ -1046,6 +1046,10 @@ a {
 /* Assistance confirmation — actions */
 
 .confirmation-actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem;
     max-width: 680px;
     margin: 2.5rem auto 0;
     text-align: center;
