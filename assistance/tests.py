@@ -462,4 +462,10 @@ class AssistanceConfirmationTemplateTests(SimpleTestCase):
         self.assertIn("We arrange assistance", html)
         self.assertIn("We provide an estimated arrival time", html)
         self.assertIn("We keep you updated", html)
-        
+        self.assertIn("Keep your phone available", html)
+        self.assertIn(
+            "We may need to contact you about your assistance request",
+            html,
+        )
+        self.assertIn("Are you in immediate danger?", html)
+        self.assertIn("999", html)
