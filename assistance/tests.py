@@ -387,7 +387,7 @@ class AssistanceRequestViewTests(TestCase):
             data=form_data,
         )
 
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, 302)
         self.assertEqual(AssistanceRequest.objects.count(), 1)
 
         saved_request = AssistanceRequest.objects.get()
@@ -412,38 +412,60 @@ class AssistanceRequestViewTests(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertEqual(AssistanceRequest.objects.count(), 0)
 
-    def test_valid_post_renders_confirmation_with_saved_request(self):
-            form_data = (
-                CompleteAssistanceRequestFormTests()
-                .get_valid_form_data()
-            )
-    
-            response = self.client.post(
-                reverse("request_assistance"),
-                data=form_data,
-            )
-    
-            self.assertEqual(response.status_code, 200)
-            self.assertTemplateUsed(
-                response,
-                "assistance-confirmation.html",
-            )
+    def test_valid_post_redirects_to_confirmation_page(self):
+        form_data = (
+            CompleteAssistanceRequestFormTests()
+            .get_valid_form_data()
+        )
 
-            saved_request = AssistanceRequest.objects.get()
-            
-            self.assertEqual(
-                response.context["assistance_request"],
-                saved_request,
-            )
+        response = self.client.post(
+            reverse("request_assistance"),
+            data=form_data,
+        )
 
-            self.assertContains(
-                response,
-                str(saved_request.reference),
-           )
-            self.assertContains(
-                response,
-                saved_request.get_status_display(),
-           )
+        saved_request = AssistanceRequest.objects.get()
+
+        self.assertRedirects(
+        response,
+        reverse(
+            "assistance_confirmation",
+            kwargs={"reference": saved_request.reference},
+        ),
+    )
+
+class AssistanceConfirmationViewTests(TestCase):
+
+    def test_confirmation_page_displays_saved_request(self):
+        assistance_request = AssistanceRequest.objects.create(
+            vehicle_type="car",
+            problem_type="breakdown",
+            problem_description="Engine stopped.",
+            location_type="roadside",
+            location_description="A350 lay-by",
+            occupant_count=1,
+            assistance_needs="no",
+            occupant_safety="yes",
+            contact_first_name="Test",
+            contact_last_name="Customer",
+            contact_phone="07123456789",
+        )
+
+        response = self.client.get(
+            reverse(
+                "assistance_confirmation",
+                kwargs={"reference": assistance_request.reference},
+            )
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(
+            response,
+            "assistance-confirmation.html",
+        )
+        self.assertEqual(
+            response.context["assistance_request"],
+            assistance_request,
+        )
 
 class AssistanceConfirmationTemplateTests(SimpleTestCase):
 

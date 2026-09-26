@@ -13,4 +13,9 @@ urlpatterns = [
         assistance_views.request_assistance,
         name="request_assistance",
     ),
+    path(
+        "assistance/confirmation/<uuid:reference>/",
+        assistance_views.assistance_confirmation,
+        name="assistance_confirmation",
+    ),
 ]
