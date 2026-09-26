@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -11,41 +12,52 @@
 
     <title>Services | Almac & Sons Mobile Vehicle Assistance</title>
 
-    <link rel="icon" type="image/png" href="static/images/favicon-32x32.png">
-    <link rel="stylesheet" href="static/css/styles.css">
+    <link
+        rel="icon"
+        type="image/png"
+        href="{% static 'images/favicon-32x32.png' %}"
+   >
+   <link rel="stylesheet" href="{% static 'css/styles.css' %}">
 </head>
 
 <body>
 
-    <header class="site-header">
-        <nav class="navbar" aria-label="Main navigation">
+<header class="site-header">
+    <nav class="navbar" aria-label="Main navigation">
 
-            <a class="site-brand" href="index.html">
-                Almac &amp; Sons Vehicle Services
-            </a>
+        <a class="site-brand" href="{% url 'home' %}">
+            Almac &amp; Sons Vehicle Services
+        </a>
 
-            <input
-                class="menu-checkbox"
-                type="checkbox"
-                id="menu-checkbox"
-                aria-label="Toggle navigation menu"
-            >
+        <input
+            class="menu-checkbox"
+            type="checkbox"
+            id="menu-checkbox"
+            aria-label="Toggle navigation menu"
+        >
 
-            <label class="menu-toggle" for="menu-checkbox" aria-hidden="true">
-                ☰
-            </label>
+        <label class="menu-toggle" for="menu-checkbox" aria-hidden="true">
+            ☰
+        </label>
 
-            <ul class="nav-links">
-                <li><a href="index.html">Home</a></li>
-                <li><a href="services.html" aria-current="page">Services</a></li>
-                <li><a href="index.html#how-it-works">How It Works</a></li>
-                <li><a href="#">Login</a></li>
-                <li><a href="#">Register</a></li>
-            </ul>
+        <ul class="nav-links">
+            <li><a href="{% url 'home' %}">Home</a></li>
+            <li>
+                <a href="{% url 'services' %}" aria-current="page">
+                    Services
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'home' %}#how-it-works">
+                    How It Works
+                </a>
+            </li>
+            <li><a href="#">Login</a></li>
+            <li><a href="#">Register</a></li>
+        </ul>
 
-        </nav>
-    </header>
-
+    </nav>
+</header>
     <main>
 
     <section class="services-hero">

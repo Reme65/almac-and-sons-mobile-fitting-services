@@ -9,4 +9,15 @@ class ServicesViewTests(TestCase):
 
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, "services.html")
-        
+        self.assertContains(
+            response,
+            f'href="{reverse("home")}"',
+        )
+        self.assertContains(
+            response,
+            f'href="{reverse("services")}"',
+        )
+        self.assertContains(
+            response,
+            f'href="{reverse("home")}#how-it-works"',
+        )
