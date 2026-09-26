@@ -100,7 +100,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 }
         
-
     function validateCurrentStep() {
         const fields = steps[currentStep].querySelectorAll(
             "input, select, textarea"
@@ -130,6 +129,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
         if (currentStep < steps.length - 1) {
             showStep(currentStep + 1);
+        }
+
+        const form = nextButton.closest("form");
+
+        if (form) {
+            form.requestSubmit();
+
         }
     });
 
