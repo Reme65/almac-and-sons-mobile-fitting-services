@@ -76,7 +76,8 @@
                     class="assistance-form"
                     action="{% url 'request_assistance' %}"
                     method="post"
-             >
+                    data-error-step="{{ error_step|default:1}}"
+                >
                     {% csrf_token %}
 
                     <fieldset
@@ -455,6 +456,12 @@
                                 rows="3"
                                 placeholder="For example, poor mobile signal or the best way to reach you..."
                             ></textarea>
+
+                            {% if form.problem_description.errors %}
+                                <div class="assistance-field-error">
+                                    {{ form.problem_description.errors }}
+                                </div>
+                            {% endif %}
                         </div>
                     </fieldset>
                     <fieldset

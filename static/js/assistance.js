@@ -8,8 +8,12 @@ document.addEventListener("DOMContentLoaded", () => {
     const cancelLink = document.getElementById("assistance-cancel");
     const progressText = document.querySelector(".assistance-progress p");
     const progressBar = document.querySelector(".assistance-progress progress");
+    const form = document.querySelector(".assistance-form");
+    let currentStep = form
+        ? Number(form.dataset.errorStep) - 1
+        : 0;
 
-    let currentStep = 0;
+        
     let editingFromReview = false;
 
     function populateReview() {
@@ -162,6 +166,6 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
 
-    showStep(0);
+    showStep(currentStep);
     
 });

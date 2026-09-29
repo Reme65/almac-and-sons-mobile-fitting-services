@@ -396,7 +396,7 @@ class AssistanceRequestViewTests(TestCase):
             saved_request.problem_description,
             "The engine stopped while driving.",
         )
-
+        
     def test_invalid_post_does_not_create_assistance_request(self):
         form_data = (
             CompleteAssistanceRequestFormTests()
@@ -411,7 +411,19 @@ class AssistanceRequestViewTests(TestCase):
 
         self.assertEqual(response.status_code, 200)
         self.assertEqual(AssistanceRequest.objects.count(), 0)
-
+        self.assertIn("form", response.context)
+        self.assertIn(
+            "problem_description",
+            response.context["form"].errors,
+        )
+        self.assertContains(
+            response,
+            "This field is required.",
+        )
+        self.assertEqual(
+            response.context["error_step"],
+            2,
+        )
     def test_valid_post_redirects_to_confirmation_page(self):
         form_data = (
             CompleteAssistanceRequestFormTests()
