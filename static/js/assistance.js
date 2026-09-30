@@ -133,6 +133,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         if (currentStep < steps.length - 1) {
             showStep(currentStep + 1);
+            return;
         }
 
         const form = nextButton.closest("form");
