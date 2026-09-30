@@ -444,6 +444,25 @@ class AssistanceRequestViewTests(TestCase):
             "Please enter a valid UK postcode.",
         )
 
+    def test_invalid_post_preserves_vehicle_registration(self):
+        form_data = (
+            CompleteAssistanceRequestFormTests()
+            .get_valid_form_data()
+        )
+        form_data["vehicle_registration"] = "AB12 CDE"
+        form_data["location_postcode"] = "12345"
+
+        response = self.client.post(
+             reverse("request_assistance"),
+             data=form_data,
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(
+            response,
+            'value="AB12 CDE"',
+        )
+
     def test_valid_post_redirects_to_confirmation_page(self):
         form_data = (
             CompleteAssistanceRequestFormTests()

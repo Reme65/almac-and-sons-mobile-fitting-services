@@ -102,6 +102,7 @@
                                 name="vehicle_registration"
                                 autocomplete="off"
                                 placeholder="e.g. AB12 CDE"
+                                value="{{ form.vehicle_registration.value|default_if_none:'' }}"
                             >
                         </div>
 
@@ -116,11 +117,11 @@
                                 required
                             >
                                 <option value="">Please select...</option>
-                                <option value="car">Car</option>
-                                <option value="van">Van</option>
-                                <option value="hgv">HGV</option>
-                                <option value="trailer">Trailer</option>
-                                <option value="agricultural">
+                                <option value="car"{% if form.vehicle_type.value == "car" %}selected{% endif %}>Car</option>
+                                <option value="van"{% if form.vehicle_type.value == "van" %}selected{% endif %}>Van</option>
+                                <option value="hgv"{% if form.vehicle_type.value == "hgv" %}selected{% endif %}>HGV</option>
+                                <option value="trailer"{% if form.vehicle_type.value == "trailer" %}selected{% endif %}>Trailer</option>
+                                <option value="agricultural"{% if form.vehicle_type.value == "other" %}selected{% endif %}>
                                     Agricultural vehicle or equipment
                                 </option>
                                 <option value="other">Other</option>
@@ -137,6 +138,7 @@
                                 id="vehicle-make"
                                 name="vehicle_make"
                                 placeholder="e.g. Ford"
+                                value="{{ form.vehicle_make.value|default_if_none:'' }}"
                             >
                         </div>
 
@@ -150,6 +152,7 @@
                                 id="vehicle-model"
                                 name="vehicle_model"
                                 placeholder="e.g. Focus"
+                                value="{{ form.vehicle_model.value|default_if_none:'' }}"
                             >
                         </div>
 
@@ -163,7 +166,7 @@
                                 name="vehicle_description"
                                 rows="3"
                                 placeholder="Colour, distinguishing features or equipment details..."
-                            ></textarea>
+                            >{{ form.vehicle_description.value|default_if_none:'' }}</textarea>
                         </div>
                     </fieldset>
 
@@ -190,12 +193,42 @@
                                 required
                             >
                                 <option value="">Please select...</option>
-                                <option value="wont-start">Vehicle won't start</option>
-                                <option value="flat-tyre">Flat or damaged tyre</option>
-                                <option value="breakdown">Vehicle has broken down</option>
-                                <option value="recovery">Vehicle needs recovery</option>
-                                <option value="other">Other problem</option>
-                                <option value="unsure">I'm not sure</option>
+                                <option
+                                    value="wont-start"
+                                    {% if form.problem_type.value == "wont-start" %}selected{% endif %}
+                                >
+                                    Vehicle won't start
+                                </option>
+                                <option
+                                    value="flat-tyre"
+                                    {% if form.problem_type.value == "flat-tyre" %}selected{% endif %}
+                                >
+                                    Flat or damaged tyre
+                                </option>
+                                <option
+                                    value="breakdown"
+                                    {% if form.problem_type.value == "breakdown" %}selected{% endif %}
+                                >
+                                    Vehicle has broken down
+                                </option>
+                                <option
+                                    value="recovery"
+                                    {% if form.problem_type.value == "recovery" %}selected{% endif %}
+                                >
+                                    Vehicle needs recovery
+                                </option>
+                                <option
+                                    value="other"
+                                    {% if form.problem_type.value == "other" %}selected{% endif %}
+                                >
+                                    Other problem
+                                </option>
+                                <option
+                                    value="unsure"
+                                    {% if form.problem_type.value == "unsure" %}selected{% endif %}
+                                >
+                                    I'm not sure
+                                </option>
                             </select>
                         </div>
 
@@ -210,7 +243,13 @@
                                 rows="4"
                                 placeholder="Describe what happened and any information that may help our team..."
                                 required
-                            ></textarea>
+                            >{{ form.problem_description.value|default_if_none:'' }}
+                            </textarea>
+                            {% if form.problem_description.errors %}
+                                <div class="assistance-field-error">
+                                    {{ form.problem_description.errors }}
+                                </div>
+                            {% endif %}
                         </div>
                     </fieldset>
                     <fieldset
@@ -237,11 +276,36 @@
                                 required
                             >
                                 <option value="">Please select...</option>
-                                <option value="roadside">Roadside</option>
-                                <option value="motorway">Motorway</option>
-                                <option value="home">Home address</option>
-                                <option value="workplace">Workplace</option>
-                                <option value="other">Other location</option>
+                                <option
+                                    value="roadside"
+                                    {% if form.location_type.value == "roadside" %}selected{% endif %}
+                                >
+                                    Roadside
+                                </option>
+                                <option
+                                    value="motorway"
+                                    {% if form.location_type.value == "motorway" %}selected{% endif %}
+                                >
+                                    Motorway
+                                </option>
+                                <option
+                                    value="home"
+                                    {% if form.location_type.value == "home" %}selected{% endif %}
+                                >
+                                    Home address
+                                </option>
+                                <option
+                                    value="workplace"
+                                    {% if form.location_type.value == "workplace" %}selected{% endif %}
+                                >
+                                    Workplace
+                                </option>
+                                <option
+                                    value="other"
+                                    {% if form.location_type.value == "other" %}selected{% endif %}
+                                >
+                                    Other location
+                                </option>
                             </select>
                         </div>
 
@@ -256,6 +320,7 @@
                                 name="location_postcode"
                                 autocomplete="postal-code"
                                 placeholder="e.g. BA14 8AA"
+                                value="{{ form.location_postcode.value|default_if_none:'' }}"
                             >
 
                             {% if form.location_postcode.errors %}
@@ -276,7 +341,9 @@
                                 rows="4"
                                 placeholder="Road name, nearby town, landmark, junction or other details that will help us find you..."
                                 required
-                            ></textarea>
+                            >
+                                {{ form.location_description.value|default_if_none:'' }}
+                            </textarea>
                         </div>
 
                         <div class="assistance-field">
@@ -289,6 +356,7 @@
                                 id="location-direction"
                                 name="location_direction"
                                 placeholder="e.g. M4 westbound towards Bristol"
+                                value="{{ form.location_direction.value|default_if_none:'' }}"
                             >
                         </div>
 
@@ -302,7 +370,9 @@
                                 name="location_access"
                                 rows="3"
                                 placeholder="Motorway marker, farm entrance, gate instructions or other useful details..."
-                            ></textarea>
+                            >
+                                {{ form.location_access.value|default_if_none:'' }}
+                            </textarea>
                         </div>
                     </fieldset>
                     <fieldset
