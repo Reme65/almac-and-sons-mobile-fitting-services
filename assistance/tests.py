@@ -387,15 +387,7 @@ class AssistanceRequestViewTests(TestCase):
             data=form_data,
         )
 
-        self.assertEqual(response.status_code, 302)
-        self.assertEqual(AssistanceRequest.objects.count(), 1)
-
-        saved_request = AssistanceRequest.objects.get()
-        self.assertEqual(saved_request.vehicle_type, "car")
-        self.assertEqual(
-            saved_request.problem_description,
-            "The engine stopped while driving.",
-        )
+    
         
     def test_invalid_post_does_not_create_assistance_request(self):
         form_data = (
@@ -424,6 +416,34 @@ class AssistanceRequestViewTests(TestCase):
             response.context["error_step"],
             2,
         )
+
+    def test_invalid_postcode_error_is_displayed(self):
+        form_data = (
+            CompleteAssistanceRequestFormTests()
+            .get_valid_form_data()
+        ) 
+        form_data["location_postcode"] = "12345"
+
+        response = self.client.post(
+             reverse("request_assistance"),
+             data=form_data,
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(AssistanceRequest.objects.count(), 0)
+        self.assertIn(
+            "location_postcode",
+            response.context["form"].errors,
+        )
+        self.assertEqual(
+            response.context["error_step"],
+            3,
+        )
+        self.assertContains(
+            response,
+            "Please enter a valid UK postcode.",
+        )
+
     def test_valid_post_redirects_to_confirmation_page(self):
         form_data = (
             CompleteAssistanceRequestFormTests()

@@ -257,6 +257,12 @@
                                 autocomplete="postal-code"
                                 placeholder="e.g. BA14 8AA"
                             >
+
+                            {% if form.location_postcode.errors %}
+                                <div class="assistance-field-error">
+                                    {{ form.location_postcode.errors }}
+                                </div>
+                            {% endif %}
                         </div>
 
                         <div class="assistance-field">

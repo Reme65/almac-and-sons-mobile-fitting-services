@@ -818,7 +818,11 @@ a {
 .assistance-actions [hidden] {
     display: none;
 }
-
+.assistance-field-error {
+    margin-top: 0.5rem;
+    color: #8b1e1e;
+    font-weight: 700;
+}
 
 /* ========================================
    Assistance Review
