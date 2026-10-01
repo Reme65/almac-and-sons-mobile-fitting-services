@@ -560,6 +560,11 @@
                                 placeholder="e.g. name@example.com"
                                 value="{{ form.contact_email.value|default_if_none:'' }}"
                             >
+                            {% if form.contact_email.errors %}
+                                <div class="assistance-field-error">
+                                    {{ form.contact_email.errors }}
+                                </div>
+                            {% endif %}
                         </div>
 
                         <div class="assistance-field">

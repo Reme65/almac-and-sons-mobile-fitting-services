@@ -471,6 +471,33 @@ class AssistanceRequestViewTests(TestCase):
             "Please enter a valid phone number.",
         )
 
+    def test_invalid_email_error_is_displayed(self):
+        form_data = (
+            CompleteAssistanceRequestFormTests()
+            .get_valid_form_data()
+        )
+        form_data["contact_email"] = "not-an-email"
+
+        response = self.client.post(
+            reverse("request_assistance"),
+            data=form_data,
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(AssistanceRequest.objects.count(), 0)
+        self.assertIn(
+            "contact_email",
+            response.context["form"].errors,
+        )
+        self.assertEqual(
+            response.context["error_step"],
+            5,
+        )
+        self.assertContains(
+            response,
+            "Enter a valid email address.",
+        )
+
     def test_invalid_post_preserves_vehicle_registration(self):
         form_data = (
             CompleteAssistanceRequestFormTests()
