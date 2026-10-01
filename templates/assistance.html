@@ -540,6 +540,11 @@
                                 required
                                 value="{{ form.contact_phone.value|default_if_none:'' }}"
                             >
+                            {% if form.contact_phone.errors %}
+                                <div class="assistance-field-error">
+                                {{ form.contact_phone.errors }}
+                                </div>
+                            {% endif %}
                         </div>
 
                         <div class="assistance-field">
