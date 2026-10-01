@@ -401,6 +401,7 @@
                                 max="99"
                                 step="1"
                                 required
+                                value="{{ form.occupant_count.value|default_if_none:'' }}"
                             >
                         </div>
 
@@ -415,9 +416,24 @@
                                 required
                             >
                                 <option value="">Please select...</option>
-                                <option value="yes">Yes</option>
-                                <option value="no">No</option>
-                                <option value="unsure">Not sure</option>
+                                <option
+                                    value="yes"
+                                    {% if form.assistance_needs.value == "yes" %}selected{% endif %}
+                                >
+                                    Yes
+                                </option>
+                                <option
+                                    value="no"
+                                    {% if form.assistance_needs.value == "no" %}selected{% endif %}
+                                >
+                                    No
+                                </option>
+                                <option
+                                    value="unsure"
+                                    {% if form.assistance_needs.value == "unsure" %}selected{% endif %}
+                                >
+                                    Not sure
+                                </option>
                             </select>
                         </div>
 
@@ -431,7 +447,8 @@
                                 name="assistance_details"
                                 rows="4"
                                 placeholder="For example, wheelchair-accessible transport, help entering or leaving a vehicle, or other practical assistance needed..."
-                            ></textarea>
+                            >{{ form.assistance_details.value|default_if_none:'' }}
+                            </textarea>
                         </div>
 
                         <div class="assistance-field">
@@ -445,9 +462,24 @@
                                 required
                             >
                                 <option value="">Please select...</option>
-                                <option value="yes">Yes</option>
-                                <option value="no">No</option>
-                                <option value="unsure">Not sure</option>
+                                <option
+                                   value="yes"
+                                   {% if form.occupant_safety.value == "yes" %}selected{% endif %}
+                                >
+                                    Yes
+                                </option>
+                                <option
+                                   value="no"
+                                   {% if form.occupant_safety.value == "no" %}selected{% endif %}
+                                >
+                                   No
+                                </option>
+                                <option
+                                   value="unsure"
+                                   {% if form.occupant_safety.value == "unsure" %}selected{% endif %}
+                                >
+                                   Not sure
+                                </option>
                             </select>
                         </div>
                     </fieldset>
@@ -475,6 +507,7 @@
                                 name="contact_first_name"
                                 autocomplete="given-name"
                                 required
+                                value="{{ form.contact_first_name.value|default_if_none:'' }}"
                             >
                         </div>
 
@@ -489,6 +522,7 @@
                                 name="contact_last_name"
                                 autocomplete="family-name"
                                 required
+                                value="{{ form.contact_last_name.value|default_if_none:'' }}"
                             >
                         </div>
 
@@ -504,6 +538,7 @@
                                 autocomplete="tel"
                                 placeholder="e.g. 07123 456789"
                                 required
+                                value="{{ form.contact_phone.value|default_if_none:'' }}"
                             >
                         </div>
 
@@ -518,6 +553,7 @@
                                 name="contact_email"
                                 autocomplete="email"
                                 placeholder="e.g. name@example.com"
+                                value="{{ form.contact_email.value|default_if_none:'' }}"
                             >
                         </div>
 
@@ -531,13 +567,9 @@
                                 name="contact_notes"
                                 rows="3"
                                 placeholder="For example, poor mobile signal or the best way to reach you..."
-                            ></textarea>
-
-                            {% if form.problem_description.errors %}
-                                <div class="assistance-field-error">
-                                    {{ form.problem_description.errors }}
-                                </div>
-                            {% endif %}
+                            >
+                                {{ form.contact_notes.value|default_if_none:'' }}
+                            </textarea>
                         </div>
                     </fieldset>
                     <fieldset
