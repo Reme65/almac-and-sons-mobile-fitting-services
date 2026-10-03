@@ -1073,6 +1073,26 @@ a {
 .confirmation-button:focus-visible {
     text-decoration: underline;
 }
+/* Back to top */
+.back-to-top {
+    position: fixed;
+    top: 50%;
+    right: 1rem;
+    transform: translateY(-50%);
+    z-index: 1000;
+    padding: 0.65rem 0.85rem;
+    background: rgba(0, 51, 102, 0.8);
+    color: #fff;
+    text-decoration: none;
+    font-weight: 700;
+    border-radius: 0.4rem;
+    opacity: 0.8;
+}
+
+.back-to-top:hover,
+.back-to-top:focus {
+    opacity: 1;
+}
 
 /* ========================================
    Tablet

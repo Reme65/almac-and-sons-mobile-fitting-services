@@ -21,10 +21,9 @@
     <header class="site-header">
         <nav class="navbar" aria-label="Main navigation">
 
-            <a class="site-brand" href="index.html">
+            <a class="site-brand" href="{% url 'home' %}">
                 Almac &amp; Sons Vehicle Services
             </a>
-
             <input
                 class="menu-checkbox"
                 type="checkbox"
@@ -37,10 +36,14 @@
             </label>
 
             <ul class="nav-links">
-                <li><a href="index.html">Home</a></li>
-                <li><a href="services.html">Services</a></li>
-                <li><a href="index.html#how-it-works">How It Works</a></li>
-                <li><a href="assistance.html" aria-current="page">Request Assistance</a></li>
+                <li><a href="{% url 'home' %}">Home</a></li>
+                <li><a href="{% url 'services' %}">Services</a></li>
+                <li><a href="{% url 'home' %}#how-it-works">How It Works</a></li>
+                <li>
+                    <a href="{% url 'request_assistance' %}" aria-current="page">
+                        Request Assistance
+                    </a>
+                </li>
                 <li><a href="#">Login</a></li>
                 <li><a href="#">Register</a></li>
             </ul>
