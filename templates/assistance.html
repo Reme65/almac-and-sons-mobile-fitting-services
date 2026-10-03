@@ -403,6 +403,12 @@
                                 required
                                 value="{{ form.occupant_count.value|default_if_none:'' }}"
                             >
+                            
+                            {% if form.occupant_count.errors %}
+                               <div class="assistance-field-error">
+                                   {{ form.occupant_count.errors }}
+                                </div>
+                            {% endif %}
                         </div>
 
                         <div class="assistance-field">
