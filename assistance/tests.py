@@ -387,8 +387,6 @@ class AssistanceRequestViewTests(TestCase):
             data=form_data,
         )
 
-    
-        
     def test_invalid_post_does_not_create_assistance_request(self):
         form_data = (
             CompleteAssistanceRequestFormTests()
@@ -497,6 +495,7 @@ class AssistanceRequestViewTests(TestCase):
             response,
             "Enter a valid email address.",
         )
+
     def test_invalid_occupant_count_error_is_displayed(self):
         form_data = (
             CompleteAssistanceRequestFormTests()
@@ -523,6 +522,34 @@ class AssistanceRequestViewTests(TestCase):
             response,
             "Occupant count must be between 0 and 99.",
         )
+
+    def test_missing_vehicle_type_error_is_displayed(self):
+        form_data = (
+            CompleteAssistanceRequestFormTests()
+            .get_valid_form_data()
+        )
+        form_data["vehicle_type"] = ""
+
+        response = self.client.post(
+            reverse("request_assistance"),
+            data=form_data,
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(AssistanceRequest.objects.count(), 0)
+        self.assertIn(
+            "vehicle_type",
+            response.context["form"].errors,
+        )
+        self.assertEqual(
+            response.context["error_step"],
+            1,
+        )
+        self.assertContains(
+            response,
+            "This field is required.",
+        )
+
     def test_invalid_post_preserves_vehicle_registration(self):
         form_data = (
             CompleteAssistanceRequestFormTests()

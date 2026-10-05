@@ -129,6 +129,12 @@
                                 </option>
                                 <option value="other">Other</option>
                             </select>
+
+                            {% if form.vehicle_type.errors %}
+                                <div class="assistance-field-error">
+                                    {{ form.vehicle_type.errors }}
+                                </div>
+                            {% endif %}
                         </div>
 
                         <div class="assistance-field">
