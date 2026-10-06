@@ -2,6 +2,7 @@ from django.core.exceptions import ValidationError
 from django.test import SimpleTestCase, TestCase
 from django.urls import reverse
 
+import uuid
 from .forms import AssistanceRequestForm
 from .models import AssistanceRequest
 
@@ -736,7 +737,19 @@ class AssistanceRequestViewTests(TestCase):
         self.assertContains(
             response,
             "This field is required.",
-        )   
+        )
+
+    def test_confirmation_page_returns_404_for_unknown_reference(self):
+        unknown_reference = uuid.uuid4()
+
+        response = self.client.get(
+            reverse(
+                "assistance_confirmation",
+                kwargs={"reference": unknown_reference},
+            )
+        )
+
+        self.assertEqual(response.status_code, 404)       
 
     def test_invalid_post_preserves_vehicle_registration(self):
         form_data = (
