@@ -239,6 +239,11 @@
                                     I'm not sure
                                 </option>
                             </select>
+                            {% if form.problem_type.errors %}
+                                <div class="assistance-field-error">
+                                    {{ form.problem_type.errors }}
+                                </div>
+                            {% endif %}
                         </div>
 
                         <div class="assistance-field">
