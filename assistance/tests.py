@@ -658,6 +658,33 @@ class AssistanceRequestViewTests(TestCase):
             "This field is required.",
         )
 
+    def test_missing_occupant_safety_error_is_displayed(self):
+        form_data = (
+            CompleteAssistanceRequestFormTests()
+            .get_valid_form_data()
+        )
+        form_data["occupant_safety"] = ""
+
+        response = self.client.post(
+            reverse("request_assistance"),
+            data=form_data,
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(AssistanceRequest.objects.count(), 0)
+        self.assertIn(
+            "occupant_safety",
+            response.context["form"].errors,
+        )
+        self.assertEqual(
+            response.context["error_step"],
+            4,
+        )
+        self.assertContains(
+            response,
+            "This field is required.",
+        )    
+
     def test_invalid_post_preserves_vehicle_registration(self):
         form_data = (
             CompleteAssistanceRequestFormTests()

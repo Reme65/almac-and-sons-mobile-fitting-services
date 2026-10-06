@@ -516,6 +516,11 @@
                                    Not sure
                                 </option>
                             </select>
+                            {% if form.occupant_safety.errors %}
+                                <div class="assistance-field-error">
+                                    {{ form.occupant_safety.errors }}
+                                </div>
+                            {% endif %}
                         </div>
                     </fieldset>
                     <fieldset
