@@ -465,6 +465,11 @@
                                     Not sure
                                 </option>
                             </select>
+                            {% if form.assistance_needs.errors %}
+                                <div class="assistance-field-error">
+                                    {{ form.assistance_needs.errors }}
+                                </div>
+                            {% endif %}
                         </div>
 
                         <div class="assistance-field">
