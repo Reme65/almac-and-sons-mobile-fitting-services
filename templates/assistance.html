@@ -569,6 +569,11 @@
                                 required
                                 value="{{ form.contact_last_name.value|default_if_none:'' }}"
                             >
+                            {% if form.contact_last_name.errors %}
+                                <div class="assistance-field-error">
+                                    {{ form.contact_last_name.errors }}
+                                </div>
+                            {% endif %}
                         </div>
 
                         <div class="assistance-field">
