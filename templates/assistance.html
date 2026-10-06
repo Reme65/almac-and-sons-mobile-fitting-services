@@ -363,6 +363,11 @@
                             >
                                 {{ form.location_description.value|default_if_none:'' }}
                             </textarea>
+                            {% if form.location_description.errors %}
+                                <div class="assistance-field-error">
+                                    {{ form.location_description.errors }}
+                                </div>
+                            {% endif %}
                         </div>
 
                         <div class="assistance-field">
