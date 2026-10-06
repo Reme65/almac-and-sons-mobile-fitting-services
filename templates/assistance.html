@@ -321,6 +321,11 @@
                                     Other location
                                 </option>
                             </select>
+                            {% if form.location_type.errors %}
+                                <div class="assistance-field-error">
+                                    {{ form.location_type.errors }}
+                                </div>
+                            {% endif %}
                         </div>
 
                         <div class="assistance-field">
