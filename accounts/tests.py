@@ -82,3 +82,20 @@ class LoginViewTests(TestCase):
             response,
             reverse("home"),
         )
+
+    def test_logout_ends_authenticated_session(self):
+        user_model = get_user_model()
+        user = user_model.objects.create_user(
+            username="testuser",
+            password="TestPassword123!",
+        )
+
+        self.client.force_login(user)
+
+        response = self.client.get(reverse("logout"))
+
+        self.assertFalse(response.wsgi_request.user.is_authenticated)
+        self.assertRedirects(
+            response,
+            reverse("home"),
+        )
