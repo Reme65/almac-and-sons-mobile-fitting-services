@@ -62,3 +62,23 @@ class LoginViewTests(TestCase):
 
         self.assertFalse(response.wsgi_request.user.is_authenticated)
         self.assertEqual(response.status_code, 200)
+
+    def test_valid_login_redirects_to_home(self):
+        user_model = get_user_model()
+        user_model.objects.create_user(
+            username="testuser",
+            password="TestPassword123!",
+        )
+
+        response = self.client.post(
+            reverse("login"),
+            {
+                "username": "testuser",
+                "password": "TestPassword123!",
+            },
+        )
+
+        self.assertRedirects(
+            response,
+            reverse("home"),
+        )
