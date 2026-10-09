@@ -20,11 +20,20 @@ def login_view(request):
         "accounts/login.html",
         {"form": form},
     )
+
 def logout_view(request):
     logout(request)
     return redirect("home")
+
 def register_view(request):
-    form = UserCreationForm()
+    if request.method == "POST":
+        form = UserCreationForm(request.POST)
+
+        if form.is_valid():
+            form.save()
+            return redirect("login")
+    else:
+        form = UserCreationForm()
 
     return render(
         request,

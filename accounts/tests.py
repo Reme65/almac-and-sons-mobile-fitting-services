@@ -115,3 +115,20 @@ class RegistrationViewTests(TestCase):
             UserCreationForm,
         )
         self.assertContains(response, "Register")
+
+    def test_valid_registration_creates_user(self):
+        user_model = get_user_model()
+
+        response = self.client.post(
+            reverse("register"),
+            {
+                "username": "newcustomer",
+                "password1": "SecureTestPassword123!",
+                "password2": "SecureTestPassword123!",
+            },
+        )
+
+        self.assertEqual(
+            user_model.objects.filter(username="newcustomer").count(),
+            1,
+        )
