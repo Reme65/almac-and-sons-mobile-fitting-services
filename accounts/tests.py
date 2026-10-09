@@ -101,6 +101,7 @@ class LoginViewTests(TestCase):
             reverse("home"),
         )
 
+
 class RegistrationViewTests(TestCase):
     def test_registration_page_loads(self):
         response = self.client.get(reverse("register"))
@@ -131,4 +132,69 @@ class RegistrationViewTests(TestCase):
         self.assertEqual(
             user_model.objects.filter(username="newcustomer").count(),
             1,
+        )
+
+    def test_registration_rejects_mismatched_passwords(self):
+        user_model = get_user_model()
+
+        response = self.client.post(
+            reverse("register"),
+            {
+                "username": "newcustomer",
+                "password1": "SecureTestPassword123!",
+                "password2": "DifferentPassword123!",
+            },
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertFalse(
+            user_model.objects.filter(username="newcustomer").exists()
+        )
+        self.assertContains(
+            response,
+            "The two password fields didn’t match.",
+        )
+
+    def test_registration_rejects_duplicate_username(self):
+        user_model = get_user_model()
+
+        user_model.objects.create_user(
+            username="existingcustomer",
+            password="SecureTestPassword123!",
+        )
+
+        response = self.client.post(
+            reverse("register"),
+            {
+                "username": "existingcustomer",
+                "password1": "AnotherSecurePassword123!",
+                "password2": "AnotherSecurePassword123!",
+            },
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(
+            user_model.objects.filter(
+                username="existingcustomer"
+            ).count(),
+            1,
+        )
+        self.assertContains(
+            response,
+            "A user with that username already exists.",
+        )
+
+    def test_successful_registration_redirects_to_login(self):
+        response = self.client.post(
+            reverse("register"),
+            {
+                "username": "newcustomer",
+                "password1": "SecureTestPassword123!",
+                "password2": "SecureTestPassword123!",
+            },
+        )
+
+        self.assertRedirects(
+            response,
+            reverse("login"),
         )
