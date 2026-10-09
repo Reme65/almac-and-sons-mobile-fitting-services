@@ -1,5 +1,6 @@
 from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.forms import UserCreationForm
 from django.test import TestCase
 from django.urls import reverse
 
@@ -99,3 +100,18 @@ class LoginViewTests(TestCase):
             response,
             reverse("home"),
         )
+
+class RegistrationViewTests(TestCase):
+    def test_registration_page_loads(self):
+        response = self.client.get(reverse("register"))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(
+            response,
+            "accounts/register.html",
+        )
+        self.assertIsInstance(
+            response.context["form"],
+            UserCreationForm,
+        )
+        self.assertContains(response, "Register")
