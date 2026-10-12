@@ -93,7 +93,7 @@ class LoginViewTests(TestCase):
 
         self.client.force_login(user)
 
-        response = self.client.get(reverse("logout"))
+        response = self.client.post(reverse("logout"))
 
         self.assertFalse(response.wsgi_request.user.is_authenticated)
         self.assertRedirects(
@@ -101,6 +101,22 @@ class LoginViewTests(TestCase):
             reverse("home"),
         )
 
+    def test_get_request_does_not_log_user_out(self):
+        user_model = get_user_model()
+
+        user = user_model.objects.create_user(
+            username="logoutcustomer",
+            password="SecureTestPassword123!",
+        )
+
+        self.client.force_login(user)
+
+        response = self.client.get(reverse("logout"))
+
+        self.assertEqual(response.status_code, 405)
+        self.assertTrue(
+            response.wsgi_request.user.is_authenticated
+        )
 
 class RegistrationViewTests(TestCase):
     def test_registration_page_loads(self):

@@ -1,7 +1,13 @@
 from django.contrib.auth import login, logout
 from django.contrib.auth.forms import AuthenticationForm, UserCreationForm
 from django.shortcuts import redirect, render
+from django.views.decorators.http import require_POST
 
+
+@require_POST
+def logout_view(request):
+    logout(request)
+    return redirect("home")
 
 def login_view(request):
     if request.method == "POST":
@@ -21,12 +27,6 @@ def login_view(request):
         "accounts/login.html",
         {"form": form},
     )
-
-
-def logout_view(request):
-    logout(request)
-    return redirect("home")
-
 
 def register_view(request):
     if request.method == "POST":
