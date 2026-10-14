@@ -62,18 +62,27 @@ a {
     list-style: none;
 }
 
-.nav-links a {
+.nav-links a,
+.nav-links button {
     display: inline-block;
     padding: 0.5rem 0;
+    font: inherit;
     font-weight: 600;
+    color: inherit;
+    background: none;
+    border: none;
+    cursor: pointer;
 }
 
 .nav-links a:hover,
-.nav-links a:focus-visible {
+.nav-links a:focus-visible,
+.nav-links button:hover,
+.nav-links button:focus-visible {
     text-decoration: underline;
 }
 
 .nav-links a:focus-visible,
+.nav-links button:focus-visible,
 .site-brand:focus-visible {
     outline: 3px solid #ffffff;
     outline-offset: 4px;
