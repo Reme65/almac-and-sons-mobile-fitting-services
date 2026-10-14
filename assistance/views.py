@@ -7,13 +7,18 @@ def request_assistance(request):
     if request.method == "POST":
         form = AssistanceRequestForm(request.POST)
 
-        if form.is_valid():
-            assistance_request = form.save()
+    if form.is_valid():
+        assistance_request = form.save(commit=False)
 
-            return redirect(
-                "assistance_confirmation",
-                reference=assistance_request.reference,
-            )
+        if request.user.is_authenticated:
+            assistance_request.customer = request.user
+
+        assistance_request.save()
+
+        return redirect(
+            "assistance_confirmation",
+            reference=assistance_request.reference,
+        )
         
     form = form if request.method == "POST" else AssistanceRequestForm()
 

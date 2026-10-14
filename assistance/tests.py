@@ -941,3 +941,62 @@ class AssistanceCustomerRelationshipTests(TestCase):
                 pk=assistance_request.pk
             ).exists()
         )
+    def test_logged_in_customer_is_linked_to_assistance_request(self):
+        user_model = get_user_model()
+
+        customer = user_model.objects.create_user(
+            username="loggedincustomer",
+            password="SecureTestPassword123!",
+        )
+
+        self.client.force_login(customer)
+
+        form_data = {
+            "vehicle_type": "car",
+            "problem_type": "other",
+            "problem_description": "Vehicle will not start",
+            "location_type": "roadside",
+            "location_description": "Outside the supermarket",
+            "occupant_count": 1,
+            "assistance_needs": "no",
+            "occupant_safety": "yes",
+            "contact_first_name": "Test",
+            "contact_last_name": "Customer",
+            "contact_phone": "07123456789",
+        }
+          
+        response = self.client.post(
+            reverse("request_assistance"),
+            data=form_data,
+        )
+
+        self.assertEqual(response.status_code, 302)
+
+        assistance_request = AssistanceRequest.objects.latest("created_at")
+
+        self.assertEqual(assistance_request.customer, customer)
+    def test_guest_assistance_request_has_no_customer(self):
+        form_data = {
+            "vehicle_type": "car",
+            "problem_type": "other",
+            "problem_description": "Flat battery",
+            "location_type": "roadside",
+            "location_description": "Supermarket car park",
+            "occupant_count": 1,
+            "assistance_needs": "no",
+            "occupant_safety": "yes",
+            "contact_first_name": "Guest",
+            "contact_last_name": "Customer",
+            "contact_phone": "07123456789",
+        }
+
+        response = self.client.post(
+            reverse("request_assistance"),
+            data=form_data,
+        )
+
+        self.assertEqual(response.status_code, 302)
+
+        assistance_request = AssistanceRequest.objects.latest("created_at")
+
+        self.assertIsNone(assistance_request.customer)
