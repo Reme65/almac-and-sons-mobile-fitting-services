@@ -5,9 +5,9 @@ from django.urls import reverse
 import uuid
 from .forms import AssistanceRequestForm
 from .models import AssistanceRequest
+from django.contrib.auth import get_user_model
 
 class VehicleTypeValidationTests(SimpleTestCase):
-
     def test_valid_vehicle_type_is_accepted(self):
         form = AssistanceRequestForm()
         form.cleaned_data = {"vehicle_type": "car"}
@@ -25,7 +25,6 @@ class VehicleTypeValidationTests(SimpleTestCase):
             form.clean_vehicle_type()
 
 class ProblemTypeValidationTests(SimpleTestCase):
-
     def test_valid_problem_types_are_accepted(self):
         allowed_types = [
             "wont-start",
@@ -56,7 +55,6 @@ class ProblemTypeValidationTests(SimpleTestCase):
         ):
             form.clean_problem_type()
 class LocationTypeValidationTests(SimpleTestCase):
-
     def test_valid_location_types_are_accepted(self):
         allowed_types = [
             "roadside",
@@ -86,7 +84,6 @@ class LocationTypeValidationTests(SimpleTestCase):
         ):
             form.clean_location_type()
 class AssistanceNeedsValidationTests(SimpleTestCase):
-
     def test_valid_assistance_needs_are_accepted(self):
         allowed_values = [
             "yes",
@@ -119,7 +116,6 @@ class AssistanceNeedsValidationTests(SimpleTestCase):
             form.clean_assistance_needs()  
 
 class OccupantSafetyValidationTests(SimpleTestCase):
-
     def test_valid_occupant_safety_values_are_accepted(self):
         allowed_values = [
             "yes",
@@ -152,7 +148,6 @@ class OccupantSafetyValidationTests(SimpleTestCase):
             form.clean_occupant_safety()
 
 class OccupantCountValidationTests(SimpleTestCase):
-
     def test_valid_occupant_counts_are_accepted(self):
         for count in [0, 1, 5, 99]:
             with self.subTest(count=count):
@@ -185,7 +180,6 @@ class OccupantCountValidationTests(SimpleTestCase):
             form.clean_occupant_count()
 
 class ContactPhoneValidationTests(SimpleTestCase):
-
     def test_valid_phone_numbers_are_accepted(self):
         valid_numbers = [
             "07123 456789",
@@ -248,7 +242,6 @@ class ContactPhoneValidationTests(SimpleTestCase):
             form.clean_contact_phone()
 
 class LocationPostcodeValidationTests(SimpleTestCase):
-
     def test_blank_postcode_is_accepted(self):
         form = AssistanceRequestForm()
         form.cleaned_data = {"location_postcode": ""}
@@ -299,7 +292,6 @@ class LocationPostcodeValidationTests(SimpleTestCase):
                     form.clean_location_postcode()
 
 class CompleteAssistanceRequestFormTests(SimpleTestCase):
-
     def get_valid_form_data(self):
         return {
             "vehicle_registration": "AB12 CDE",
@@ -376,7 +368,6 @@ class CompleteAssistanceRequestFormTests(SimpleTestCase):
         self.assertIn("contact_email", form.errors)
 
 class AssistanceRequestViewTests(TestCase):
-
     def test_valid_post_creates_assistance_request(self):
         form_data = (
             CompleteAssistanceRequestFormTests()
@@ -792,7 +783,6 @@ class AssistanceRequestViewTests(TestCase):
     )
 
 class AssistanceConfirmationViewTests(TestCase):
-
     def test_confirmation_page_displays_saved_request(self):
         assistance_request = AssistanceRequest.objects.create(
             vehicle_type="car",
@@ -826,7 +816,6 @@ class AssistanceConfirmationViewTests(TestCase):
         )
 
 class AssistanceConfirmationTemplateTests(SimpleTestCase):
-
     def test_confirmation_template_renders(self):
         from django.template.loader import render_to_string
 
@@ -865,4 +854,90 @@ class AssistanceConfirmationTemplateTests(SimpleTestCase):
             html,
         )
         self.assertIn("View Services", html)
-        
+
+class AssistanceCustomerRelationshipTests(TestCase):
+    def test_assistance_request_can_be_linked_to_customer(self):
+        user_model = get_user_model()
+
+        customer = user_model.objects.create_user(
+            username="testcustomer",
+            password="SecureTestPassword123!",
+        )
+
+        assistance_request = AssistanceRequest.objects.create(
+            customer=customer,
+            vehicle_type="car",
+            problem_type="other",
+            problem_description="Vehicle will not start",
+            location_type="roadside",
+            location_description="Outside the supermarket",
+            occupant_count=1,
+            assistance_needs="no",
+            occupant_safety="yes",
+            contact_first_name="Test",
+            contact_last_name="Customer",
+            contact_phone="07123456789",
+        )
+
+        saved_request = AssistanceRequest.objects.get(
+            pk=assistance_request.pk
+        )
+
+        self.assertEqual(saved_request.customer, customer)
+        self.assertIn(
+            saved_request,
+            customer.assistance_requests.all(),
+        )
+    def test_assistance_request_can_exist_without_customer(self):
+        assistance_request = AssistanceRequest.objects.create(
+            vehicle_type="car",
+            problem_type="other",
+            problem_description="Flat battery",
+            location_type="roadside",
+            location_description="Supermarket car park",
+            occupant_count=1,
+            assistance_needs="no",
+            occupant_safety="yes",
+            contact_first_name="Guest",
+            contact_last_name="Customer",
+            contact_phone="07123456789",
+        )
+
+        saved_request = AssistanceRequest.objects.get(
+            pk=assistance_request.pk
+        )
+
+        self.assertIsNone(saved_request.customer)
+    def test_deleting_customer_preserves_assistance_request(self):
+        user_model = get_user_model()
+
+        customer = user_model.objects.create_user(
+            username="deletedcustomer",
+            password="SecureTestPassword123!",
+        )
+
+        assistance_request = AssistanceRequest.objects.create(
+            customer=customer,
+            vehicle_type="car",
+            problem_type="other",
+            problem_description="Engine will not start",
+            location_type="roadside",
+            location_description="Outside the garage",
+            occupant_count=1,
+            assistance_needs="no",
+            occupant_safety="yes",
+            contact_first_name="Test",
+            contact_last_name="Customer",
+            contact_phone="07123456789",
+        )
+
+        customer.delete()
+
+        assistance_request.refresh_from_db()
+
+        self.assertIsNone(assistance_request.customer)
+        self.assertTrue(
+            AssistanceRequest.objects.filter(
+                pk=assistance_request.pk
+            ).exists()
+        )

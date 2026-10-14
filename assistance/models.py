@@ -1,6 +1,7 @@
 import uuid
 
 from django.db import models
+from django.conf import settings
 
 
 class AssistanceRequest(models.Model):
@@ -10,6 +11,14 @@ class AssistanceRequest(models.Model):
         IN_PROGRESS = "in_progress", "In progress"
         COMPLETED = "completed", "Completed"
         CANCELLED = "cancelled", "Cancelled"
+
+    customer = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        related_name="assistance_requests",
+    )
 
     reference = models.UUIDField(
         default=uuid.uuid4,
