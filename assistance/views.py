@@ -1,25 +1,35 @@
 from django.shortcuts import get_object_or_404, redirect, render
-
+from django.http import Http404
 from .forms import AssistanceRequestForm
 from .models import AssistanceRequest
+
 
 def request_assistance(request):
     if request.method == "POST":
         form = AssistanceRequestForm(request.POST)
 
-    if form.is_valid():
-        assistance_request = form.save(commit=False)
+        if form.is_valid():
+            assistance_request = form.save(commit=False)
 
-        if request.user.is_authenticated:
-            assistance_request.customer = request.user
+            if request.user.is_authenticated:
+                assistance_request.customer = request.user
 
-        assistance_request.save()
+            assistance_request.save()
 
-        return redirect(
-            "assistance_confirmation",
-            reference=assistance_request.reference,
-        )
-        
+            if not request.user.is_authenticated:
+                guest_references = request.session.get(
+                    "guest_assistance_references", []
+                )
+
+                guest_references.append(str(assistance_request.reference))
+
+                request.session["guest_assistance_references"] = guest_references
+
+            return redirect(
+                "assistance_confirmation",
+                reference=assistance_request.reference,
+            )
+
     form = form if request.method == "POST" else AssistanceRequestForm()
 
     error_step = 1
@@ -62,12 +72,27 @@ def request_assistance(request):
             "error_step": error_step,
        },
     )
-        
+
 def assistance_confirmation(request, reference):
     assistance_request = get_object_or_404(
         AssistanceRequest,
         reference=reference,
     )
+
+    if assistance_request.customer_id is not None:
+        if (
+            not request.user.is_authenticated
+            or assistance_request.customer_id != request.user.pk
+        ):
+            raise Http404("Assistance request not found.")
+
+    else:
+        guest_references = request.session.get(
+            "guest_assistance_references", []
+        )
+
+        if str(assistance_request.reference) not in guest_references:
+            raise Http404("Assistance request not found.")
 
     return render(
         request,

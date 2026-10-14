@@ -7,7 +7,9 @@ from .forms import AssistanceRequestForm
 from .models import AssistanceRequest
 from django.contrib.auth import get_user_model
 
+
 class VehicleTypeValidationTests(SimpleTestCase):
+
     def test_valid_vehicle_type_is_accepted(self):
         form = AssistanceRequestForm()
         form.cleaned_data = {"vehicle_type": "car"}
@@ -24,7 +26,9 @@ class VehicleTypeValidationTests(SimpleTestCase):
         ):
             form.clean_vehicle_type()
 
+
 class ProblemTypeValidationTests(SimpleTestCase):
+
     def test_valid_problem_types_are_accepted(self):
         allowed_types = [
             "wont-start",
@@ -54,7 +58,10 @@ class ProblemTypeValidationTests(SimpleTestCase):
             "Please select a valid problem type.",
         ):
             form.clean_problem_type()
+
+
 class LocationTypeValidationTests(SimpleTestCase):
+
     def test_valid_location_types_are_accepted(self):
         allowed_types = [
             "roadside",
@@ -83,7 +90,10 @@ class LocationTypeValidationTests(SimpleTestCase):
             "Please select a valid location type.",
         ):
             form.clean_location_type()
+
+
 class AssistanceNeedsValidationTests(SimpleTestCase):
+
     def test_valid_assistance_needs_are_accepted(self):
         allowed_values = [
             "yes",
@@ -113,9 +123,11 @@ class AssistanceNeedsValidationTests(SimpleTestCase):
             ValidationError,
             "Please select a valid assistance needs option.",
         ):
-            form.clean_assistance_needs()  
+            form.clean_assistance_needs()
+
 
 class OccupantSafetyValidationTests(SimpleTestCase):
+
     def test_valid_occupant_safety_values_are_accepted(self):
         allowed_values = [
             "yes",
@@ -147,7 +159,9 @@ class OccupantSafetyValidationTests(SimpleTestCase):
         ):
             form.clean_occupant_safety()
 
+
 class OccupantCountValidationTests(SimpleTestCase):
+
     def test_valid_occupant_counts_are_accepted(self):
         for count in [0, 1, 5, 99]:
             with self.subTest(count=count):
@@ -179,7 +193,9 @@ class OccupantCountValidationTests(SimpleTestCase):
         ):
             form.clean_occupant_count()
 
+
 class ContactPhoneValidationTests(SimpleTestCase):
+
     def test_valid_phone_numbers_are_accepted(self):
         valid_numbers = [
             "07123 456789",
@@ -241,7 +257,9 @@ class ContactPhoneValidationTests(SimpleTestCase):
         ):
             form.clean_contact_phone()
 
+
 class LocationPostcodeValidationTests(SimpleTestCase):
+
     def test_blank_postcode_is_accepted(self):
         form = AssistanceRequestForm()
         form.cleaned_data = {"location_postcode": ""}
@@ -291,7 +309,9 @@ class LocationPostcodeValidationTests(SimpleTestCase):
                 ):
                     form.clean_location_postcode()
 
+
 class CompleteAssistanceRequestFormTests(SimpleTestCase):
+
     def get_valid_form_data(self):
         return {
             "vehicle_registration": "AB12 CDE",
@@ -356,7 +376,7 @@ class CompleteAssistanceRequestFormTests(SimpleTestCase):
 
         form = AssistanceRequestForm(data=form_data)
 
-        self.assertTrue(form.is_valid(), form.errors.as_json())           
+        self.assertTrue(form.is_valid(), form.errors.as_json())
 
     def test_invalid_contact_email_is_rejected(self):
         form_data = self.get_valid_form_data()
@@ -367,7 +387,9 @@ class CompleteAssistanceRequestFormTests(SimpleTestCase):
         self.assertFalse(form.is_valid())
         self.assertIn("contact_email", form.errors)
 
+
 class AssistanceRequestViewTests(TestCase):
+
     def test_valid_post_creates_assistance_request(self):
         form_data = (
             CompleteAssistanceRequestFormTests()
@@ -411,7 +433,7 @@ class AssistanceRequestViewTests(TestCase):
         form_data = (
             CompleteAssistanceRequestFormTests()
             .get_valid_form_data()
-        ) 
+        )
         form_data["location_postcode"] = "12345"
 
         response = self.client.post(
@@ -621,7 +643,7 @@ class AssistanceRequestViewTests(TestCase):
         self.assertContains(
             response,
             "This field is required.",
-        )  
+        )
 
     def test_missing_assistance_needs_error_is_displayed(self):
         form_data = (
@@ -702,7 +724,7 @@ class AssistanceRequestViewTests(TestCase):
         self.assertContains(
             response,
             "This field is required.",
-        ) 
+        )
     def test_missing_contact_last_name_error_is_displayed(self):
         form_data = (
             CompleteAssistanceRequestFormTests()
@@ -740,7 +762,7 @@ class AssistanceRequestViewTests(TestCase):
             )
         )
 
-        self.assertEqual(response.status_code, 404)       
+        self.assertEqual(response.status_code, 404)
 
     def test_invalid_post_preserves_vehicle_registration(self):
         form_data = (
@@ -775,15 +797,56 @@ class AssistanceRequestViewTests(TestCase):
         saved_request = AssistanceRequest.objects.get()
 
         self.assertRedirects(
-        response,
-        reverse(
+            response,
+            reverse(
             "assistance_confirmation",
             kwargs={"reference": saved_request.reference},
         ),
     )
 
 class AssistanceConfirmationViewTests(TestCase):
+
     def test_confirmation_page_displays_saved_request(self):
+        assistance_request = AssistanceRequest.objects.create(
+            vehicle_type="car",
+            problem_type="breakdown",
+            problem_description="Engine stopped.",
+            location_type="roadside",
+            location_description="A350 lay-by",
+            occupant_count=1,
+            assistance_needs="no",
+            occupant_safety="yes",
+            contact_first_name="Test",
+            contact_last_name="Customer",
+            contact_phone="07123456789",
+        )
+
+        session = self.client.session
+
+        session["guest_assistance_references"] = [
+            str(assistance_request.reference)
+        ]
+
+        session.save()
+
+        response = self.client.get(
+            reverse(
+                "assistance_confirmation",
+                kwargs={"reference": assistance_request.reference},
+            )
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(
+            response,
+            "assistance-confirmation.html",
+        )
+        self.assertEqual(
+            response.context["assistance_request"],
+            assistance_request,
+        )
+
+    def test_guest_confirmation_denied_without_session_permission(self):
         assistance_request = AssistanceRequest.objects.create(
             vehicle_type="car",
             problem_type="breakdown",
@@ -805,6 +868,79 @@ class AssistanceConfirmationViewTests(TestCase):
             )
         )
 
+        self.assertEqual(response.status_code, 404)
+
+    def test_customer_cannot_view_another_customers_confirmation(self):
+        user_model = get_user_model()
+
+        customer_a = user_model.objects.create_user(
+            username="customer_a",
+            password="SecureTestPassword123!",
+        )
+
+        customer_b = user_model.objects.create_user(
+            username="customer_b",
+            password="SecureTestPassword123!",
+        )
+
+        assistance_request = AssistanceRequest.objects.create(
+            customer=customer_a,
+            vehicle_type="car",
+            problem_type="breakdown",
+            problem_description="Engine stopped.",
+            location_type="roadside",
+            location_description="A350 lay-by",
+            occupant_count=1,
+            assistance_needs="no",
+            occupant_safety="yes",
+            contact_first_name="Test",
+            contact_last_name="Customer",
+            contact_phone="07123456789",
+        )
+
+        self.client.force_login(customer_b)
+
+        response = self.client.get(
+            reverse(
+                "assistance_confirmation",
+                kwargs={"reference": assistance_request.reference},
+            )
+        )
+
+        self.assertEqual(response.status_code, 404)
+
+    def test_customer_can_view_own_confirmation(self):
+        user_model = get_user_model()
+
+        customer = user_model.objects.create_user(
+            username="ownercustomer",
+            password="SecureTestPassword123!",
+        )
+
+        assistance_request = AssistanceRequest.objects.create(
+            customer=customer,
+            vehicle_type="car",
+            problem_type="breakdown",
+            problem_description="Engine stopped.",
+            location_type="roadside",
+            location_description="A350 lay-by",
+            occupant_count=1,
+            assistance_needs="no",
+            occupant_safety="yes",
+            contact_first_name="Test",
+            contact_last_name="Customer",
+            contact_phone="07123456789",
+        )
+
+        self.client.force_login(customer)
+
+        response = self.client.get(
+            reverse(
+                "assistance_confirmation",
+                kwargs={"reference": assistance_request.reference},
+            )
+        )
+
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(
             response,
@@ -815,7 +951,44 @@ class AssistanceConfirmationViewTests(TestCase):
             assistance_request,
         )
 
+    def test_logged_out_customer_cannot_view_confirmation(self):
+        user_model = get_user_model()
+
+        customer = user_model.objects.create_user(
+            username="loggedoutcustomer",
+            password="SecureTestPassword123!",
+        )
+
+        assistance_request = AssistanceRequest.objects.create(
+            customer=customer,
+            vehicle_type="car",
+            problem_type="breakdown",
+            problem_description="Engine stopped.",
+            location_type="roadside",
+            location_description="A350 lay-by",
+            occupant_count=1,
+            assistance_needs="no",
+            occupant_safety="yes",
+            contact_first_name="Test",
+            contact_last_name="Customer",
+            contact_phone="07123456789",
+        )
+
+        self.client.force_login(customer)
+        self.client.logout()
+
+        response = self.client.get(
+            reverse(
+                "assistance_confirmation",
+                kwargs={"reference": assistance_request.reference},
+            )
+        )
+
+        self.assertEqual(response.status_code, 404)
+
 class AssistanceConfirmationTemplateTests(SimpleTestCase):
+
+
     def test_confirmation_template_renders(self):
         from django.template.loader import render_to_string
 
@@ -855,7 +1028,9 @@ class AssistanceConfirmationTemplateTests(SimpleTestCase):
         )
         self.assertIn("View Services", html)
 
+
 class AssistanceCustomerRelationshipTests(TestCase):
+
     def test_assistance_request_can_be_linked_to_customer(self):
         user_model = get_user_model()
 
@@ -888,6 +1063,7 @@ class AssistanceCustomerRelationshipTests(TestCase):
             saved_request,
             customer.assistance_requests.all(),
         )
+
     def test_assistance_request_can_exist_without_customer(self):
         assistance_request = AssistanceRequest.objects.create(
             vehicle_type="car",
@@ -908,6 +1084,7 @@ class AssistanceCustomerRelationshipTests(TestCase):
         )
 
         self.assertIsNone(saved_request.customer)
+
     def test_deleting_customer_preserves_assistance_request(self):
         user_model = get_user_model()
 
@@ -941,6 +1118,7 @@ class AssistanceCustomerRelationshipTests(TestCase):
                 pk=assistance_request.pk
             ).exists()
         )
+
     def test_logged_in_customer_is_linked_to_assistance_request(self):
         user_model = get_user_model()
 
@@ -964,7 +1142,7 @@ class AssistanceCustomerRelationshipTests(TestCase):
             "contact_last_name": "Customer",
             "contact_phone": "07123456789",
         }
-          
+
         response = self.client.post(
             reverse("request_assistance"),
             data=form_data,
@@ -975,6 +1153,7 @@ class AssistanceCustomerRelationshipTests(TestCase):
         assistance_request = AssistanceRequest.objects.latest("created_at")
 
         self.assertEqual(assistance_request.customer, customer)
+
     def test_guest_assistance_request_has_no_customer(self):
         form_data = {
             "vehicle_type": "car",
