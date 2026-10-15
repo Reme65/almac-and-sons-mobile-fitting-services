@@ -3,6 +3,7 @@ from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.forms import UserCreationForm
 from django.test import TestCase
 from django.urls import reverse
+from assistance.models import AssistanceRequest
 
 
 class LoginViewTests(TestCase):
@@ -84,6 +85,50 @@ class LoginViewTests(TestCase):
             reverse("home"),
         )
 
+    def test_login_redirects_to_requested_dashboard(self):
+        user_model = get_user_model()
+
+        user_model.objects.create_user(
+            username="dashboardcustomer",
+            password="SecureTestPassword123!",
+        )
+
+        response = self.client.post(
+            reverse("login"),
+            {
+                "username": "dashboardcustomer",
+                "password": "SecureTestPassword123!",
+                "next": reverse("dashboard"),
+            },
+        )
+
+        self.assertRedirects(
+            response,
+            reverse("dashboard"),
+        )
+
+    def test_login_rejects_external_redirect(self):
+        user_model = get_user_model()
+
+        user_model.objects.create_user(
+            username="securitycustomer",
+            password="SecureTestPassword123!",
+        )
+
+        response = self.client.post(
+            reverse("login"),
+            {
+                "username": "securitycustomer",
+                "password": "SecureTestPassword123!",
+                "next": "https://example.com/unsafe",
+            },
+        )
+
+        self.assertRedirects(
+            response,
+            reverse("home"),
+        )
+
     def test_logout_ends_authenticated_session(self):
         user_model = get_user_model()
         user = user_model.objects.create_user(
@@ -118,7 +163,9 @@ class LoginViewTests(TestCase):
             response.wsgi_request.user.is_authenticated
         )
 
+
 class RegistrationViewTests(TestCase):
+
     def test_registration_page_loads(self):
         response = self.client.get(reverse("register"))
 
@@ -149,6 +196,7 @@ class RegistrationViewTests(TestCase):
             user_model.objects.filter(username="newcustomer").count(),
             1,
         )
+        self.assertRedirects(response, reverse("login"))
 
     def test_registration_rejects_mismatched_passwords(self):
         user_model = get_user_model()
@@ -213,4 +261,95 @@ class RegistrationViewTests(TestCase):
         self.assertRedirects(
             response,
             reverse("login"),
+        )
+
+
+class DashboardViewTests(TestCase):
+
+    def test_dashboard_requires_login(self):
+        response = self.client.get(
+            reverse("dashboard")
+        )
+
+        self.assertRedirects(
+            response,
+            f'{reverse("login")}?next={reverse("dashboard")}',
+        )
+
+    def test_dashboard_displays_only_own_requests(self):
+        user_model = get_user_model()
+
+        customer_a = user_model.objects.create_user(
+            username="customer_a",
+            password="SecureTestPassword123!",
+        )
+
+        customer_b = user_model.objects.create_user(
+            username="customer_b",
+            password="SecureTestPassword123!",
+        )
+
+        own_request = AssistanceRequest.objects.create(
+            customer=customer_a,
+            vehicle_type="car",
+            problem_type="breakdown",
+            problem_description="Flat battery",
+            location_type="roadside",
+            location_description="Supermarket car park",
+            occupant_count=1,
+            assistance_needs="no",
+            occupant_safety="yes",
+            contact_first_name="Customer",
+            contact_last_name="A",
+            contact_phone="07123456789",
+        )
+
+        other_request = AssistanceRequest.objects.create(
+            customer=customer_b,
+            vehicle_type="car",
+            problem_type="breakdown",
+            problem_description="Engine stopped",
+            location_type="roadside",
+            location_description="A350 lay-by",
+            occupant_count=1,
+            assistance_needs="no",
+            occupant_safety="yes",
+            contact_first_name="Customer",
+            contact_last_name="B",
+            contact_phone="07123456789",
+        )
+
+        self.client.force_login(customer_a)
+
+        response = self.client.get(reverse("dashboard"))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, str(own_request.reference))
+        self.assertNotContains(response, str(other_request.reference))
+
+        self.assertQuerySetEqual(
+            response.context["assistance_requests"],
+            [own_request],
+        )
+
+    def test_dashboard_displays_message_when_no_requests(self):
+        user_model = get_user_model()
+
+        customer = user_model.objects.create_user(
+            username="newcustomer",
+            password="SecureTestPassword123!",
+        )
+
+        self.client.force_login(customer)
+
+        response = self.client.get(reverse("dashboard"))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(
+            response,
+            "You haven't submitted any assistance requests yet.",
+        )
+        self.assertQuerySetEqual(
+            response.context["assistance_requests"],
+            [],
         )

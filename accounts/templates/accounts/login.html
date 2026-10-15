@@ -8,9 +8,19 @@
     <h1>Login</h1>
 
     <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Login</button>
-    </form>
+    {% csrf_token %}
+
+    {% if request.GET.next %}
+        <input
+            type="hidden"
+            name="next"
+            value="{{ request.GET.next }}"
+        >
+    {% endif %}
+
+    {{ form.as_p }}
+
+    <button type="submit">Login</button>
+</form>
 </body>
 </html>
