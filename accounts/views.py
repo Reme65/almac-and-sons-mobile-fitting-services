@@ -12,6 +12,7 @@ def logout_view(request):
     logout(request)
     return redirect("home")
 
+
 def login_view(request):
     if request.method == "POST":
         form = AuthenticationForm(
@@ -42,6 +43,7 @@ def login_view(request):
         {"form": form},
     )
 
+
 def register_view(request):
     if request.method == "POST":
         form = UserCreationForm(request.POST)
@@ -57,6 +59,7 @@ def register_view(request):
         "accounts/register.html",
         {"form": form},
     )
+
 
 @login_required
 def dashboard_view(request):
