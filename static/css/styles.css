@@ -1082,6 +1082,72 @@ a {
 .confirmation-button:focus-visible {
     text-decoration: underline;
 }
+/* ========================================
+   Customer Dashboard
+======================================== */
+
+.dashboard-content {
+    width: min(1100px, 92%);
+    margin: 0 auto;
+    padding: 4rem 0;
+}
+
+.dashboard-content h1 {
+    margin-bottom: 1rem;
+    color: #003366;
+    font-size: 2.5rem;
+}
+
+.dashboard-content h2 {
+    margin-bottom: 2rem;
+    color: #003366;
+    font-size: 1.75rem;
+}
+
+.dashboard-request-list {
+    display: grid;
+    gap: 1.5rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+.dashboard-request-card {
+    padding: 1.75rem;
+    border: 1px solid #d9e2ec;
+    border-left: 5px solid #003366;
+    border-radius: 8px;
+    background-color: #ffffff;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+}
+
+.dashboard-request-card p {
+    margin-bottom: 0.75rem;
+    color: #334e68;
+}
+
+.dashboard-request-card a {
+    display: inline-block;
+    margin-top: 0.5rem;
+    color: #003366;
+    font-weight: 700;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+}
+
+.dashboard-request-card a:focus-visible {
+    outline: 3px solid #0066cc;
+    outline-offset: 4px;
+}
+
+.dashboard-actions {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-top: 2.5rem;
+}
+
 /* Back to top */
 .back-to-top {
     position: fixed;

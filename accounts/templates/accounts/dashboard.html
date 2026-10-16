@@ -18,9 +18,9 @@
         <h2>My Assistance Requests</h2>
 
         {% if assistance_requests %}
-            <ul>
+            <ul class="dashboard-request-list">
                 {% for assistance_request in assistance_requests %}
-                    <li>
+                    <li class="dashboard-request-card">
                         <p>
                             <strong>Reference:</strong>
                             {{ assistance_request.reference }}
@@ -45,14 +45,15 @@
         {% else %}
             <p>You haven't submitted any assistance requests yet.</p>
         {% endif %}
-
-        <a href="{% url 'request_assistance' %}">
+    <div class="dashboard-actions">
+        <a href="{% url 'request_assistance' %}" class="button button-primary">
             Request Assistance
         </a>
 
-        <p>
-            <a href="{% url 'home' %}">Return to Home</a>
-        </p>
+        <a href="{% url 'home' %}" class="button button-secondary">
+            Return to Home
+        </a>
+    </div>
     </main>
 </body>
 </html>
