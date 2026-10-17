@@ -1,4 +1,5 @@
 from django.contrib.auth.decorators import login_required
+from django.contrib.admin.views.decorators import staff_member_required
 from assistance.models import AssistanceRequest
 from django.utils.http import url_has_allowed_host_and_scheme
 from django.contrib.auth import login, logout
@@ -70,5 +71,18 @@ def dashboard_view(request):
     return render(
         request,
         "accounts/dashboard.html",
+        {"assistance_requests": assistance_requests},
+    )
+
+
+@staff_member_required(login_url="login")
+def staff_dashboard_view(request):
+    assistance_requests = AssistanceRequest.objects.all().order_by(
+        "-created_at"
+    )
+
+    return render(
+        request,
+        "accounts/staff_dashboard.html",
         {"assistance_requests": assistance_requests},
     )

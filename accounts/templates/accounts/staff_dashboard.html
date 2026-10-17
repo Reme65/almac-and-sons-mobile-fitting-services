@@ -1,0 +1,51 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Staff Dashboard | Almac & Sons</title>
+
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+</head>
+
+<body>
+    <main class="dashboard-content">
+        <h1>Staff Dashboard</h1>
+        <h2>Assistance Requests</h2>
+
+        {% if assistance_requests %}
+            <ul class="dashboard-request-list">
+                {% for assistance_request in assistance_requests %}
+                    <li class="dashboard-request-card">
+                        <p>
+                            <strong>Reference:</strong>
+                            {{ assistance_request.reference }}
+                        </p>
+
+                        <p>
+                            <strong>Submitted:</strong>
+                            {{ assistance_request.created_at|date:"d M Y" }}
+                        </p>
+
+                        <p>
+                            <strong>Status:</strong>
+                            {{ assistance_request.get_status_display }}
+                        </p>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>There are no assistance requests yet.</p>
+        {% endif %}
+
+        <div class="dashboard-actions">
+            <a href="{% url 'home' %}" class="button button-secondary">
+                Return to Home
+            </a>
+        </div>
+    </main>
+</body>
+</html>

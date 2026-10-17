@@ -353,3 +353,102 @@ class DashboardViewTests(TestCase):
             response.context["assistance_requests"],
             [],
         )
+
+class StaffDashboardViewTests(TestCase):
+
+    def test_staff_dashboard_requires_login(self):
+        response = self.client.get(
+            reverse("staff_dashboard")
+        )
+
+        self.assertRedirects(
+            response,
+            f'{reverse("login")}?next={reverse("staff_dashboard")}',
+        )
+
+    def test_staff_dashboard_rejects_ordinary_customer(self):
+        user_model = get_user_model()
+
+        customer = user_model.objects.create_user(
+            username="ordinarycustomer",
+            password="SecureTestPassword123!",
+        )
+
+        self.client.force_login(customer)
+
+        response = self.client.get(
+            reverse("staff_dashboard")
+        )
+
+        self.assertRedirects(
+            response,
+            f'{reverse("login")}?next={reverse("staff_dashboard")}',
+        )
+
+    def test_staff_dashboard_allows_staff_member(self):
+        user_model = get_user_model()
+
+        staff_user = user_model.objects.create_user(
+            username="staffmember",
+            password="SecureTestPassword123!",
+            is_staff=True,
+        )
+
+        self.client.force_login(staff_user)
+
+        response = self.client.get(
+            reverse("staff_dashboard")
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(
+            response,
+            "accounts/staff_dashboard.html",
+        )
+        self.assertContains(response, "Staff Dashboard")
+
+    def test_staff_dashboard_displays_all_requests(self):
+        user_model = get_user_model()
+
+        staff_user = user_model.objects.create_user(
+            username="staffviewer",
+            password="SecureTestPassword123!",
+            is_staff=True,
+        )
+
+        customer = user_model.objects.create_user(
+            username="assistancecustomer",
+            password="SecureTestPassword123!",
+        )
+
+        assistance_request = AssistanceRequest.objects.create(
+            customer=customer,
+            vehicle_type="car",
+            problem_type="breakdown",
+            problem_description="Flat battery",
+            location_type="roadside",
+            location_description="Supermarket car park",
+            occupant_count=1,
+            assistance_needs="no",
+            occupant_safety="yes",
+            contact_first_name="Customer",
+            contact_last_name="Test",
+            contact_phone="07123456789",
+        )
+
+        self.client.force_login(staff_user)
+
+        response = self.client.get(
+            reverse("staff_dashboard")
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(
+            response,
+            str(assistance_request.reference),
+        )
+        self.assertQuerySetEqual(
+            response.context["assistance_requests"],
+            [assistance_request],
+        )        
+
