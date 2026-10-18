@@ -452,3 +452,39 @@ class StaffDashboardViewTests(TestCase):
             response.context["assistance_requests"],
             [assistance_request],
         )
+
+    def test_staff_dashboard_displays_request_details(self):
+        user_model = get_user_model()
+
+        staff_user = user_model.objects.create_user(
+            username="detailsstaff",
+            password="SecureTestPassword123!",
+            is_staff=True,
+        )
+
+        AssistanceRequest.objects.create(
+            vehicle_type="car",
+            problem_type="breakdown",
+            problem_description="Flat battery",
+            location_type="roadside",
+            location_description="Supermarket car park",
+            occupant_count=1,
+            assistance_needs="no",
+            occupant_safety="yes",
+            contact_first_name="John",
+            contact_last_name="Smith",
+            contact_phone="07123456789",
+        )
+
+        self.client.force_login(staff_user)
+
+        response = self.client.get(reverse("staff_dashboard"))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "John")
+        self.assertContains(response, "Smith")
+        self.assertContains(response, "07123456789")
+        self.assertContains(response, "Car")
+        self.assertContains(response, "Breakdown")
+        self.assertContains(response, "Supermarket car park")
+        

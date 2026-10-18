@@ -34,6 +34,27 @@
                             <strong>Status:</strong>
                             {{ assistance_request.get_status_display }}
                         </p>
+                        <p>
+                            <strong>Customer:</strong>
+                            {{ assistance_request.contact_first_name }}
+                            {{ assistance_request.contact_last_name }}
+                        </p>
+                        <p>
+                            <strong>Telephone:</strong>
+                            {{ assistance_request.contact_phone }}
+                        </p>
+                        <p>
+                            <strong>Vehicle Type:</strong>
+                            {{ assistance_request.vehicle_type|capfirst }}
+                        </p>
+                        <p>
+                            <strong>Reported Problem:</strong>
+                             {{ assistance_request.problem_type|capfirst }}
+                        </p>
+                        <p>
+                            <strong>Assistance Location:</strong>
+                            {{ assistance_request.location_description }}
+                        </p>
                     </li>
                 {% endfor %}
             </ul>
