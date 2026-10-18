@@ -354,6 +354,7 @@ class DashboardViewTests(TestCase):
             [],
         )
 
+
 class StaffDashboardViewTests(TestCase):
 
     def test_staff_dashboard_requires_login(self):
@@ -450,5 +451,4 @@ class StaffDashboardViewTests(TestCase):
         self.assertQuerySetEqual(
             response.context["assistance_requests"],
             [assistance_request],
-        )        
-
+        )
