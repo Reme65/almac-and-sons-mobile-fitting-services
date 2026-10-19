@@ -50,7 +50,7 @@ class AssistanceRequest(models.Model):
     # Problem details
     problem_type = models.CharField(max_length=30)
     problem_description = models.TextField()
-        # Location details
+    # Location details
     location_type = models.CharField(max_length=30)
     location_postcode = models.CharField(
         max_length=10,
@@ -62,17 +62,17 @@ class AssistanceRequest(models.Model):
         blank=True,
     )
     location_access = models.TextField(blank=True)
-        # Occupants and assistance needs
+    # Occupants and assistance needs
     occupant_count = models.PositiveSmallIntegerField()
     assistance_needs = models.CharField(max_length=10)
     assistance_details = models.TextField(blank=True)
     occupant_safety = models.CharField(max_length=10)
-        # Contact details
+    # Contact details
     contact_first_name = models.CharField(max_length=100)
     contact_last_name = models.CharField(max_length=100)
     contact_phone = models.CharField(max_length=30)
     contact_email = models.EmailField(blank=True)
     contact_notes = models.TextField(blank=True)
-    
+
     def __str__(self):
         return f"{self.reference} — {self.get_status_display()}"

@@ -487,4 +487,3 @@ class StaffDashboardViewTests(TestCase):
         self.assertContains(response, "Car")
         self.assertContains(response, "Breakdown")
         self.assertContains(response, "Supermarket car park")
-        
