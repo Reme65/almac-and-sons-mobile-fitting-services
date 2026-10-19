@@ -1,6 +1,6 @@
 
 from decimal import Decimal
-
+from django.core.exceptions import ValidationError
 from django.test import TestCase
 
 from assistance.models import AssistanceRequest
@@ -32,3 +32,11 @@ class PaymentModelTests(TestCase):
         self.assertEqual(payment.status, Payment.Status.PENDING)
         self.assertEqual(payment.timing, Payment.Timing.ON_COMPLETION)
         self.assertEqual(payment.assistance_request, assistance_request)
+
+    def test_payment_rejects_zero_amount(self):
+        payment = Payment(
+            amount=Decimal("0.00"),
+        )
+
+        with self.assertRaises(ValidationError):
+            payment.full_clean()

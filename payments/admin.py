@@ -1,3 +1,32 @@
+
 from django.contrib import admin
 
-# Register your models here.
+from .models import Payment
+
+
+@admin.register(Payment)
+class PaymentAdmin(admin.ModelAdmin):
+    list_display = (
+        "assistance_request",
+        "amount",
+        "timing",
+        "status",
+        "created_at",
+    )
+
+    list_filter = (
+        "status",
+        "timing",
+    )
+
+    search_fields = (
+        "assistance_request__reference",
+    )
+
+    readonly_fields = (
+        "status",
+        "stripe_checkout_session_id",
+        "stripe_payment_intent_id",
+        "created_at",
+        "paid_at",
+    )
