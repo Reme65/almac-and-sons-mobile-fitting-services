@@ -4,6 +4,7 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 import stripe
 from django.conf import settings
+from django.utils import timezone
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseBadRequest
 from django.shortcuts import get_object_or_404, redirect
@@ -33,7 +34,6 @@ def create_checkout_session(request, payment_id):
     try:
         checkout_session = stripe.checkout.Session.create(
             mode="payment",
-            payment_method_types=["card"],
             line_items=[
                 {
                     "price_data": {
@@ -101,5 +101,23 @@ def stripe_webhook(request):
         return HttpResponseBadRequest("Invalid webhook signature.")
 
     logger.info("Verified Stripe event: %s", event["type"])
+    if event["type"] == "checkout.session.completed":
+        session = event["data"]["object"]
 
+        if session.get("payment_status") == "paid":
+            logger.info(
+                "Stripe confirmed payment for session: %s",
+                session.get("id"),
+            )
+            payment = Payment.objects.filter(
+                stripe_checkout_session_id=session.get("id"),
+                pk=session.get("client_reference_id"),
+            ).first()
+            if payment and payment.status == Payment.Status.PENDING:
+                payment.status = Payment.Status.PAID
+                payment.paid_at = timezone.now()
+                payment.stripe_payment_intent_id = (
+                    session.get("payment_intent") or ""
+                )
+                payment.save()
     return HttpResponse(status=200)
