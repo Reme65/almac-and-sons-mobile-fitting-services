@@ -7,6 +7,7 @@ from assistance import views as assistance_views
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("accounts/", include("accounts.urls")),
+    path("payments/", include("payments.urls")),
     path("", core_views.home, name="home"),
     path("services/", core_views.services, name="services"),
     path(
