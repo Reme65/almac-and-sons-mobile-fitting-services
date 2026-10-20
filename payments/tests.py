@@ -223,3 +223,54 @@ class StripeCheckoutViewTests(TestCase):
                 payment.stripe_payment_intent_id,
                 "pi_original_123",
             )
+
+    def test_webhook_does_not_confirm_unpaid_session(self):
+        user = get_user_model().objects.create_user(
+            username="unpaidwebhookcustomer",
+            password="TestPassword123!",
+        )
+        assistance_request = AssistanceRequest.objects.create(
+            customer=user,
+            vehicle_type="car",
+            problem_type="breakdown",
+            problem_description="Engine will not start",
+            location_type="roadside",
+            location_description="Supermarket car park",
+            occupant_count=1,
+            assistance_needs="no",
+            occupant_safety="yes",
+            contact_first_name="John",
+            contact_last_name="Smith",
+            contact_phone="07123456789",
+        )
+        payment = Payment.objects.create(
+            assistance_request=assistance_request,
+            amount=Decimal("75.00"),
+            stripe_checkout_session_id="cs_test_unpaid_123",
+        )
+        event = {
+            "type": "checkout.session.completed",
+            "data": {
+                "object": {
+                    "id": "cs_test_unpaid_123",
+                    "client_reference_id": str(payment.id),
+                    "payment_status": "unpaid",
+                    "payment_intent": "pi_test_unpaid_123",
+                }
+            },
+        }
+        with patch(
+            "payments.views.stripe.Webhook.construct_event",
+            return_value=event,
+        ):
+            response = self.client.post(
+                "/payments/webhook/",
+                data="{}",
+                content_type="application/json",
+                HTTP_STRIPE_SIGNATURE="test_signature",
+            )
+        self.assertEqual(response.status_code, 200)
+        payment.refresh_from_db()
+        self.assertEqual(payment.status, Payment.Status.PENDING)
+        self.assertIsNone(payment.paid_at)
+        self.assertFalse(payment.stripe_payment_intent_id)
