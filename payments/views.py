@@ -9,7 +9,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseBadRequest
 from django.shortcuts import get_object_or_404, redirect
 from django.views.decorators.http import require_POST
-
+from assistance.models import AssistanceRequest
 from .models import Payment
 
 
@@ -25,6 +25,13 @@ def create_checkout_session(request, payment_id):
         assistance_request__customer=request.user,
         status=Payment.Status.PENDING,
     )
+    if (
+        payment.timing == Payment.Timing.ON_COMPLETION
+        and payment.assistance_request.status != AssistanceRequest.Status.COMPLETED
+    ):
+        return HttpResponseBadRequest(
+        "Payment is not due until assistance is completed."
+       )
 
     if payment.amount <= 0:
         return HttpResponseBadRequest("Invalid payment amount.")
@@ -79,6 +86,7 @@ def payment_cancel(request):
         "No payment has been confirmed."
     )
 
+
 @csrf_exempt
 @require_POST
 def stripe_webhook(request):
@@ -103,21 +111,22 @@ def stripe_webhook(request):
     logger.info("Verified Stripe event: %s", event["type"])
     if event["type"] == "checkout.session.completed":
         session = event["data"]["object"]
-
-        if session.get("payment_status") == "paid":
-            logger.info(
-                "Stripe confirmed payment for session: %s",
-                session.get("id"),
+    if hasattr(session, "to_dict"):
+       session = session.to_dict()
+    if session.get("payment_status") == "paid":
+        logger.info(
+            "Stripe confirmed payment for session: %s",
+            session.get("id"),
+        )
+        payment = Payment.objects.filter(
+            stripe_checkout_session_id=session.get("id"),
+            pk=session.get("client_reference_id"),
+        ).first()
+        if payment and payment.status == Payment.Status.PENDING:
+            payment.status = Payment.Status.PAID
+            payment.paid_at = timezone.now()
+            payment.stripe_payment_intent_id = (
+                session.get("payment_intent") or ""
             )
-            payment = Payment.objects.filter(
-                stripe_checkout_session_id=session.get("id"),
-                pk=session.get("client_reference_id"),
-            ).first()
-            if payment and payment.status == Payment.Status.PENDING:
-                payment.status = Payment.Status.PAID
-                payment.paid_at = timezone.now()
-                payment.stripe_payment_intent_id = (
-                    session.get("payment_intent") or ""
-                )
-                payment.save()
+            payment.save()
     return HttpResponse(status=200)

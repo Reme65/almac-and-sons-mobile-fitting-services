@@ -73,6 +73,7 @@ class StripeCheckoutViewTests(TestCase):
         payment = Payment.objects.create(
             assistance_request=assistance_request,
             amount=Decimal("75.00"),
+            timing=Payment.Timing.UPFRONT,
         )
 
         request = RequestFactory().post("/payments/checkout/")

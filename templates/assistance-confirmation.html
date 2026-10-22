@@ -86,7 +86,35 @@
                 <span>{{ assistance_request.get_status_display }}</span>
             </p>
         </div>
-        
+        {% if payment %}
+        <section class="confirmation-payment" aria-labelledby="payment-heading">
+            <h2 id="payment-heading">Payment information</h2>
+
+            <p>
+                <strong>Amount:</strong> £{{ payment.amount }}
+            </p>
+
+            <p>
+                <strong>Payment timing:</strong>
+                {{ payment.get_timing_display }}
+            </p>
+
+            <p>
+                Your payment details have been prepared by our team.
+            </p>
+            {% if user.is_authenticated %}
+                {% if payment.timing == "upfront" or assistance_request.status == "completed" %}
+                    <form method="post" action="{% url 'payments:create_checkout_session' payment.id %}">
+                        {% csrf_token %}
+                        <button type="submit" class="confirmation-button">
+                            Pay Now
+                        </button>
+                    </form>
+                {% endif %}
+            {% endif %}
+        </section>
+        {% endif %}
+
         <section class="confirmation-next-steps" aria-labelledby="next-steps-heading">
             <h2 id="next-steps-heading">What happens next?</h2>
 

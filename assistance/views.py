@@ -94,8 +94,18 @@ def assistance_confirmation(request, reference):
         if str(assistance_request.reference) not in guest_references:
             raise Http404("Assistance request not found.")
 
+    payment = (
+        assistance_request.payments
+        .filter(status="pending")
+        .order_by("-created_at")
+        .first()
+    )
+
     return render(
         request,
         "assistance-confirmation.html",
-        {"assistance_request": assistance_request},
+        {
+            "assistance_request": assistance_request,
+            "payment": payment,
+        },   
     )
