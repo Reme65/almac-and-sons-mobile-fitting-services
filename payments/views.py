@@ -111,22 +111,27 @@ def stripe_webhook(request):
     logger.info("Verified Stripe event: %s", event["type"])
     if event["type"] == "checkout.session.completed":
         session = event["data"]["object"]
-    if hasattr(session, "to_dict"):
-       session = session.to_dict()
-    if session.get("payment_status") == "paid":
-        logger.info(
-            "Stripe confirmed payment for session: %s",
-            session.get("id"),
-        )
-        payment = Payment.objects.filter(
-            stripe_checkout_session_id=session.get("id"),
-            pk=session.get("client_reference_id"),
-        ).first()
-        if payment and payment.status == Payment.Status.PENDING:
-            payment.status = Payment.Status.PAID
-            payment.paid_at = timezone.now()
-            payment.stripe_payment_intent_id = (
-                session.get("payment_intent") or ""
+
+        if hasattr(session, "to_dict"):
+            session = session.to_dict()
+
+        if session.get("payment_status") == "paid":
+            logger.info(
+                "Stripe confirmed payment for session: %s",
+                session.get("id"),
             )
-            payment.save()
+
+            payment = Payment.objects.filter(
+                stripe_checkout_session_id=session.get("id"),
+                pk=session.get("client_reference_id"),
+            ).first()
+
+            if payment and payment.status == Payment.Status.PENDING:
+                payment.status = Payment.Status.PAID
+                payment.paid_at = timezone.now()
+                payment.stripe_payment_intent_id = (
+                     session.get("payment_intent") or ""
+                )
+                payment.save()
+
     return HttpResponse(status=200)
