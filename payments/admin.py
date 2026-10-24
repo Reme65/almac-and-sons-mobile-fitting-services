@@ -8,6 +8,7 @@ from .models import Payment
 class PaymentAdmin(admin.ModelAdmin):
     list_display = (
         "assistance_request",
+        "customer_name",
         "amount",
         "timing",
         "status",
@@ -31,3 +32,8 @@ class PaymentAdmin(admin.ModelAdmin):
         "created_at",
         "paid_at",
     )
+
+    @admin.display(description="Customer")
+    def customer_name(self, obj):
+        request = obj.assistance_request
+        return f"{request.contact_first_name} {request.contact_last_name}"
