@@ -23,6 +23,8 @@ class PaymentAdmin(admin.ModelAdmin):
 
     search_fields = (
         "assistance_request__reference",
+        "assistance_request__contact_first_name",
+        "assistance_request__contact_last_name",
     )
 
     readonly_fields = (
