@@ -12,6 +12,7 @@ class PaymentAdmin(admin.ModelAdmin):
         "timing",
         "status",
         "created_at",
+        "paid_at",
     )
 
     list_filter = (
