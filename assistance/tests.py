@@ -1,11 +1,14 @@
 from django.core.exceptions import ValidationError
 from django.test import SimpleTestCase, TestCase
 from django.urls import reverse
+from django.contrib import admin
 
 import uuid
 from .forms import AssistanceRequestForm
 from .models import AssistanceRequest
 from django.contrib.auth import get_user_model
+from payments.models import Payment
+from .admin import AssistanceRequestAdmin
 
 
 class VehicleTypeValidationTests(SimpleTestCase):
@@ -804,6 +807,7 @@ class AssistanceRequestViewTests(TestCase):
         ),
     )
 
+
 class AssistanceConfirmationViewTests(TestCase):
 
     def test_confirmation_page_displays_saved_request(self):
@@ -848,6 +852,8 @@ class AssistanceConfirmationViewTests(TestCase):
 
     def test_guest_confirmation_denied_without_session_permission(self):
         assistance_request = AssistanceRequest.objects.create(
+            contact_first_name="Joe",
+            contact_last_name="Bloggs",
             vehicle_type="car",
             problem_type="breakdown",
             problem_description="Engine stopped.",
@@ -856,8 +862,6 @@ class AssistanceConfirmationViewTests(TestCase):
             occupant_count=1,
             assistance_needs="no",
             occupant_safety="yes",
-            contact_first_name="Test",
-            contact_last_name="Customer",
             contact_phone="07123456789",
         )
 
@@ -986,8 +990,8 @@ class AssistanceConfirmationViewTests(TestCase):
 
         self.assertEqual(response.status_code, 404)
 
-class AssistanceConfirmationTemplateTests(SimpleTestCase):
 
+class AssistanceConfirmationTemplateTests(SimpleTestCase):
 
     def test_confirmation_template_renders(self):
         from django.template.loader import render_to_string
@@ -1179,3 +1183,39 @@ class AssistanceCustomerRelationshipTests(TestCase):
         assistance_request = AssistanceRequest.objects.latest("created_at")
 
         self.assertIsNone(assistance_request.customer)
+
+
+class AssistanceRequestAdminPaymentTests(TestCase):
+
+    def test_payment_summary_without_payments(self):
+        assistance_request = AssistanceRequest.objects.create(
+            contact_first_name="Joe",
+            contact_last_name="Bloggs",
+            vehicle_type="car",
+            problem_type="other",
+            problem_description="Flat battery",
+            location_type="roadside",
+            location_description="Supermarket car park",
+            occupant_count=1,
+            assistance_needs="no",
+            occupant_safety="yes",
+            contact_phone="07123456789",
+        )
+
+        admin_instance = AssistanceRequestAdmin(
+            AssistanceRequest,
+            admin.site,
+        )
+
+        result = admin_instance.payment_summary(assistance_request)
+
+        self.assertEqual(result, "0 paid / 0 pending")
+
+        admin_instance = AssistanceRequestAdmin(
+            AssistanceRequest,
+            admin.site,
+        )
+
+        result = admin_instance.payment_summary(assistance_request)
+
+        self.assertEqual(result, "0 paid / 0 pending")
