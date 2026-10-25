@@ -30,15 +30,15 @@
                 <li>
                     <a href="{% url 'home' %}" aria-current="page">Home</a>
                 </li>
-
                 <li>
                     <a href="#services">Services</a>
                 </li>
-
                 <li>
                     <a href="#how-it-works">How It Works</a>
                 </li>
-
+                <li>
+                    <a href="{% url 'dashboard' %}">Accounts</a>
+                </li>
             {% if user.is_authenticated %}
                 <li>
                     <form method="post" action="{% url 'logout' %}">
@@ -51,7 +51,6 @@
                   <a href="{% url 'login' %}">Login</a>
                 </li>
             {% endif %}
-
                 <li>
                     <a href="{% url 'register' %}">Register</a>
                 </li>
