@@ -1219,3 +1219,39 @@ class AssistanceRequestAdminPaymentTests(TestCase):
         result = admin_instance.payment_summary(assistance_request)
 
         self.assertEqual(result, "0 paid / 0 pending")
+
+    def test_payment_summary_with_paid_and_pending_payments(self):
+        assistance_request = AssistanceRequest.objects.create(
+            contact_first_name="Joe",
+            contact_last_name="Bloggs",
+            vehicle_type="car",
+            problem_type="other",
+            problem_description="Flat battery",
+            location_type="roadside",
+            location_description="Supermarket car park",
+            occupant_count=1,
+            assistance_needs="no",
+            occupant_safety="yes",
+            contact_phone="07123456789",
+        )
+
+        Payment.objects.create(
+            assistance_request=assistance_request,
+            amount="10.00",
+            status=Payment.Status.PAID,
+        )
+
+        Payment.objects.create(
+            assistance_request=assistance_request,
+            amount="20.00",
+            status=Payment.Status.PENDING,
+        )
+
+        admin_instance = AssistanceRequestAdmin(
+            AssistanceRequest,
+            admin.site,
+        )
+
+        result = admin_instance.payment_summary(assistance_request)
+
+        self.assertEqual(result, "1 paid / 1 pending")
