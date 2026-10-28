@@ -21,3 +21,7 @@ staticfiles/
 # Operating system files
 .DS_Store
 Thumbs.db
+# Original image backups and unused optimised PNG
+/static/images/almac-mobile-logo-original.png
+/static/images/mobile-fitting-service-original.jpg
+/static/images/mobile-fitting-service-small.png
