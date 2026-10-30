@@ -404,6 +404,9 @@ class AssistanceRequestViewTests(TestCase):
             data=form_data,
         )
 
+        self.assertEqual(response.status_code, 302)
+        self.assertEqual(AssistanceRequest.objects.count(), 1)
+
     def test_invalid_post_does_not_create_assistance_request(self):
         form_data = (
             CompleteAssistanceRequestFormTests()
@@ -728,6 +731,7 @@ class AssistanceRequestViewTests(TestCase):
             response,
             "This field is required.",
         )
+
     def test_missing_contact_last_name_error_is_displayed(self):
         form_data = (
             CompleteAssistanceRequestFormTests()
@@ -802,10 +806,10 @@ class AssistanceRequestViewTests(TestCase):
         self.assertRedirects(
             response,
             reverse(
-            "assistance_confirmation",
-            kwargs={"reference": saved_request.reference},
-        ),
-    )
+                "assistance_confirmation",
+                kwargs={"reference": saved_request.reference},
+            ),
+        )
 
 
 class AssistanceConfirmationViewTests(TestCase):

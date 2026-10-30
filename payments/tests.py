@@ -2,7 +2,7 @@
 from decimal import Decimal
 from django.core.exceptions import ValidationError
 from django.test import TestCase
-from unittest.mock import patch, MagicMock
+from unittest.mock import patch
 from django.utils import timezone
 import stripe
 from django.contrib.auth import get_user_model
