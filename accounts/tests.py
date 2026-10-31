@@ -7,6 +7,7 @@ from assistance.models import AssistanceRequest
 
 
 class LoginViewTests(TestCase):
+
     def test_login_page_loads(self):
         response = self.client.get(reverse("login"))
 
@@ -163,6 +164,23 @@ class LoginViewTests(TestCase):
             response.wsgi_request.user.is_authenticated
         )
 
+    def test_authenticated_user_redirected_from_login(self):
+        user_model = get_user_model()
+
+        user = user_model.objects.create_user(
+            username="loggedincustomer",
+            password="SecureTestPassword123!",
+        )
+
+        self.client.force_login(user)
+
+        response = self.client.get(reverse("login"))
+
+        self.assertRedirects(
+            response,
+            reverse("dashboard"),
+        )
+
 
 class RegistrationViewTests(TestCase):
 
@@ -261,6 +279,23 @@ class RegistrationViewTests(TestCase):
         self.assertRedirects(
             response,
             reverse("login"),
+        )
+
+    def test_authenticated_user_redirected_from_registration(self):
+        user_model = get_user_model()
+
+        user = user_model.objects.create_user(
+            username="registeredcustomer",
+            password="SecureTestPassword123!",
+        )
+
+        self.client.force_login(user)
+
+        response = self.client.get(reverse("register"))
+
+        self.assertRedirects(
+            response,
+            reverse("dashboard"),
         )
 
 
@@ -384,6 +419,7 @@ class StaffDashboardViewTests(TestCase):
         self.assertRedirects(
             response,
             f'{reverse("login")}?next={reverse("staff_dashboard")}',
+            fetch_redirect_response=False,
         )
 
     def test_staff_dashboard_allows_staff_member(self):
