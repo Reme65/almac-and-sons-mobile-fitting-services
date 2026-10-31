@@ -7,7 +7,7 @@ from django.conf import settings
 from django.utils import timezone
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseBadRequest
-from django.shortcuts import get_object_or_404, redirect
+from django.shortcuts import get_object_or_404, redirect, render
 from django.views.decorators.http import require_POST
 from assistance.models import AssistanceRequest
 from .models import Payment
@@ -73,18 +73,12 @@ def create_checkout_session(request, payment_id):
 
 @login_required
 def payment_success(request):
-    return HttpResponse(
-        "You have returned from Stripe Checkout. "
-        "Your payment is awaiting confirmation."
-    )
+    return render(request, "payments/payments_success.html")
 
 
 @login_required
 def payment_cancel(request):
-    return HttpResponse(
-        "You have cancelled Stripe Checkout. "
-        "No payment has been confirmed."
-    )
+    return render(request, "payments/payments_cancel.html")
 
 
 @csrf_exempt

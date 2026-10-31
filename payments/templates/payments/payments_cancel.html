@@ -1,0 +1,36 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Payment Cancelled | Almac & Sons</title>
+
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <link rel="icon" type="image/png"
+          href="{% static 'images/favicon-32x32.png' %}">
+</head>
+
+<body id="top">
+    <main class="container">
+        <section class="payment-confirmation">
+            <h1>Payment Cancelled</h1>
+
+            <p>
+                You have cancelled Stripe Checkout.
+                No payment has been confirmed.
+            </p>
+
+            <p>
+                If you still wish to make a payment,
+                you can return to your account and try again.
+            </p>
+
+            <a href="{% url 'dashboard' %}" class="btn">
+                Return to My Account
+            </a>
+        </section>
+    </main>
+</body>
+</html>
