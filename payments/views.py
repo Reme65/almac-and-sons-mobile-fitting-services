@@ -1,6 +1,6 @@
 
 import logging
-from django.http import JsonResponse
+
 from django.views.decorators.csrf import csrf_exempt
 import stripe
 from django.conf import settings
@@ -27,11 +27,12 @@ def create_checkout_session(request, payment_id):
     )
     if (
         payment.timing == Payment.Timing.ON_COMPLETION
-        and payment.assistance_request.status != AssistanceRequest.Status.COMPLETED
+        and payment.assistance_request.status
+        != AssistanceRequest.Status.COMPLETED
     ):
         return HttpResponseBadRequest(
-        "Payment is not due until assistance is completed."
-       )
+            "Payment is not due until assistance is completed."
+        )
 
     if payment.amount <= 0:
         return HttpResponseBadRequest("Invalid payment amount.")

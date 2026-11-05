@@ -23,7 +23,9 @@ def request_assistance(request):
 
                 guest_references.append(str(assistance_request.reference))
 
-                request.session["guest_assistance_references"] = guest_references
+                request.session[
+                    "guest_assistance_references"
+                ] = guest_references
 
             return redirect(
                 "assistance_confirmation",
@@ -67,11 +69,12 @@ def request_assistance(request):
     return render(
         request,
         "assistance.html",
-       {
+        {
             "form": form,
             "error_step": error_step,
-       },
+        },
     )
+
 
 def assistance_confirmation(request, reference):
     assistance_request = get_object_or_404(
@@ -107,5 +110,5 @@ def assistance_confirmation(request, reference):
         {
             "assistance_request": assistance_request,
             "payment": payment,
-        },   
+        },
     )

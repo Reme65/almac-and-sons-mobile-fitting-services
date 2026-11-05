@@ -119,7 +119,7 @@ class AssistanceRequestForm(forms.ModelForm):
             )
 
         return occupant_safety
-    
+
     def clean_occupant_count(self):
         occupant_count = self.cleaned_data["occupant_count"]
 
@@ -168,4 +168,3 @@ class AssistanceRequestForm(forms.ModelForm):
             )
 
         return postcode
-    

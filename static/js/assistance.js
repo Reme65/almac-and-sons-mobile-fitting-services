@@ -1,7 +1,8 @@
 
-"use strict";
+
 
 document.addEventListener("DOMContentLoaded", () => {
+    "use strict";
     const steps = document.querySelectorAll(".assistance-step");
     const backButton = document.getElementById("assistance-back");
     const nextButton = document.getElementById("assistance-next");
@@ -9,9 +10,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const progressText = document.querySelector(".assistance-progress p");
     const progressBar = document.querySelector(".assistance-progress progress");
     const form = document.querySelector(".assistance-form");
-    let currentStep = form
-        ? Number(form.dataset.errorStep) - 1
-        : 0;
+    let currentStep = form ? Number(form.dataset.errorStep) - 1 : 0;
 
         
     let editingFromReview = false;
