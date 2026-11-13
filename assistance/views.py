@@ -2,8 +2,10 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.http import Http404
 from .forms import AssistanceRequestForm
 from .models import AssistanceRequest
+from django.contrib.auth.decorators import login_required
 
 
+@login_required(login_url="login")
 def request_assistance(request):
     if request.method == "POST":
         form = AssistanceRequestForm(request.POST)
@@ -99,7 +101,6 @@ def assistance_confirmation(request, reference):
 
     payment = (
         assistance_request.payments
-        .filter(status="pending")
         .order_by("-created_at")
         .first()
     )

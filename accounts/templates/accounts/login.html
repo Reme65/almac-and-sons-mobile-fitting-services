@@ -22,5 +22,11 @@
 
     <button type="submit">Login</button>
 </form>
+<p>
+    Don't have an account?
+    <a href="{% url 'register' %}?next={{ request.GET.next|urlencode }}">
+        Create an account
+    </a>
+</p>
 </body>
 </html>

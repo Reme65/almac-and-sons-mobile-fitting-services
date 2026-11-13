@@ -1,3 +1,4 @@
+
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
@@ -43,19 +44,26 @@
 
             <ul class="nav-links">
                 <li><a href="{% url 'home' %}">Home</a></li>
-                <li><a href="#">Services</a></li>
+                <li><a href="{% url 'services' %}">Services</a></li>
                 <li>
                     <a href="{% url 'home' %}#how-it-works">
                         How It Works
                     </a>
                 </li>
                 <li>
-                    <a href="{% url 'request_assistance' %}" aria-current="page">
+                    <a href="{% url 'request_assistance' %}">
                         Request Assistance
                     </a>
                 </li>
-                <li><a href="#">Login</a></li>
-                <li><a href="{% url 'register' %}">Register</a></li>
+
+                {% if user.is_authenticated %}
+                    <li>
+                        <a href="{% url 'dashboard' %}">My Dashboard</a>
+                    </li>
+                {% else %}
+                    <li><a href="{% url 'login' %}">Login</a></li>
+                    <li><a href="{% url 'register' %}">Register</a></li>
+                {% endif %}
             </ul>
 
         </nav>
@@ -63,111 +71,233 @@
 
     <main>
         <section class="confirmation-content">
-            <h1>Request Received</h1>
+            <h1>Assistance Request Details</h1>
 
             <p>
                 Thank you for contacting Almac &amp; Sons Vehicle Services.
             </p>
 
             <p>
-                Your request for assistance has been submitted and is now
-                awaiting assessment by our team.
-            </p>
-        <div class="confirmation-reference">
-            <h2>Your assistance request</h2>
-
-            <p>
-                <strong>Reference number:</strong>
-                <span>{{ assistance_request.reference }}</span>
+                You can check your assistance request and payment
+                information below.
             </p>
 
-            <p>
-                <strong>Current status:</strong>
-                <span>{{ assistance_request.get_status_display }}</span>
-            </p>
-        </div>
-        {% if payment %}
-        <section class="confirmation-payment" aria-labelledby="payment-heading">
-            <h2 id="payment-heading">Payment information</h2>
-
-            <p>
-                <strong>Amount:</strong> £{{ payment.amount }}
-            </p>
-
-            <p>
-                <strong>Payment timing:</strong>
-                {{ payment.get_timing_display }}
-            </p>
-
-            <p>
-                Your payment details have been prepared by our team.
-            </p>
-            {% if user.is_authenticated %}
-                {% if payment.timing == "upfront" or assistance_request.status == "completed" %}
-                    <form method="post" action="{% url 'payments:create_checkout_session' payment.id %}">
-                        {% csrf_token %}
-                        <button type="submit" class="confirmation-button">
-                            Pay Now
-                        </button>
-                    </form>
-                {% endif %}
-            {% endif %}
-        </section>
-        {% endif %}
-
-        <section class="confirmation-next-steps" aria-labelledby="next-steps-heading">
-            <h2 id="next-steps-heading">What happens next?</h2>
-
-            <ol>
-                <li>
-                    <h3>We assess your request</h3>
-                    <p>Our team reviews the information you have provided.</p>
-                </li>
-                <li>
-                    <h3>We arrange assistance</h3>
-                    <p>We determine the appropriate assistance for your situation.</p>
-                </li>
-                <li>
-                    <h3>We provide an estimated arrival time</h3>
-                    <p>We will share an estimated arrival time once assistance is arranged.</p>
-                </li>
-                <li>
-                     <h3>We keep you updated</h3>
-                     <p>We will contact you if there are updates about your request.</p>
-                </li>
-            </ol>
-        </section>
-
-        <section
-            class="confirmation-contact"
-            aria-labelledby="contact-heading"
-        >
-            <h2 id="contact-heading">Keep your phone available</h2>
-
-            <p>
-                Please keep your phone switched on and nearby.
-                We may need to contact you about your assistance request.
-            </p>
-
-            <div class="confirmation-emergency">
-                <h3>Are you in immediate danger?</h3>
+            <div class="confirmation-reference">
+                <h2>Your assistance request</h2>
 
                 <p>
-                    If you or anyone else is in immediate danger,
-                    call <strong>999</strong>.
+                    <strong>Reference number:</strong>
+                    <span>{{ assistance_request.reference }}</span>
+                </p>
+
+                <p>
+                    <strong>Current status:</strong>
+                    <span>{{ assistance_request.get_status_display }}</span>
                 </p>
             </div>
-        </section>
 
-        <div class="confirmation-actions">
-            <a class="confirmation-button" href="{% url 'home' %}">
-                Return to Home
-            </a>
+            <section
+                class="confirmation-payment"
+                aria-labelledby="payment-heading"
+            >
+                <h2 id="payment-heading">Payment information</h2>
 
-            <a class="confirmation-button" href="{% url 'services' %}">
-                View Services
-            </a>
-        </div>
+                {% if payment %}
+
+                    <p>
+                        <strong>Amount:</strong>
+                        £{{ payment.amount }}
+                    </p>
+
+                    <p>
+                        <strong>Payment timing:</strong>
+                        {{ payment.get_timing_display }}
+                    </p>
+
+                    <p>
+                        <strong>Payment status:</strong>
+                        {{ payment.get_status_display }}
+                    </p>
+
+                    {% if payment.status == "paid" %}
+
+                        <p>
+                            Your payment has been confirmed.
+                            Thank you for your payment.
+                        </p>
+
+                        {% if payment.paid_at %}
+                            <p>
+                                <strong>Payment confirmed:</strong>
+                                {{ payment.paid_at|date:"d M Y, H:i" }}
+                            </p>
+                        {% endif %}
+
+                    {% elif payment.status == "pending" %}
+
+                        {% if payment.timing == "upfront" or assistance_request.status == "completed" %}
+
+                            <p>
+                                Your payment details are ready.
+                                You can proceed to secure payment below.
+                            </p>
+
+                            {% if user.is_authenticated %}
+                                <form
+                                    method="post"
+                                    action="{% url 'payments:create_checkout_session' payment.id %}"
+                                >
+                                    {% csrf_token %}
+                                    <button
+                                        type="submit"
+                                        class="confirmation-button"
+                                    >
+                                        Pay Now
+                                    </button>
+                                </form>
+                            {% else %}
+                                <p>
+                                    Please log in to make your payment.
+                                </p>
+                            {% endif %}
+
+                        {% else %}
+
+                            <p>
+                                Your payment details have been prepared.
+                                Payment will become available when
+                                your assistance request is completed.
+                            </p>
+
+                        {% endif %}
+
+                    {% elif payment.status == "failed" %}
+
+                        <p>
+                            This payment was not completed successfully.
+                            Please contact our team for assistance.
+                        </p>
+
+                    {% elif payment.status == "cancelled" %}
+
+                        <p>
+                            This payment has been cancelled.
+                            Please contact our team if you require
+                            further information.
+                        </p>
+
+                    {% endif %}
+
+                {% else %}
+
+                    <p>
+                        No payment has been prepared for this request yet.
+                    </p>
+
+                    {% if assistance_request.status == "cancelled" %}
+
+                        <p>
+                            Your assistance request is cancelled.
+                            Please contact our team if you have
+                            any questions.
+                        </p>
+
+                    {% else %}
+
+                        <p>
+                            Our team will prepare your payment details
+                            when appropriate for your assistance request.
+                        </p>
+
+                        <p>
+                            Please check your customer dashboard
+                            for updates.
+                        </p>
+
+                    {% endif %}
+
+                {% endif %}
+            </section>
+
+            <section
+                class="confirmation-next-steps"
+                aria-labelledby="next-steps-heading"
+            >
+                <h2 id="next-steps-heading">What happens next?</h2>
+
+                <ol>
+                    <li>
+                        <h3>We assess your request</h3>
+                        <p>
+                            Our team reviews the information you have provided.
+                        </p>
+                    </li>
+                    <li>
+                        <h3>We arrange assistance</h3>
+                        <p>
+                            We determine the appropriate assistance
+                            for your situation.
+                        </p>
+                    </li>
+                    <li>
+                        <h3>We provide an estimated arrival time</h3>
+                        <p>
+                            We will share an estimated arrival time
+                            once assistance is arranged.
+                        </p>
+                    </li>
+                    <li>
+                        <h3>We keep you updated</h3>
+                        <p>
+                            We will contact you if there are updates
+                            about your request.
+                        </p>
+                    </li>
+                </ol>
+            </section>
+
+            <section
+                class="confirmation-contact"
+                aria-labelledby="contact-heading"
+            >
+                <h2>Keep your phone available</h2>
+
+                <p>
+                    Please keep your phone switched on and nearby.
+                    We may need to contact you about your
+                    assistance request.
+                </p>
+
+                <div class="confirmation-emergency">
+                    <h3>Are you in immediate danger?</h3>
+
+                    <p>
+                        If you or anyone else is in immediate danger,
+                        call <strong>999</strong>.
+                    </p>
+                </div>
+            </section>
+
+            <div class="confirmation-actions">
+
+                {% if user.is_authenticated %}
+                    <a
+                        class="confirmation-button"
+                        href="{% url 'dashboard' %}"
+                    >
+                        My Dashboard
+                    </a>
+                {% endif %}
+
+                <a class="confirmation-button" href="{% url 'home' %}">
+                    Return to Home
+                </a>
+
+                <a class="confirmation-button" href="{% url 'services' %}">
+                    View Services
+                </a>
+
+            </div>
         </section>
     </main>
 
