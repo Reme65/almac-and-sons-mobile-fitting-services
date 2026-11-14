@@ -1,13 +1,70 @@
 <!DOCTYPE html>
 <html lang="en">
+{% load static %}
 <head>
     <meta charset="UTF-8">
-    <title>Login | Almac & Sons</title>
-</head>
-<body>
-    <h1>Login</h1>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <form method="post">
+    <title>Login | Almac & Sons Mobile Fitting Services</title>
+
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
+    <link rel="icon" type="image/png" href="{% static 'images/favicon-32x32.png' %}">
+</head>
+<body id="top">
+
+    <header class="site-header">
+        <nav class="navbar" aria-label="Main navigation">
+
+            <a href="{% url 'home' %}" class="site-brand">
+                Almac & Sons Mobile Fitting Services
+            </a>
+
+            <input
+                type="checkbox"
+                id="menu-checkbox"
+                class="menu-checkbox"
+            >
+
+            <label for="menu-checkbox" class="menu-toggle">
+                ☰
+            </label>
+
+            <ul class="nav-links">
+                <li>
+                    <a href="{% url 'home' %}">Home</a>
+                </li>
+                <li>
+                    <a href="{% url 'services' %}">Services</a>
+                </li>
+                <li>
+                    <a href="{% url 'home' %}#how-it-works">
+                        How It Works
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'login' %}" aria-current="page">
+                        Login
+                    </a>
+                </li>
+                <li>
+                    <a href="{% url 'register' %}">Register</a>
+                </li>
+            </ul>
+
+        </nav>
+    </header>
+
+    <main>
+    <section class="login-section">
+        <div class="login-container">
+
+            <h1>Customer Login</h1>
+            <p>
+                Sign in to manage your assistance requests
+                and view your account.
+            </p>
+
+            <form method="post" class="assistance-form">
     {% csrf_token %}
 
     {% if request.GET.next %}
@@ -21,12 +78,18 @@
     {{ form.as_p }}
 
     <button type="submit">Login</button>
-</form>
-<p>
-    Don't have an account?
-    <a href="{% url 'register' %}?next={{ request.GET.next|urlencode }}">
-        Create an account
-    </a>
-</p>
+            </form>
+
+            <p>
+                Don't have an account?
+                <a href="{% url 'register' %}?next={{ request.GET.next|urlencode }}">
+                    Create an account
+                </a>
+            </p>
+
+        </div>
+    </section>
+    </main>
+
 </body>
 </html>

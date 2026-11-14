@@ -1170,6 +1170,37 @@ a {
 }
 
 /* ========================================
+   Customer Login Page
+======================================== */
+
+.login-section {
+    padding: 3rem 1rem;
+    min-height: 70vh;
+    background-color: #f5f7fa;
+}
+
+.login-container {
+    max-width: 480px;
+    margin: 0 auto;
+}
+
+.login-container h1 {
+    color: #003366;
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+.login-container > p {
+    text-align: center;
+    color: #52606d;
+    margin-bottom: 1.5rem;
+}
+
+.login-container .assistance-form {
+    margin-bottom: 1.5rem;
+}
+
+/* ========================================
    Tablet
 ======================================== */
 
