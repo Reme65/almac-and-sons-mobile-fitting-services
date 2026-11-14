@@ -393,6 +393,18 @@ class CompleteAssistanceRequestFormTests(SimpleTestCase):
 
 class AssistanceRequestViewTests(TestCase):
 
+    def setUp(self):
+        from django.contrib.auth import get_user_model
+
+        User = get_user_model()
+
+        self.user = User.objects.create_user(
+            username="testcustomer",
+            password="TestPassword123!",
+        )
+
+        self.client.force_login(self.user)
+
     def test_valid_post_creates_assistance_request(self):
         form_data = (
             CompleteAssistanceRequestFormTests()
@@ -1003,8 +1015,11 @@ class AssistanceConfirmationTemplateTests(SimpleTestCase):
         html = render_to_string("assistance-confirmation.html")
 
         self.assertIn("Request Received", html)
-        self.assertIn(
-            "Your request for assistance has been submitted",
+        self.assertInHTML(
+            (
+                "<p>You can check your assistance request and payment "
+                "information below.</p>"
+            ),
             html,
         )
         self.assertIn("What happens next?", html)
@@ -1015,7 +1030,7 @@ class AssistanceConfirmationTemplateTests(SimpleTestCase):
         self.assertIn("Keep your phone available", html)
         self.assertIn(
             "We may need to contact you about your assistance request",
-            html,
+            " ".join(html.split()),
         )
         self.assertIn("Are you in immediate danger?", html)
         self.assertIn("999", html)
@@ -1182,11 +1197,15 @@ class AssistanceCustomerRelationshipTests(TestCase):
             data=form_data,
         )
 
-        self.assertEqual(response.status_code, 302)
+        self.assertRedirects(
+            response,
+            f"{reverse('login')}?next={reverse('request_assistance')}",
+        )
 
-        assistance_request = AssistanceRequest.objects.latest("created_at")
-
-        self.assertIsNone(assistance_request.customer)
+        self.assertEqual(
+            AssistanceRequest.objects.count(),
+            0,
+        )
 
 
 class AssistanceRequestAdminPaymentTests(TestCase):
