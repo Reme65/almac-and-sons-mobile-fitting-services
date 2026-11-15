@@ -9,6 +9,11 @@ urlpatterns = [
     path("register/", views.register_view, name="register"),
     path("dashboard/", views.dashboard_view, name="dashboard"),
     path(
+         "account/edit/",
+         views.edit_account_view,
+         name="edit_account",
+    ),
+    path(
         "staff/dashboard/", views.staff_dashboard_view, name="staff_dashboard"
     ),
 ]

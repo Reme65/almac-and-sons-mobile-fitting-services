@@ -8,6 +8,7 @@ from django.shortcuts import redirect, render
 from django.views.decorators.http import require_POST
 from django.urls import reverse
 from urllib.parse import urlencode
+from .forms import CustomerAccountForm
 
 
 @require_POST
@@ -106,9 +107,29 @@ def staff_dashboard_view(request):
     assistance_requests = AssistanceRequest.objects.all().order_by(
         "-created_at"
     )
-
     return render(
         request,
         "accounts/staff_dashboard.html",
         {"assistance_requests": assistance_requests},
+    )
+
+
+@login_required(login_url="login")
+def edit_account_view(request):
+    if request.method == "POST":
+        form = CustomerAccountForm(
+            request.POST,
+            instance=request.user,
+        )
+
+        if form.is_valid():
+            form.save()
+            return redirect("dashboard")
+    else:
+        form = CustomerAccountForm(instance=request.user)
+
+    return render(
+        request,
+        "accounts/edit_account.html",
+        {"form": form},
     )

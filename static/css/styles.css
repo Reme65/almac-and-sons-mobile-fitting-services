@@ -1200,6 +1200,63 @@ a {
     margin-bottom: 1.5rem;
 }
 
+/* Customer Dashboard */
+
+.dashboard-content {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 3rem 1.5rem;
+    min-height: 65vh;
+}
+
+.dashboard-content h1 {
+    color: #003366;
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.dashboard-content h2 {
+    color: #003366;
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+
+.dashboard-content > p {
+    text-align: center;
+}
+
+.dashboard-request-list {
+    list-style: none;
+    padding: 0;
+    display: grid;
+    gap: 1.5rem;
+}
+
+.dashboard-request-card {
+    background-color: #ffffff;
+    border: 1px solid #dce3eb;
+    border-radius: 8px;
+    padding: 1.5rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+}
+
+.dashboard-request-card p {
+    margin-bottom: 0.75rem;
+}
+
+.dashboard-request-card a {
+    color: #003366;
+    font-weight: 600;
+}
+
+.dashboard-actions {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 2rem;
+}
+
 /* ========================================
    Tablet
 ======================================== */

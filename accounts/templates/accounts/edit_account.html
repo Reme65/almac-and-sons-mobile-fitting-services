@@ -1,0 +1,34 @@
+
+{% extends "base.html" %}
+
+{% block title %}Edit My Details | Almac & Sons{% endblock %}
+
+{% block content %}
+<section class="login-section">
+    <div class="login-container">
+
+        <h1>Edit My Details</h1>
+
+        <p>
+            Update your customer account information below.
+        </p>
+
+        <form method="post" class="assistance-form">
+            {% csrf_token %}
+
+            {{ form.as_p }}
+
+            <button type="submit" class="button button-primary">
+                Save Changes
+            </button>
+        </form>
+
+        <p>
+            <a href="{% url 'dashboard' %}">
+                Return to My Dashboard
+            </a>
+        </p>
+
+    </div>
+</section>
+{% endblock %}

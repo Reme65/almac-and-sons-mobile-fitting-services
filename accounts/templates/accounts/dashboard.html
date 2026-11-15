@@ -1,18 +1,9 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="en">
+{% extends "base.html" %}
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+{% block title %}My Dashboard | Almac & Sons{% endblock %}
 
-    <title>My Dashboard | Almac & Sons</title>
-
-    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
-</head>
-
-<body>
-    <main class="dashboard-content">
+{% block content %}
+    <section class="dashboard-content">
         <h1>My Dashboard</h1>
 
         <h2>My Assistance Requests</h2>
@@ -46,6 +37,10 @@
             <p>You haven't submitted any assistance requests yet.</p>
         {% endif %}
     <div class="dashboard-actions">
+        <a href="{% url 'edit_account' %}" class="button button-primary">
+            Edit My Details
+        </a>
+
         <a href="{% url 'request_assistance' %}" class="button button-primary">
             Request Assistance
         </a>
@@ -54,6 +49,5 @@
             Return to Home
         </a>
     </div>
-    </main>
-</body>
-</html>
+</section>
+{% endblock %}
