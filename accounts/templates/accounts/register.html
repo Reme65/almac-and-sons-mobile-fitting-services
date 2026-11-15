@@ -1,13 +1,17 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Register | Almac & Sons</title>
-</head>
-<body>
-    <h1>Register</h1>
+{% extends "base.html" %}
 
-    <form method="post">
+{% block title %}Register | Almac & Sons Mobile Fitting Services{% endblock %}
+
+{% block content %}
+<section class="login-section">
+    <div class="login-container">
+        <h1>Create an Account</h1>
+        <p>
+            Register to request assistance and manage
+            your customer account.
+        </p>
+
+    <form method="post" class="assistance-form">
         {% csrf_token %}
 
         {% if request.GET.next %}
@@ -28,5 +32,7 @@
 
         <button type="submit">Register</button>
     </form>
-</body>
-</html>
+
+    </div>
+</section>
+{% endblock %}

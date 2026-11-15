@@ -1,60 +1,10 @@
-<!DOCTYPE html>
-<html lang="en">
-{% load static %}
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Login | Almac & Sons Mobile Fitting Services</title>
+{% extends "base.html" %}
 
-    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
-    <link rel="icon" type="image/png" href="{% static 'images/favicon-32x32.png' %}">
-</head>
-<body id="top">
+{% block title %}Login | Almac & Sons Mobile Fitting Services{% endblock %}
 
-    <header class="site-header">
-        <nav class="navbar" aria-label="Main navigation">
+{% block content %}
 
-            <a href="{% url 'home' %}" class="site-brand">
-                Almac & Sons Mobile Fitting Services
-            </a>
-
-            <input
-                type="checkbox"
-                id="menu-checkbox"
-                class="menu-checkbox"
-            >
-
-            <label for="menu-checkbox" class="menu-toggle">
-                ☰
-            </label>
-
-            <ul class="nav-links">
-                <li>
-                    <a href="{% url 'home' %}">Home</a>
-                </li>
-                <li>
-                    <a href="{% url 'services' %}">Services</a>
-                </li>
-                <li>
-                    <a href="{% url 'home' %}#how-it-works">
-                        How It Works
-                    </a>
-                </li>
-                <li>
-                    <a href="{% url 'login' %}" aria-current="page">
-                        Login
-                    </a>
-                </li>
-                <li>
-                    <a href="{% url 'register' %}">Register</a>
-                </li>
-            </ul>
-
-        </nav>
-    </header>
-
-    <main>
     <section class="login-section">
         <div class="login-container">
 
@@ -89,7 +39,5 @@
 
         </div>
     </section>
-    </main>
 
-</body>
-</html>
+{% endblock %}
