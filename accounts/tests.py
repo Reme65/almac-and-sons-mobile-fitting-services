@@ -523,3 +523,160 @@ class StaffDashboardViewTests(TestCase):
         self.assertContains(response, "Car")
         self.assertContains(response, "Breakdown")
         self.assertContains(response, "Supermarket car park")
+
+
+class EditAccountViewTests(TestCase):
+
+    def test_edit_account_requires_login(self):
+        response = self.client.get(reverse("edit_account"))
+
+        self.assertRedirects(
+            response,
+            f'{reverse("login")}?next={reverse("edit_account")}',
+        )
+
+    def test_logged_in_customer_can_view_account_details(self):
+        user = get_user_model().objects.create_user(
+            username="testcustomer",
+            password="SecureTestPassword123!",
+            first_name="John",
+            last_name="Smith",
+            email="john@example.com",
+        )
+
+        self.client.force_login(user)
+
+        response = self.client.get(reverse("edit_account"))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(
+            response,
+            "accounts/edit_account.html",
+        )
+
+        form = response.context["form"]
+
+        self.assertEqual(form.instance.pk, user.pk)
+        self.assertEqual(form["first_name"].value(), "John")
+        self.assertEqual(form["last_name"].value(), "Smith")
+        self.assertEqual(form["email"].value(), "john@example.com")
+
+    def test_customer_can_update_own_account_details(self):
+        user = get_user_model().objects.create_user(
+            username="testcustomer",
+            password="SecureTestPassword123!",
+            first_name="John",
+            last_name="Smith",
+            email="john@example.com",
+        )
+
+        self.client.force_login(user)
+
+        response = self.client.post(
+            reverse("edit_account"),
+            {
+                "first_name": "James",
+                "last_name": "Jones",
+                "email": "james@example.com",
+            },
+        )
+
+        user.refresh_from_db()
+
+        self.assertRedirects(response, reverse("dashboard"))
+        self.assertEqual(user.first_name, "James")
+        self.assertEqual(user.last_name, "Jones")
+        self.assertEqual(user.email, "james@example.com")
+
+    def test_customer_cannot_modify_another_customers_account(self):
+        user_model = get_user_model()
+
+        customer_a = user_model.objects.create_user(
+            username="customer_a",
+            password="SecureTestPassword123!",
+            first_name="John",
+        )
+
+        customer_b = user_model.objects.create_user(
+            username="customer_b",
+            password="SecureTestPassword123!",
+            first_name="Sarah",
+            email="sarah@example.com",
+        )
+
+        self.client.force_login(customer_a)
+
+        response = self.client.post(
+            reverse("edit_account"),
+            {
+                "first_name": "James",
+                "last_name": "Jones",
+                "email": "james@example.com",
+                "id": customer_b.pk,
+            },
+        )
+
+        customer_a.refresh_from_db()
+        customer_b.refresh_from_db()
+
+        self.assertRedirects(response, reverse("dashboard"))
+        self.assertEqual(customer_a.first_name, "James")
+        self.assertEqual(customer_b.first_name, "Sarah")
+        self.assertEqual(customer_b.email, "sarah@example.com")
+
+    def test_customer_cannot_grant_themselves_staff_permissions(self):
+        user = get_user_model().objects.create_user(
+            username="ordinarycustomer",
+            password="SecureTestPassword123!",
+            first_name="John",
+        )
+
+        self.client.force_login(user)
+
+        response = self.client.post(
+            reverse("edit_account"),
+            {
+                "first_name": "James",
+                "last_name": "Smith",
+                "email": "james@example.com",
+                "is_staff": True,
+                "is_superuser": True,
+                "is_active": False,
+            },
+        )
+
+        user.refresh_from_db()
+
+        self.assertRedirects(response, reverse("dashboard"))
+        self.assertEqual(user.first_name, "James")
+        self.assertFalse(user.is_staff)
+        self.assertFalse(user.is_superuser)
+        self.assertTrue(user.is_active)
+
+    def test_invalid_account_details_are_not_saved(self):
+        user = get_user_model().objects.create_user(
+            username="testcustomer",
+            password="SecureTestPassword123!",
+            first_name="John",
+            last_name="Smith",
+            email="john@example.com",
+        )
+
+        self.client.force_login(user)
+
+        response = self.client.post(
+            reverse("edit_account"),
+            {
+                "first_name": "James",
+                "last_name": "Jones",
+                "email": "not-an-email",
+            },
+        )
+
+        user.refresh_from_db()
+
+        self.assertEqual(response.status_code, 200)
+        self.assertFalse(response.context["form"].is_valid())
+        self.assertEqual(user.first_name, "John")
+        self.assertEqual(user.last_name, "Smith")
+        self.assertEqual(user.email, "john@example.com")
