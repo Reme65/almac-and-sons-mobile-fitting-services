@@ -1,18 +1,10 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="en">
+{% extends "base.html" %}
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+{% block title %}Staff Dashboard | Almac & Sons{% endblock %}
 
-    <title>Staff Dashboard | Almac & Sons</title>
+{% block content %}
 
-    <link rel="stylesheet" href="{% static 'css/styles.css' %}">
-</head>
-
-<body>
-    <main class="dashboard-content">
+    <section class="dashboard-content">
         <h1>Staff Dashboard</h1>
         <h2>Assistance Requests</h2>
 
@@ -67,6 +59,5 @@
                 Return to Home
             </a>
         </div>
-    </main>
-</body>
-</html>
+    </section>
+{% endblock %}
